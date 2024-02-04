@@ -13,6 +13,10 @@ def load_and_store_embeddings(dir = '../data/guidelines/', path = 'redcross_guid
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
     docs = text_splitter.split_documents(pages)
 
+    # store text output as pickle
+    with open(dir + path[:-4] + '.pickle', 'wb') as f:
+        pickle.dump(pages, f)
+
     # default is "sentence-transformers/all-mpnet-base-v2"
     embeddings = HuggingFaceEmbeddings()
 

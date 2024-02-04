@@ -1,0 +1,37 @@
+Number of rows: 541
+Number of unique values: 541
+Maximum text length: 3998
+Minimum text length: 17
+Average text length: 2673.532347504621
+Average number of sentences: 22.709796672828094
+Common Bigrams:
+-- en/index.htm
+-Is Compression-Only
+//assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/ file/825202/Carbon_monoxide_incident_management_PHE.pdf
+//doi.org/10.1016/j.resuscitation.2016.01.028 Meissner
+//doi.org/10.1016/j.wem.2018.10.004 Wasserman
+//journals.lww.com/ejanaesthesiology/Fulltext/2018/07000/Self_confidence_and_level_of_knowledge_ after.7.aspx
+//journals.plos.org/plosmedicine/article id=10.1371/journal.pmed.1001322
+//journals.plos.org/plosntds/article id=10.1371/journal.pntd.0008334
+//journals.sagepub.com/doi/pdf/10.1177/1090198117749257 casa_token=87RdOQ6qqSoAAAAA
+//oaks.kent.edu/ijfae/vol2/iss1/7-rights-active-reflection-tool-develop-risk-awareness-outdoor-first- aid-education
+//oaks.kent.edu/ijfae/vol2/iss1/pressure-methods-primary-hemorrhage-control-randomized- crossover-trial
+//oaks.kent.edu/ijfae/vol2/iss2/time-reconsider-straddle-arm-technique-providing-care-conscious- infant-who-choking
+//oaks.kent.edu/ijfae/vol3/iss1/theoretical-organization-motivations-attend-first-aid-education- scoping-review
+//pscentre.org/ resource=guidelines-for-caring-for-staff-and-volunteers-in-crises
+//rcrcconference.org/app//uploads/2015/04/32IC-Background-report-on-Sexual-and-gender-based- violence_EN.pdf
+//search.proquest.com/openview/900209469ec63a1ee762c732998f3c7d/1 pq-origsite=gscholar
+//synapse.koreamed.org/DOIx.php id=10.4040/jkan.2016.46.3.463
+//www.cdc.gov/handwashing/why-handwashing.html text=Germs
+//www.cebap.org/knowledge-dissemination/first-aid- evidence-summaries/
+//www.cebap.org/knowledge-dissemination/first-aid-evidence-summarie Rudd
+//www.communicationcache.com/uploads/1/0/8/8/10887248/bystander_intervention_in_emergencies_ diffusion_of_responsibility.pdf
+//www.communicationcache.com/uploads/1/0/8/8/10887248/putting_the_fear_back_into_fear_ appeals-_the_extended_parallel_process_model.pdf
+//www.cureus.com/articles/38836-stop-the-bleed-education-assessment-tool-sbeat-development- and-validation
+//www.ghspjournal.org/content/3/4/577 utm_source=TrendMD
+//www.ilo.org/global/topics/safety-and-health-at-work/lang --
+//www.jacionline.org/article/S0091-6749 09
+//www.ncbi.nlm.nih.gov/pmc/articles/pmc4145646/ Patricia
+//www.researchgate.net/profile/Carlo_Diclemente/publication/16334721_Stages_and_Processes_of_ Self-Change_of_Smoking_-_Toward_An_Integrative_Model_of_Change/links/0deec51ba01390a356000000.pdf
+//www.researchgate.net/profile/Charles_Deakin/publication/275667328_Public_knowledge_and_ confidence_in_the_use_of_public_access_defibrillation/links/55acef0208ae815a042b3c46.pdf
+//www.researchgate.net/profile/Geraldine_Murphy8/publication/281140918_Randomised_ controlled_trial_of_a_mobile_phone_infant_resuscitation_guide/links/5ce30795a6fdccc9ddc13ebc/
