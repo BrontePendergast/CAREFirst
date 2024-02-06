@@ -20,5 +20,7 @@ print(f"Total number of first aid videos: {len(first_aid)}")
 df = pd.DataFrame(first_aid)
 df['category'] = df['level_2_category_labels'].apply(lambda row: row[0])
 
+print(f"Total number of categories in first aid: {len(fdf['category'].unique())}")
+
 # export counts for graph
 df['category'].value_counts()
