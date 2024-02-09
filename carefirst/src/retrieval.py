@@ -19,37 +19,37 @@ def retrieval(query):
 
     source = page_num + ' of ' + document
     
-    return page_content, source
+    return page_content
+    #return page_content, source
 
 
 ##################### demo
 
-import gradio as gr
+# import gradio as gr
 
-try:
-    demo.close()
-    print("Previous demo closed")
-except:
-    print("No demo running")
+# try:
+#     demo.close()
+#     print("Previous demo closed")
+# except:
+#     print("No demo running")
 
-demo = gr.Interface(
-    title = "CAREFirst - Retrieval demo",
-    description = """
-    Steps taken:
-    1. Red Cross pdf was converted to text 
-    2. Text was converted to embeddings with sentence-transformers all-mpnet-base-v2
-    3. Information is retrieved based on similarity to the query with Facebook AI Similarity Search (Faiss) Vector Database
-    """,
-    fn=retrieval,
-    inputs=[gr.Textbox(label="Question", lines=1)],
-    outputs=[gr.Textbox(label="Guidelines", lines=10), gr.Textbox(label="Reference", lines=1)],
-    examples = ["What to do if Cuts?",
-                "how do you treat abrasions?",
-                "What to do if you get a sting?",
-                "How to remove Splinters",
-                "How do you treat a sprain?",
-                "Which medicine to take if I get a mild fever?"]
-)
+# demo = gr.Interface(
+#     title = "CAREFirst - Retrieval demo",
+#     description = """
+#     Steps taken:
+#     1. Red Cross pdf was converted to text 
+#     2. Text was converted to embeddings with sentence-transformers all-mpnet-base-v2
+#     3. Information is retrieved based on similarity to the query with Facebook AI Similarity Search (Faiss) Vector Database
+#     """,
+#     fn=retrieval,
+#     inputs=[gr.Textbox(label="Question", lines=1)],
+#     outputs=[gr.Textbox(label="Guidelines", lines=10), gr.Textbox(label="Reference", lines=1)],
+#     examples = ["What to do if Cuts?",
+#                 "how do you treat abrasions?",
+#                 "What to do if you get a sting?",
+#                 "How to remove Splinters",
+#                 "How do you treat a sprain?",
+#                 "Which medicine to take if I get a mild fever?"]
+# )
 
-demo.launch()
-
+# demo.launch()

@@ -7,7 +7,7 @@ from pydantic import BaseModel, Extra, ValidationError, validator
 # from joblib import load
 # #from redis import asyncio as aioredis
 
-from src.retrieval import retrieval
+from retrieval import retrieval
 
 app = FastAPI()
 
