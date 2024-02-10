@@ -12,7 +12,9 @@ pandas = "^2.2.0"
 pypdf = "^4.0.1"
 sentence-transformers = "^2.3.1"
 faiss-cpu = "^1.7.4"
-gradio = "^4.16.0"
+openai = "0.27.8"
+doctran = "^0.0.14"
+gradio = "3.14.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,8 +24,6 @@ gensim = "^4.3.2"
 wordcloud = "^1.9.3"
 matplotlib-venn = "^0.11.10"
 matplotlib-venn-wordcloud = "^0.2.6"
-openai = "^1.11.0"
-langchain-openai = "^0.0.5"
 huggingface-hub = "^0.20.3"
 
 [build-system]
