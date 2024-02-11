@@ -24,7 +24,7 @@ from retrieval import *
 #https://python.langchain.com/docs/expression_language/cookbook/retrieval
 # reframe as one complete question
 _template = """
-Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
+Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
 Chat History:
 {chat_history}
@@ -34,7 +34,7 @@ CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
 
 
 # prompt to provide answer
-template = """Answer the question based only on the following context:
+template = """Answer the question based only on the following context. The context may include synonyms to what is provided in the question:
 {context}
 
 Question: {question}
@@ -57,7 +57,7 @@ def _combine_documents(
 #######################################
 
 
-retriever = db.as_retriever(k=1)
+retriever = db.as_retriever(search_kwargs={"k": 1})
 
 
 #######################################
@@ -126,6 +126,8 @@ def ChatChain(question):
 
     # And finally, we do the part that returns the answers
     answer = {
+        "history": loaded_memory,
+        "question": itemgetter("question"),
         "answer": final_inputs | ANSWER_PROMPT | llm,
         "docs": itemgetter("docs"),
     }
@@ -140,4 +142,4 @@ def ChatChain(question):
     memory.save_context({"question": question}, 
                         {"answer": result["answer"].content})
 
-    return result["answer"].content, result["docs"]
+    return result["answer"].content, result["history"]["chat_history"], result["question"], result["docs"]
