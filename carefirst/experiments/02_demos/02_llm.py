@@ -11,7 +11,7 @@ os.chdir(os.getcwd() + '/../../')
 sys.path.append(sys.path[0] + '/../../src/')
 sys.path.append(sys.path[0] + '/../../')
 
-# load in db and embeddings
+# load in chatbot
 from llm import *
 
 
