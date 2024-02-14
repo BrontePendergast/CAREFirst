@@ -17,8 +17,11 @@ black = "^24.1.1"
 ruff = "^0.2.1"
 isort = "^5.13.2"
 fastapi = "^0.109.2"
+requests = "^2.31"
+fastapi-cache2 = {extras = ["redis"], version = "^0.1.9"}
 uvicorn = "^0.27.0.post1"
 langchain = "^0.1.6"
+langchain-community = "^0.0.19"
 
 
 
