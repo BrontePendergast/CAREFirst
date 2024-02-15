@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 
 
 from src.main import app
-from src.retrieval import retrieval
 
 client = TestClient(app)
 
