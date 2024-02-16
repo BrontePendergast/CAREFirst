@@ -1,0 +1,10 @@
+---
+namespace: jhsmith
+bases:
+  - ../../bases
+resources:
+  - virtual-service.yaml
+patches:
+  - path: patch-deployment-conversational.yaml
+    target:
+      kind: Deployment

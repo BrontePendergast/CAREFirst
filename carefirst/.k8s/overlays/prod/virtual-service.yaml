@@ -1,0 +1,27 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: conversational
+spec:
+  hosts:
+    - jhsmith.mids255.com
+  gateways:
+    - istio-ingress/jhsmith-gateway
+  http:
+    - match:
+        - uri:
+            exact: /predict
+        - uri:
+            prefix: /health
+        - uri:
+            prefix: /hello
+        - uri:
+            prefix: /docs
+        - uri:
+            prefix: /openapi.json
+      route:
+        - destination:
+            host: conversational
+            port:
+              number: 8001

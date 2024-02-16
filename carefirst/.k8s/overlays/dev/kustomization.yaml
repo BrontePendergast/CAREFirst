@@ -1,0 +1,8 @@
+---
+namespace: carefirst
+bases:
+  - ../../bases
+patches:
+  - path: patch-deployment-conversational.yaml
+    target:
+      kind: Deployment
