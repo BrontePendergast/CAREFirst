@@ -16,7 +16,6 @@ LOCAL_REDIS_URL = "redis://localhost:6379/"
 @app.on_event("startup")
 def startup():
     HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
-    logger.debug(HOST_URL)
     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
