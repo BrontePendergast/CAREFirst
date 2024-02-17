@@ -22,7 +22,6 @@ def startup():
     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
-
 class Query(BaseModel, extra='ignore'):
     query: str
     
