@@ -1,22 +1,10 @@
 #!/bin/bash
-IMAGE_NAME=demo
-APP_NAME=demo
-
-# Create poetry environment and train model using environment
-# move model to the src directory to be picked up by Docker
-poetry env remove python3.11
-poetry install
-
-# FILE=./model_pipeline.pkl
-# if [ -f ${FILE} ]; then
-#     echo "${FILE} exist."
-# else
-#     echo "${FILE} does not exist."
-#     poetry run python ../trainer/train.py
-#     cp ../trainer/${FILE} .
-# fi
+IMAGE_NAME=lab1
+APP_NAME=lab1
 
 # Run pytest within poetry virtualenv
+poetry env remove python3.11
+poetry install
 poetry run pytest -vv -s
 
 # stop and remove image in case this script was run before
@@ -41,18 +29,10 @@ while ! $finished; do
 done
 
 # check a few endpoints and their http response
-# curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/"
-curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/docs"
-# curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/predict" -H 'Content-Type: application/json' -d '{
-#     "MedInc": 1,
-#     "HouseAge": 1,
-#     "AveRooms": 3,
-#     "AveBedrms": 3,
-#     "Population": 3,
-#     "AveOccup": 5,
-#     "Latitude": 1,
-#     "Longitude": 1
-# }'
+curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/hello?name=Winegar" # 200
+curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/hello?nam=Winegar" # 422
+curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/" # 404
+curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/docs" # 200
 
 # output logs for the container
 docker logs ${APP_NAME}

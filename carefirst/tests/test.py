@@ -23,12 +23,12 @@ def test_hello(test_input, expected):
 
 # Are we able to make a basic prediction?
 # Do I return the type I expect?
-# def test_predict_basic2():
-#     data = {"query": "cut"}
-#     response = client.post(
-#         "/predict",
-#         json=data,
-#     )
-#     print(response)
-#     assert response.status_code == 200
-#     # assert type(response.json()["prediction"]) is str
+def test_predict_basic2():
+    data = {"query": "cut"}
+    response = client.post(
+        "/predict",
+        json=data,
+    )
+    # print(response)
+    assert response.status_code == 200
+    # assert type(response.json()["prediction"]) is str
