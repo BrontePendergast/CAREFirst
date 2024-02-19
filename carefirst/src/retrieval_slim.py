@@ -1,16 +1,20 @@
 # packages required
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from datetime import datetime
 
 # load in db and embeddings
 # default is "sentence-transformers/all-mpnet-base-v2"
 embeddings = HuggingFaceEmbeddings()
-#db = FAISS.load_local("../data/guidelines/redcross_guidelinesfaiss_index/", embeddings)
-db = FAISS.load_local('/Users/Jess/Documents/capstone/CAREFirst/carefirst/data/guidelines/redcross_guidelinesfaiss_index/', embeddings)
-def retrieval(query):
+db = FAISS.load_local("./data/guidelines/redcross_guidelinesfaiss_index/", embeddings)
+
+#def retrieval(query):
+def retrieval(conversation_id, message_id, question):
     
+    timestamp = datetime.now()
+
     # run similarity search
-    answer = db.similarity_search(query)
+    answer = db.similarity_search(question)
 
     # extract required information
     page_content = answer[0].page_content
@@ -19,10 +23,11 @@ def retrieval(query):
 
     source = page_num + ' of ' + document
     
-    return page_content
-    #return page_content, source
+    #return page_content
+    return conversation_id, message_id, page_content, source, timestamp
 
-#print(retrieval('cut'))
+# page_content, source = retrieval(conversation_id='99999', message_id="1", question="cut", timestamp="2032-04-23T10:20:30.400+02:30")
+# print(source)
 
 ##################### demo
 
