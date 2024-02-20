@@ -1,11 +1,12 @@
 import openai
+import os
 from operator import itemgetter
 
 # orchestration
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from langchain_community.llms import HuggingFaceHub
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.prompts.prompt import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema import format_document
@@ -15,6 +16,11 @@ from langchain.memory import ConversationBufferMemory
 
 # scripts
 from retrieval import *
+
+# guardrails
+from nemoguardrails import RailsConfig
+from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails
+
 
 #######################################
 # Prompts
@@ -83,6 +89,17 @@ def SelectLLM(model_name="gpt-3.5-turbo", huggingface=False):
 
 llm = SelectLLM()
 
+#######################################
+# Guardrails
+#######################################
+
+# simple prompt to have minimal impact on latency
+prompt = ChatPromptTemplate.from_template("Answer No to this: {question}")
+output_parser = StrOutputParser()
+
+config = RailsConfig.from_path("data/config")
+guardrails = RunnableRails(config, input_key="question", output_key="answer")
+
 
 #######################################
 # chatbot
@@ -118,6 +135,7 @@ def ChatChain(question):
         "question": lambda x: x["standalone_question"],
     }
 
+
     # Now we construct the inputs for the final prompt
     final_inputs = {
         "context": lambda x: _combine_documents(x["docs"]),
@@ -132,14 +150,36 @@ def ChatChain(question):
         "docs": itemgetter("docs"),
     }
 
+    simple_chain = prompt | llm 
+    chain_with_guardrails = guardrails | simple_chain 
+
+    guardrail_result = chain_with_guardrails.invoke({"question": question})
+
+    if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
+
+        memory.save_context({"question": question}, 
+                            {"answer": guardrail_result['answer']})
+        
+        result = {
+        "history": None,
+        "question": None,
+        "answer": guardrail_result['answer'],
+        "docs": None,
+        }
+    
+        return result["answer"], result["history"], result["question"], result["docs"]
+    
     # And now we put it all together!
     final_chain = loaded_memory | standalone_question | retrieved_documents | answer
 
     # run chain
+    #result = final_chain.invoke({"question": question})
     result = final_chain.invoke({"question": question})
 
-    # store answer in memory
+    # # store answer in memory
     memory.save_context({"question": question}, 
                         {"answer": result["answer"].content})
 
-    return result["answer"].content, result["history"]["chat_history"], result["question"], result["docs"]
+    output = result["answer"].content, result["history"]["chat_history"], result["question"], result["docs"]
+
+    return output

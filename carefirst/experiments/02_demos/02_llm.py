@@ -35,7 +35,8 @@ Steps taken:
 1. Red Cross pdf was converted to text 
 2. Text was converted to embeddings with sentence-transformers all-mpnet-base-v2
 3. Information is retrieved based on similarity to the query with Facebook AI Similarity Search (Faiss) Vector Database
-4. GPT-3.5 turbo takes in context and conversation history to answer questions               
+4. GPT-3.5 turbo takes in context and conversation history to answer questions    
+5. NeMo guardrails to respond immediately to call 911 given certain input           
 """)
     with gr.Row():
         with gr.Column():

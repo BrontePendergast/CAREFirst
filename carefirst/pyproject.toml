@@ -6,17 +6,18 @@ authors = ["Bronte Pendergast <bronpend@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.13"
 langchain = "^0.1.4"
 pandas = "^2.2.0"
 pypdf = "^4.0.1"
 sentence-transformers = "^2.3.1"
 faiss-cpu = "^1.7.4"
-openai = "0.27.8"
-doctran = "^0.0.14"
+openai = ">=1.10.0,<2.0.0"
 gradio = "3.14.0"
 langchain-core = "^0.1.22"
 langchain-community = "^0.0.19"
+nemoguardrails = "^0.7.1"
+langchain-openai = "^0.0.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -27,6 +28,7 @@ wordcloud = "^1.9.3"
 matplotlib-venn = "^0.11.10"
 matplotlib-venn-wordcloud = "^0.2.6"
 huggingface-hub = "^0.20.3"
+
 
 [build-system]
 requires = ["poetry-core"]
