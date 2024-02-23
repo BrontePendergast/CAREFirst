@@ -2,46 +2,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conversational
+  namespace: rmarin
+  name: lab4
   labels:
-    app: conversational
+    app: lab4
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: conversational
+      app: lab4
   template:
     metadata:
       labels:
-        app: conversational
+        app: lab4
     spec:
       containers:
-        - name: conversational
-          image: local:latest
+        - name: lab4
+          image: lab4:latest
+          env:
+          - name: REDIS_URL
+            value: redis://:thisisapassword@redis:6379
           resources:
             requests:
-              cpu: 200m
-              memory: 500Mi
+              cpu: 600m
+              memory: 64Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 1500m
+              memory: 128Mi
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8001
+            - containerPort: 8000
           readinessProbe:
             httpGet:
               scheme: HTTP
               path: /health
-              port: 8001
+              port: 8000
             initialDelaySeconds: 1
             periodSeconds: 3
           livenessProbe:
             httpGet:
               scheme: HTTP
               path: /health
-              port: 8001
-            initialDelaySeconds: 15
-            periodSeconds: 20
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 3
       initContainers:
         - name: init-verify-redis-service-dns
           image: busybox
@@ -63,12 +67,13 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: conversational
+  namespace: rmarin
+  name: lab4
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: conversational
+    name: lab4
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 40
   targetCPUUtilizationPercentage: 50

@@ -1,9 +1,0 @@
----
-namespace: carefirst
-resources:
-  - config-map.yaml
-  - persistent-volume.yaml
-  - deployment-conversational.yaml
-  - deployment-redis.yaml
-  - service-conversational.yaml
-  - service-redis.yaml

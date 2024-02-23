@@ -1,24 +1,15 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
+  namespace: rmarin
   name: redis
 spec:
-  serviceName: redis
   replicas: 1
   selector:
     matchLabels:
       app: redis
       tier: backend
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "standard"
-        resources:
-          requests:
-            storage: 500Mi
   template:
     metadata:
       labels:
@@ -27,7 +18,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:7.0
+          image: redis:7.2
           resources:
             requests:
               cpu: 200m
@@ -38,8 +29,6 @@ spec:
             - name: ALLOW_EMPTY_PASSWORD
               value: "yes"
           volumeMounts:
-            - name: data
-              mountPath: /data
             - name: redis-config
               mountPath: /etc/
               subPath: redis.conf
@@ -53,19 +42,10 @@ spec:
             name: redis
       initContainers:
         - name: config
-          image: redis:6.2
+          image: redis:7.2
           command: ["bash", "-c"]
           args:
-            - |
-              set -ex
-              [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
-              ordinal=${BASH_REMATCH[1]}
-              # Copy appropriate conf.d files from config-map to emptyDir.
-              if [[ $ordinal -eq 0 ]]; then
-                cp /mnt/config-map/master.conf /etc/redis.conf
-              else
-                cp /mnt/config-map/slave.conf /etc/redis.conf
-              fi
+            - cp /mnt/config-map/master.conf /etc/redis.conf
           volumeMounts:
             - name: redis-config
               mountPath: /etc

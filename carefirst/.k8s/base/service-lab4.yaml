@@ -2,14 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: conversational
+  name: lab4
+  namespace: rmarin
   labels:
-    app: conversational
+    app: lab4
 spec:
   type: LoadBalancer
   ports:
-    - port: 8001
-      targetPort: 8001
+    - port: 8000
+      targetPort: 8000
       protocol: TCP
   selector:
-    app: conversational
+    app: lab4

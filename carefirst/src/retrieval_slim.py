@@ -9,8 +9,10 @@ embeddings = HuggingFaceEmbeddings()
 db = FAISS.load_local("./data/guidelines/redcross_guidelinesfaiss_index/", embeddings)
 
 #def retrieval(query):
-def retrieval(conversation_id, message_id, question):
+def retrieval(question, conversation_id):
     
+    #conversation_id = '99999'
+    message_id = "1"
     timestamp = datetime.now()
 
     # run similarity search

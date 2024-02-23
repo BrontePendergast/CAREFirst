@@ -7,29 +7,29 @@ spec:
   template:
     spec:
       containers:
-        - name: conversational
-          image: local:latest
+        - name: lab4
+          image: w255mids.azurecr.io/rmarin/lab4:d3a2cbf
           resources:
-            requests:
-              cpu: 200m
-              memory: 500Mi
             limits:
               cpu: 500m
               memory: 500Mi
-          imagePullPolicy: IfNotPresent
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          imagePullPolicy: Always
           ports:
-            - containerPort: 8001
+            - containerPort: 8000
           readinessProbe:
             httpGet:
               scheme: HTTP
               path: /health
-              port: 8001
-            initialDelaySeconds: 1
-            periodSeconds: 3
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               scheme: HTTP
               path: /health
-              port: 8001
+              port: 8000
             initialDelaySeconds: 15
             periodSeconds: 20

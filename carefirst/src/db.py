@@ -7,10 +7,10 @@ db = client["carefirstdb"]
 client.drop_database('feedback_table')
 feedback = db["feedback_table"]
 
-def insertFeedback(conversation_id, message_id, user_feedback):
+def insertFeedback(conversation_id, message_id, user_feedback, question):
 
   feedback_entry = { "conversation_id": conversation_id, "messages": [
-    { "message_id": message_id, "feedback" : user_feedback}
+    { "message_id": message_id, "feedback" : user_feedback, "question": question}
     ]}
       
   x = feedback.insert_one(feedback_entry)
