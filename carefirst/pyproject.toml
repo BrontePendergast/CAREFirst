@@ -22,7 +22,7 @@ fastapi-cache2 = {extras = ["redis"], version = "^0.1.9"}
 uvicorn = "^0.27.0.post1"
 langchain = "^0.1.6"
 langchain-community = "^0.0.19"
-
+pymongo = "^4.6.1"
 
 
 [tool.poetry.group.dev.dependencies]
