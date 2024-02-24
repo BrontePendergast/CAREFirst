@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from datetime import datetime
+import pymongo
 
 # App to Test
 from src.main import app
@@ -10,6 +11,9 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from typing import Any, Generator
 import asyncio
+
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+database = client["carefirstdb"]
 
 @pytest.fixture(autouse=True)
 def _init_cache() -> Generator[Any, Any, None]:
@@ -34,19 +38,42 @@ def test_hello(test_input, expected):
     assert response.status_code == 200
     assert response.json() == {"message": f"Hello {expected}"}
 
-# Are we able to make a basic prediction?
-# Do I return the type I expect?
-def test_conversations_basic():
-    data = {"question": "cut"}
-    response = client.post(
-        "/conversations/99999",
-        json=data,
-    )
+# # Are we able to make a basic prediction?
+# # Do I return the type I expect?
+# def test_conversations_basic():
+#     data = {"question": "simple check on my burn"}
+#     response = client.post(
+#         "/conversations/40",
+#         json=data,
+#     )
+    
+#     assert response.status_code == 200
 
-    # conversation_id, message_id, page_content, source, timestamp
-    assert response.status_code == 200
-    # assert type(response.json()["output"][0]) is str
-    # assert response.json()["output"][0] == '99999'
-    # assert response.json()["output"][1] == "1"
-    # assert response.json()["output"][2] == "Cuts and Scrapes\nA cut is a wound where the skin has been split open. The edges of the \ncut can be jagged or smooth. Scrapes are wounds where the skin has \nbeen rubbed or scraped away. Signs and symptoms of a cut or scrape may \ninclude pain and bleeding.\nWhat to Do\nCall\nCall EMS/9-1-1 if you suspect that there may be more serious injuries.\nCare\n1.There is usually minimal bleeding with cuts and scrapes, but if\nthe wound is bleeding significantly, apply direct pressure until it\nstops.\n2.If possible, rinse the wound for 5\nminutes with clean, running tap\nwater.3.If an antibiotic ointment or\ncream is available, ask the\nperson if he or she has a\nsensitivity to any antibiotics,\nsuch as penicillin. If not, suggest\nthe person apply it to the\nwound.\n4.Cover the wound with a\nsterile non-stick dressing\nand/or bandage.\n5.Ensure that the person\nknows to watch for signs\nof infection over the next\nfew days.\n8787\nWound Care87"
-    # assert response.json()["output"][3] == 'page 91 of redcross_guidelines.pdf'    
+def test_conversations_history_update():
+    data1 = {"question": "broke my toe first"}
+    response1 = client.post(
+        "/conversations/999",
+        json=data1,
+    )
+    
+    message_id_1 =  database["history"].find_one({'conversation_id' : "999"})['message_id']
+    #history_1 =  database["history"].find_one({'conversation_id' : "999"})['history']
+    
+    data2 = {"question": "broke my arm second"}
+    response2 = client.post(
+        "/conversations/999",
+        json=data2,
+    )  
+    
+    message_id_2 =  database["history"].find_one({'conversation_id' : "999"})["message_id"]
+    #history_2 =  database["history"].find_one({'conversation_id' : "999"})['history']
+
+
+    assert response1.status_code == 200
+    assert response2.status_code == 200
+
+    assert response1.json()["output"][0] == '999'
+    assert response2.json()["output"][0] == '999'
+
+    assert message_id_1 != message_id_2
+    #assert history_1 != history_2  

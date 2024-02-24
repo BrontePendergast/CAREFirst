@@ -5,7 +5,7 @@ from langchain_community.vectorstores import FAISS
 # load in db and embeddings
 # default is "sentence-transformers/all-mpnet-base-v2"
 embeddings = HuggingFaceEmbeddings()
-db = FAISS.load_local("../data/guidelines/redcross_guidelinesfaiss_index", embeddings)
+db = FAISS.load_local("./data/guidelines/redcross_guidelinesfaiss_index", embeddings)
 
 def retrieval(query):
     
@@ -19,8 +19,7 @@ def retrieval(query):
 
     source = page_num + ' of ' + document
     
-    return page_content
-    #return page_content, source
+    return page_content, source
 
 
 ##################### demo
