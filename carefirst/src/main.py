@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from typing import List, Dict, Tuple, NamedTuple, Optional
 from typing_extensions import TypedDict
 from pydantic import BaseModel, Extra, ValidationError, validator, TypeAdapter
-from pydantic_mongo import AbstractRepository, ObjectIdField
 
 import os
 from datetime import datetime
@@ -17,13 +16,21 @@ from redis import asyncio
 # Mongo
 import pymongo
 from pymongo import MongoClient
+from pydantic_mongo import AbstractRepository, ObjectIdField
+from langchain_community.chat_message_histories import MongoDBChatMessageHistory
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables.history import RunnableWithMessageHistory
 
 # Model
 from src.llm_js import ChatChain
 #from llm_js import ChatChain
 
+from src.db_mongo import getURI
+#from db_mongo import getURI
+
 # MongoDB
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+connection_string= getURI()
+client = pymongo.MongoClient(connection_string)
 database = client["carefirstdb"]
 
 app = FastAPI()
@@ -33,55 +40,29 @@ class Query(BaseModel, extra='ignore'):
     question: str
 
 class Response(BaseModel):
-    output: Tuple[str, str, str, str, str, str, str, datetime]
+    output: Tuple[str, str, str, str, str, str, datetime]
 
-class History(BaseModel):
+class Message(BaseModel):
     id: ObjectIdField = None
     conversation_id: str
     message_id: int
-    new_history_human: str
-    new_history_ai: str
+    message_human: str
+    message_ai: str
+    feedback: Optional[bool] = None
     timestamp: datetime
 
-    def to_bson(self):
-        data = self.dict(by_alias=True, exclude_none=True)
-        return data
-
-    def __getitem__(self, item):
-        return getattr(self, item)
-
-class HistoryRepository(AbstractRepository[History]):
+class MessagesRepository(AbstractRepository[Message]):
    class Meta:
-      collection_name = 'history'
-
-# class Response(BaseModel):
-#     conversation_id: str
-#     message_id: str
-#     answer: str
-#     history: str
-#     question: str
-#     source: str
-#     timestamp: datetime
+      collection_name = 'messages'
 
 class Feedback(BaseModel, extra='ignore'):
-    conversation_id: str
-    message_id: str
+    id: Optional[str] = None
+    message_id: int
     user_feedback: bool
-
-def getHistory(conversation_id):
-    result = database["history"].find_one({'conversation_id': conversation_id})
-    if not result:
-        history_human = ''
-        history_ai = ''
-
-    else:
-        history_human = result["new_history_human"]
-        history_ai = result["new_history_ai"]
-
-    return history_human, history_ai
-    
+  
 def getMessageID(conversation_id):
-    result = database["history"].find_one({'conversation_id': conversation_id})
+    '''Increment message_id by 1 with each new message in the chat'''
+    result = database["messages"].find_one({'conversation_id': conversation_id})
     if not result:
         message_id = 0
     else:
@@ -90,38 +71,37 @@ def getMessageID(conversation_id):
 
     return message_id
 
-def setHistory(conversation_id, ai_response):
-        message_id = getMessageID(conversation_id=conversation_id)
-        history_update = History(conversation_id=conversation_id, message_id=message_id, new_history_human=ai_response[3], new_history_ai=ai_response[4], timestamp=ai_response[6])
-    
-        database["history"].update_one(
-            {'conversation_id': history_update.conversation_id}, 
-            {'$set': {"message_id": message_id, "history": history_update.history, "timestamp": history_update.timestamp}}, upsert=True)   
-
-        return
-
 @app.post("/conversations/{conversation_id}", response_model=Response)
 #@cache(expire=60)
 async def conversations(conversation_id, text: Query) -> TypeAdapter(Response):
     text.id = conversation_id
 
-    # Get conversation history
-
-
     # Generate Response
     ai_response = ChatChain(text.question, text.id)  
-        
-    # Store conversation id, updated conversation history, timestamp in mongodb
-    setHistory(conversation_id, ai_response)
-    
+
+    # Create message_id
+    message_id = getMessageID(conversation_id=text.id)
+
+    # Store record in "messages" collection
+    messages_repository = MessagesRepository(database=database)
+    message = Message(conversation_id = text.id, message_id=message_id, message_human=ai_response[2], message_ai=ai_response[3], timestamp=ai_response[6])
+    messages_repository.save(message)
+
     # Return Response
+    #output_dict = Response(**ai_response)
     return {"output": ai_response}
 
-@app.post("/messages")
-async def messages(feedback: Feedback):
+@app.post("/messages/{conversation_id}")
+async def messages(conversation_id, feedback: Feedback):
+    feedback.id = conversation_id
 
-    # Store feedback in database
-    return {"feedback": feedback.user_feedback}
+    # Update message collection with feedback
+    database["messages"].update_one(
+            {'conversation_id': feedback.id, "message_id": feedback.message_id}, 
+            {'$set': {"feedback": feedback.user_feedback}})   
+
+    return {"output": feedback} 
+
 
 @app.get("/health")
 async def health():
@@ -130,12 +110,6 @@ async def health():
 @app.get("/hello")
 async def hello(name: str):
     return {"message": f"Hello {name}"}
-
-history_repository = HistoryRepository(database=database)
-# result = history_repository.find_one({'conversation_id': history_update.conversation_id})
-# print(result)
-result = history_repository.find_one_by({'conversation_id': '500'})
-
 
 # # Redis
 # LOCAL_REDIS_URL = "redis://localhost:6379/"
@@ -147,18 +121,11 @@ result = history_repository.find_one_by({'conversation_id': '500'})
 #     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 
-# class ResponseTuple:
-#     output: Response(BaseModel)
-# # retrieval function returns: (conversation_id, message_id, page_content, source, timestamp)
 # class Response(BaseModel):
-#     output: Tuple[str, str, str, str, datetime]
-
-
-
-# class Response(NamedTuple):
 #     conversation_id: str
-#     message_id: str
-#     page_content: str
+#     answer: str
+#     history_human: str
+#     history_ai: str
+#     question: str
 #     source: str
 #     timestamp: datetime
-
