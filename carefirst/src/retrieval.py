@@ -5,10 +5,10 @@ from langchain_community.vectorstores import FAISS
 # load in db and embeddings
 # default is "sentence-transformers/all-mpnet-base-v2"
 embeddings = HuggingFaceEmbeddings()
-# assumes you're running from carefirst directory
+# assumes you're running from carefirst directory and this db by default
 db = FAISS.load_local("./data/guidelines/redcross_guidelinesfaiss_index", embeddings)
 
-def retrieval(query):
+def retrieval(query, db):
     
     # run similarity search
     answer = db.similarity_search(query)

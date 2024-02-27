@@ -1,18 +1,21 @@
 import openai
 import os
 from operator import itemgetter
+from typing import List
+import ast
 
 # orchestration
-from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
 from langchain_community.llms import HuggingFaceHub
 from langchain_openai import ChatOpenAI
 from langchain.prompts.prompt import PromptTemplate
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.schema import format_document
-from langchain_core.messages import AIMessage, HumanMessage, get_buffer_string
-from langchain_core.runnables import RunnableParallel
+from langchain_core.messages import AIMessage, HumanMessage, get_buffer_string, SystemMessage
 from langchain.memory import ConversationBufferMemory
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.output_parsers import StrOutputParser
+from langchain.output_parsers.pydantic import PydanticOutputParser
 
 # scripts
 from retrieval import *
@@ -20,6 +23,7 @@ from retrieval import *
 # guardrails
 from nemoguardrails import RailsConfig
 from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails
+from tenacity import retry, stop_after_attempt
 
 
 #######################################
@@ -40,7 +44,9 @@ CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
 
 
 # prompt to provide answer
-template = """Answer the question based only on the following context. The context may include synonyms to what is provided in the question:
+template = """
+Answer the question based only on the following context. 
+The context may include synonyms to what is provided in the question:
 {context}
 
 Question: {question}
@@ -51,11 +57,70 @@ ANSWER_PROMPT = ChatPromptTemplate.from_template(template)
 # retrieval prompt
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
 
-def _combine_documents(
-    docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"
-):
+def _combine_documents(docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"):
     doc_strings = [format_document(doc, document_prompt) for doc in docs]
     return document_separator.join(doc_strings)
+
+
+# knowledge graph node identification prompt
+class Node(BaseModel):
+    node: str = Field(description="The high level topic node that the user's question is referring to", default = 'None')
+    relationship: str = Field(description="The specific topic if mentioned by the user", default = 'None')
+
+# function to extract the node:
+def ExtractNode(info):
+    scenarios = ast.literal_eval(info['scenarios'])
+    # run through list
+    for scenario in scenarios:
+        if info['node']['node'] == scenario['node']:
+            identified = scenario
+    # return the one identified by the model
+    return identified
+
+SCENARIO_PROMPT = PromptTemplate.from_template(template="{scenarios}")
+
+def _extract_documents(docs, document_prompt=SCENARIO_PROMPT, document_separator="\n\n"):
+    doc_strings = [format_document(doc, document_prompt) for doc in docs]
+    return document_separator.join(doc_strings)
+
+node_parser = PydanticOutputParser(pydantic_object=Node)
+
+node_prompt = PromptTemplate(
+    template="""
+    The user has provided the following response: \n {question}. 
+    Given the following knowledge graph of nodes and their related topics, which node in the graph does this response relate to? 
+    Respond with the value of the 'node'. 
+    The 'relationship' will be 'None' if there is no way to choose between existing relationships in the Knowledge graph. 
+    If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, include this in your response. 
+    Remember the topic should already exist in the graph.
+    Think step by step.
+
+    Provide your response in JSON format with the identified node and relationship
+
+    Knowledge graph:
+    {graph}
+    """,
+    input_variables=["question", "graph"],
+   # partial_variables={"format_instructions": node_parser.get_format_instructions()},
+)
+
+
+# follow up prompt
+class FollowUp(BaseModel):
+    output: str = Field(description="a question to send back to the user")
+
+# Set up a parser + inject instructions into the prompt template.
+follow_parser = PydanticOutputParser(pydantic_object=FollowUp)
+
+follow_system_prompt = SystemMessagePromptTemplate.from_template(
+    template="""
+    The user has a question and you have narrowed down that the answer is related to several scenarios. 
+    Ask the user a follow up question to identify which specific scenario they are referring to.
+    """)
+
+follow_human_prompt = HumanMessagePromptTemplate.from_template(template = "User question: \n {question} \n Scenarios: \n{graph}", input_variables=["question", "graph"])
+
+follow_prompt = ChatPromptTemplate.from_messages([follow_system_prompt, follow_human_prompt])
 
 
 #######################################
@@ -63,6 +128,7 @@ def _combine_documents(
 #######################################
 
 
+db = FAISS.load_local("./data/guidelines/transformed_redcross_w_metadata.pifaiss_index", embeddings)
 retriever = db.as_retriever(search_kwargs={"k": 1})
 
 
@@ -71,7 +137,7 @@ retriever = db.as_retriever(search_kwargs={"k": 1})
 #######################################
 
 
-def SelectLLM(model_name="gpt-3.5-turbo", huggingface=False):
+def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
 
     if huggingface:
         # See https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads for some other options
@@ -89,9 +155,11 @@ def SelectLLM(model_name="gpt-3.5-turbo", huggingface=False):
 
 llm = SelectLLM()
 
+
 #######################################
 # Guardrails
 #######################################
+
 
 # simple prompt to have minimal impact on latency
 prompt = ChatPromptTemplate.from_template("Answer No to this: {question}")
@@ -102,10 +170,11 @@ guardrails = RunnableRails(config, input_key="question", output_key="answer")
 
 
 #######################################
-# chatbot
+# Chatbot modules
 #######################################
 
 
+# memory
 memory = ConversationBufferMemory(
         return_messages=True, output_key="answer", input_key="question"
     )
@@ -135,18 +204,53 @@ def ChatChain(question):
         "question": lambda x: x["standalone_question"],
     }
 
+    # knowledge graph of retrieved information
+    get_knowledge_graph = ({
+        "question": itemgetter("question"), 
+        "graph": lambda x: _extract_documents(x["docs"])
+        }
+        | node_prompt 
+               | llm
+               | node_parser 
+               | dict
+    )
 
-    # Now we construct the inputs for the final prompt
-    final_inputs = {
-        "context": lambda x: _combine_documents(x["docs"]),
-        "question": itemgetter("question"),
-    }
+    graph = ({"question": itemgetter("question"),
+              "node": get_knowledge_graph,
+              "docs": itemgetter("docs")} 
+    )   
+
+    # when a follow up question is required 
+    follow_up = (follow_prompt
+                 | llm
+    )
+
+    # Function to check if follow up is required or direct answer
+    def RequireQuestion(info):
+
+        if info['node']['relationship'] == 'None':
+            answer_chain = {"question": lambda x: info["question"], 
+                            "graph": {"scenarios": lambda x : info["scenarios"], "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+        else:
+            answer_chain = {"question": lambda x: info["question"], 
+                            "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
+
+        return answer_chain
+
+
+    final_chain = ({"question": itemgetter("question"), 
+                   "node": itemgetter("node"),
+                   "scenarios": lambda x: _extract_documents(x["docs"]),
+                   "context": lambda x: _combine_documents(x["docs"])} 
+                   | RunnableLambda(RequireQuestion)
+    )
 
     # And finally, we do the part that returns the answers
     answer = {
         "history": loaded_memory,
         "question": itemgetter("question"),
-        "answer": final_inputs | ANSWER_PROMPT | llm,
+        "node": itemgetter("node"),
+        "answer": final_chain | StrOutputParser(),
         "docs": itemgetter("docs"),
     }
 
@@ -160,26 +264,16 @@ def ChatChain(question):
         memory.save_context({"question": question}, 
                             {"answer": guardrail_result['answer']})
         
-        result = {
-        "history": None,
-        "question": None,
-        "answer": guardrail_result['answer'],
-        "docs": None,
-        }
-    
-        return result["answer"], result["history"], result["question"], result["docs"]
+        return guardrail_result['answer']
     
     # And now we put it all together!
-    final_chain = loaded_memory | standalone_question | retrieved_documents | answer
-
+    chain = loaded_memory | standalone_question | retrieved_documents | graph | answer
+    
     # run chain
-    #result = final_chain.invoke({"question": question})
-    result = final_chain.invoke({"question": question})
+    result = chain.invoke({"question": question})
 
     # # store answer in memory
     memory.save_context({"question": question}, 
-                        {"answer": result["answer"].content})
+                        {"answer": result["answer"]})
 
-    output = result["answer"].content, result["history"]["chat_history"], result["question"], result["docs"]
-
-    return output
+    return result
