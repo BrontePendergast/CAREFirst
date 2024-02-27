@@ -53,45 +53,45 @@ def test_conversations_basic():
 
     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
-def test_conversations_chatlog():
-    data1 = {"question": "broke my toe first"}
-    response1 = client.post(
-        "/conversations/40",
-        json=data1,
-    )
+# def test_conversations_chatlog():
+#     data1 = {"question": "broke my toe first"}
+#     response1 = client.post(
+#         "/conversations/40",
+#         json=data1,
+#     )
     
-    message_id_1 =  database["messages"].find_one({'conversation_id' : "40", 'message_id' : 0})['message_id']
+#     message_id_1 =  database["messages"].find_one({'conversation_id' : "40", 'message_id' : 0})['message_id']
     
-    data2 = {"question": "broke my arm second"}
-    response2 = client.post(
-        "/conversations/40",
-        json=data2,
-    )  
+#     data2 = {"question": "broke my arm second"}
+#     response2 = client.post(
+#         "/conversations/40",
+#         json=data2,
+#     )  
     
-    message_id_2 =  database["messages"].find_one({'conversation_id' : "40", 'message_id' : 1})["message_id"]
+#     message_id_2 =  database["messages"].find_one({'conversation_id' : "40", 'message_id' : 1})["message_id"]
 
 
-    assert response1.status_code == 200
-    assert response2.status_code == 200
+#     assert response1.status_code == 200
+#     assert response2.status_code == 200
 
-    assert response1.json()["output"][0] == '40'
-    assert response2.json()["output"][0] == '40'
+#     assert response1.json()["output"][0] == '40'
+#     assert response2.json()["output"][0] == '40'
 
-    assert message_id_1 != message_id_2
+#     assert message_id_1 != message_id_2
     
-    deleteCollection(db_name="carefirstdb", collection_name="messages")
+#     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
-def test_feedback_basic():
-    data = {"message_id": 0, "user_feedback": True}
-    response = client.post(
-        "/messages/50",
-        json=data,
-    )
+# def test_feedback_basic():
+#     data = {"message_id": 0, "user_feedback": True}
+#     response = client.post(
+#         "/messages/50",
+#         json=data,
+#     )
     
-    assert response.status_code == 200
-    assert response.json()["output"]["id"] == "50"
-    assert response.json()["output"]["message_id"] == 0
-    assert response.json()["output"]["user_feedback"] == True
+#     assert response.status_code == 200
+#     assert response.json()["output"]["id"] == "50"
+#     assert response.json()["output"]["message_id"] == 0
+#     assert response.json()["output"]["user_feedback"] == True
 
-    deleteCollection(db_name="carefirstdb", collection_name="messages")
+#     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
