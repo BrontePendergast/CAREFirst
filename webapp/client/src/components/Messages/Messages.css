@@ -1,0 +1,102 @@
+#input-text{
+    margin: 5px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: block;
+    height: auto !important;
+    resize: none;
+    max-height: 400px;
+  }
+
+  #bottom-div{
+    position: absolute;
+    bottom: 0;
+    background-color: gray;
+    border-radius: 3%;
+    margin-left: -12px;
+    margin-right: -12px;
+    margin-top: -16px;
+    height: auto;
+  }
+  
+  #input-text:focus, #input-text:active {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+  }
+
+  .send_icon_div {
+    position: relative;
+    justify-content: center;
+  }
+
+  .send_icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+  }
+
+  .send_icon:hover {
+    color: blue !important;
+  }
+
+  #individual-messages-div {
+    height: 450px;
+    padding-bottom: 30px !important;
+    overflow-y: scroll;
+  }
+
+  .individual-message-div {
+    width: 100%;
+    font-size: 14px;
+    margin: 10px;
+
+  }
+
+  .you {
+    padding: 8px;
+    background-color: gray;
+    max-width: 70%;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    margin-top: -10px;
+  }
+
+  .bot {
+    padding: 8px;
+    background-color: #407481;
+    color: white;
+    max-width: 70%;
+    border-radius: 10px;
+    margin-bottom: 50px;
+  }
+
+  .message-container {
+    position: relative;
+    /* margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px; */
+}
+
+.thumbs-container {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+}
+
+.thumbs-up,
+.thumbs-down {
+    margin-right: -5px;
+    cursor: pointer;
+    background-color: #407481;
+    border: none;
+    font-size: 10px;
+    border-radius: 50%;
+}
+
+.thumbs-up:hover,
+.thumbs-down:hover {
+    background-color: green;
+}
