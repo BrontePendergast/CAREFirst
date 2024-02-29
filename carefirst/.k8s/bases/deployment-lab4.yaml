@@ -2,7 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: rmarin
   name: lab4
   labels:
     app: lab4
@@ -18,17 +17,14 @@ spec:
     spec:
       containers:
         - name: lab4
-          image: lab4:latest
-          env:
-          - name: REDIS_URL
-            value: redis://:thisisapassword@redis:6379
+          image: local:latest
           resources:
             requests:
-              cpu: 600m
-              memory: 64Mi
+              cpu: 200m
+              memory: 500Mi
             limits:
-              cpu: 1500m
-              memory: 128Mi
+              cpu: 500m
+              memory: 500Mi
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
@@ -44,8 +40,8 @@ spec:
               scheme: HTTP
               path: /health
               port: 8000
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 15
+            periodSeconds: 20
       initContainers:
         - name: init-verify-redis-service-dns
           image: busybox
@@ -67,7 +63,6 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  namespace: rmarin
   name: lab4
 spec:
   scaleTargetRef:
@@ -75,5 +70,5 @@ spec:
     kind: Deployment
     name: lab4
   minReplicas: 1
-  maxReplicas: 40
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 50

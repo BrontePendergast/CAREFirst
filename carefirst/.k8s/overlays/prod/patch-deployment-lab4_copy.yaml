@@ -8,12 +8,13 @@ spec:
     spec:
       containers:
         - name: lab4
-          image: w255mids.azurecr.io/rmarin/lab4:[TAG]
+          image: w255mids.azurecr.io/jhsmith/api-lab4:e3c9197
+          #image: w255mids.azurecr.io/jhsmith/api-lab4:[TAG]
           resources:
-            limits:
-              cpu: 500m
-              memory: 500Mi
             requests:
+              cpu: 200m
+              memory: 500Mi
+            limits:
               cpu: 500m
               memory: 500Mi
           imagePullPolicy: Always
@@ -24,8 +25,8 @@ spec:
               scheme: HTTP
               path: /health
               port: 8000
-            initialDelaySeconds: 5
-            periodSeconds: 10
+            initialDelaySeconds: 1
+            periodSeconds: 3
           livenessProbe:
             httpGet:
               scheme: HTTP

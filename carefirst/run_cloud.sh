@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAMESPACE=carefirst
+NAMESPACE=jhsmith
 
 # Set context (DIFFERENT)
 echo "Set kubernetes context"
@@ -38,12 +38,8 @@ curl -o /dev/null -s -w "%{http_code}\n" -X GET 'https://jhsmith.mids255.com/doc
 echo "testing '/health' endpoint. expect status code of 200 returned"
 curl -o /dev/null -s -w "%{http_code}\n" -X GET 'https://jhsmith.mids255.com/health'
 
-# # echo "testing '/predict' endpoint. expect status code of 200 returned"
-# curl -X 'POST' 'https://jhsmith.mids255.com/predict' -L -H 'Content-Type: application/json' -d \
-# '{"houses":
-# [{"AveRooms":"6.98","AveBedrms":"1.02","Population":"321","AveOccup":"2.55","Latitude":"37.88","Longitude":"-122.21","HouseAge":"41","MedInc":"8.32"},
-# {"AveRooms":"6.98","AveBedrms":"1.02","Population":"322","AveOccup":"2.55","Latitude":"37.88","Longitude":"-122.21","HouseAge":"41","MedInc":"8.24"}]}
-# '
+curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/conversations/9999" -H 'Content-Type: application/json' -d \
+'{"question": "cut"}'
 
 echo "Delete deployments and services in namespace"
 kubectl delete --all deployments --namespace=${NAMESPACE}

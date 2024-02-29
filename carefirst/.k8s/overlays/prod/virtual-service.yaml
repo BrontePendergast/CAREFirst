@@ -5,23 +5,21 @@ metadata:
   name: lab4
 spec:
   hosts:
-    - rmarin.mids255.com
+    - jhsmith.mids255.com
   gateways:
-    - istio-ingress/rmarin-gateway
+    - istio-ingress/jhsmith-gateway
   http:
     - match:
         - uri:
-            exact: /predict
-        - uri:
-            exact: /bulk_predict
+            exact: /conversations
         - uri:
             prefix: /health
+        - uri:
+            prefix: /hello
         - uri:
             prefix: /docs
         - uri:
             prefix: /openapi.json
-        - uri:
-            prefix: /hello
       route:
         - destination:
             host: lab4

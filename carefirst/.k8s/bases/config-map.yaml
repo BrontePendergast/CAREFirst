@@ -16,3 +16,6 @@ data:
     pidfile /var/run/redis_6379.pid
     loglevel notice
     logfile ""
+  slave.conf: |
+    slaveof redis-0.redis 6379
+

@@ -60,11 +60,15 @@ curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/docs"
 echo "testing '/health' endpoint. expect status code of 200 returned"
 curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/health"
 
-# # echo "testing '/conversations' endpoint. expect status code of 200 returned"
+echo "testing '/conversations' endpoint. expect status code of 200 returned"
 curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/conversations/9999" -H 'Content-Type: application/json' -d \
 '{"question": "cut"}'
 
-# # echo "Kill minikube tunnel"
+echo "testing '/messages' endpoint. expect status code of 200 returned"
+curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/messages/9999" -H 'Content-Type: application/json' -d \
+'{"message_id": 0, "user_feedback": False}'
+
+echo "Kill minikube tunnel"
 kill $TUNNEL_ID
 
 echo "Delete deployments and services in namespace w255"
@@ -74,8 +78,9 @@ kubectl delete --all services --namespace=carefirst
 echo "Delete namespace"
 kubectl delete namespace carefirst
 
-# echo "Clean up docker resources"
+echo "Clean up docker resources"
 docker image rm ${IMAGE_NAME}
 
-# echo "minikube stop"
+echo "minikube stop"
 minikube stop
+

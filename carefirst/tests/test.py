@@ -81,17 +81,17 @@ def test_conversations_basic():
     
 #     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
-# def test_feedback_basic():
-#     data = {"message_id": 0, "user_feedback": True}
-#     response = client.post(
-#         "/messages/50",
-#         json=data,
-#     )
+def test_feedback_basic():
+    data = {"message_id": 0, "user_feedback": True}
+    response = client.post(
+        "/messages/50",
+        json=data,
+    )
     
-#     assert response.status_code == 200
-#     assert response.json()["output"]["id"] == "50"
-#     assert response.json()["output"]["message_id"] == 0
-#     assert response.json()["output"]["user_feedback"] == True
+    assert response.status_code == 200
+    assert response.json()["output"]["id"] == "50"
+    assert response.json()["output"]["message_id"] == 0
+    assert response.json()["output"]["user_feedback"] == True
 
-#     deleteCollection(db_name="carefirstdb", collection_name="messages")
+    deleteCollection(db_name="carefirstdb", collection_name="messages")
 

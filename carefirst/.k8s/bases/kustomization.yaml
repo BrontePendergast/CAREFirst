@@ -1,9 +1,8 @@
 ---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: rmarin
+namespace: jhsmith
 resources:
   - config-map.yaml
+  - persistent-volume.yaml
   - deployment-lab4.yaml
   - deployment-redis.yaml
   - service-lab4.yaml

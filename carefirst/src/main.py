@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from typing import List, Dict, Tuple, NamedTuple, Optional
+from typing import Dict, Optional
 from typing_extensions import TypedDict
-from pydantic import BaseModel, Extra, ValidationError, validator, TypeAdapter, field_validator, ValidationInfo
+from pydantic import BaseModel, Extra, ValidationError, validator
 
 import os
 from datetime import datetime
-
 
 # Cache
 from fastapi_cache import FastAPICache
@@ -17,9 +16,6 @@ from redis import asyncio
 import pymongo
 from pymongo import MongoClient
 from pydantic_mongo import AbstractRepository, ObjectIdField
-from langchain_community.chat_message_histories import MongoDBChatMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables.history import RunnableWithMessageHistory
 
 # Model
 from src.llm_js import ChatChain
@@ -36,12 +32,19 @@ database = client["carefirstdb"]
 
 app = FastAPI()
 
+# Redis
+# LOCAL_REDIS_URL = "redis://localhost:6379/"
+
+# @app.on_event("startup")
+# def startup():
+#     HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
+#     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
+#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+
 class Query(BaseModel, extra='ignore'):
     id: Optional[str] = None
     question: str
-
-# class Response(BaseModel):
-#     output: Tuple[str, str, str, str, str, str, datetime]
 
 class Response(BaseModel):
     conversation_id: str
@@ -126,13 +129,6 @@ async def health():
 async def hello(name: str):
     return {"message": f"Hello {name}"}
 
-# # Redis
-# LOCAL_REDIS_URL = "redis://localhost:6379/"
 
-# @app.on_event("startup")
-# def startup():
-#     HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
-#     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
-#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 

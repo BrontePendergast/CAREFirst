@@ -25,8 +25,8 @@ from langchain_core.runnables import RunnableParallel
 from langchain.memory import ConversationBufferMemory
 
 # scripts
-from retrieval import *  
-#from src.retrieval import *     # Jess add src.
+#from retrieval import *  
+from src.retrieval import *     # Jess add src.
 
 # guardrails
 from nemoguardrails import RailsConfig
@@ -196,14 +196,14 @@ def ChatChain(question, conversation_id):
     
     # JS Add Below
     timestamp = datetime.now()
-    output = conversation_id, "1", result["answer"].content, result["history"]["chat_history"][0], result["history"]["chat_history"][1], result["question"], result["docs"][0].page_content, timestamp
+    output = conversation_id, result["answer"].content, result["history"]["chat_history"][0].content, result["history"]["chat_history"][1].content, result["question"], result["docs"][0].page_content, timestamp
 
     #return output
 
-    # # JS Add Below to convert to dictionary
+    # # # JS Add Below to convert to dictionary
 
-    keys =  ["conversation_id", "message_id", "answer", "history_human", "history_ai", "question", "source", "timestamp"]
-    values = [conversation_id, "1", output[2], output[3], output[4], output[5], output[6], timestamp]
+    keys =  ["conversation_id", "answer", "message_human", "message_ai", "question", "source", "timestamp"]
+    values = [output[0], output[1], output[2], output[3], output[4], output[5], output[6]]
 
     output_dict = dict(zip(keys, values))
 
