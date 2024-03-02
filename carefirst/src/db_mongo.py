@@ -1,4 +1,5 @@
 import os
+import pymongo
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv, dotenv_values 
@@ -61,12 +62,4 @@ def viewCollection(db_name, collection_name):
 
 # addCollection(db_name="carefirstdb", collection_name="chat_histories")
 #deleteCollection(db_name="carefirstdb", collection_name="messages")
-
-# connection_string= getURI()
-# client = MongoClient(connection_string)
-# database = client["carefirstdb"]
-# database["messages"].update_one(
-#             {'conversation_id': "40", "message_id": "0"}, 
-#             {'$set': {"feedback": False}})
-
 viewCollection(db_name="carefirstdb", collection_name="messages")

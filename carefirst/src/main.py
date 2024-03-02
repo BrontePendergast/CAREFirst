@@ -7,10 +7,10 @@ import os
 from datetime import datetime
 
 # Cache
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.decorator import cache
-from redis import asyncio
+# from fastapi_cache import FastAPICache
+# from fastapi_cache.backends.redis import RedisBackend
+# from fastapi_cache.decorator import cache
+# from redis import asyncio
 
 # Mongo
 import pymongo
@@ -44,23 +44,21 @@ app = FastAPI()
 
 class Query(BaseModel, extra='ignore'):
     id: Optional[str] = None
-    question: str
+    query: str
 
 class Response(BaseModel):
     conversation_id: str
     answer: str
-    message_human: str
-    message_ai: str
-    question: str
-    source: str
+    query: str
+    source: dict
     timestamp: datetime
 
 class MessageRecord(BaseModel):
     id: ObjectIdField = None
     conversation_id: str
     message_id: int
-    message_human: str
-    message_ai: str
+    answer: str
+    query: str
     feedback: Optional[bool] = None
     timestamp: datetime
 
@@ -70,17 +68,17 @@ class MessagesRepository(AbstractRepository[MessageRecord]):
 
 class Feedback(BaseModel, extra='ignore'):
     id: Optional[str] = None
-    message_id: int
-    user_feedback: bool
+    feedback: bool
   
 def getMessageID(conversation_id):
     '''Increment message_id by 1 with each new message in the chat'''
-    result = database["messages"].find_one({'conversation_id': conversation_id})
+    result = database["messages"].find_one({'conversation_id': conversation_id}, sort=[('timestamp', pymongo.DESCENDING)])
+
     if not result:
         message_id = 0
     else:
         # Add code to ensure it is the most recent message_id
-        message_id = result["message_id"]
+        message_id = result['message_id']
         message_id += 1
 
     return message_id
@@ -91,18 +89,18 @@ async def conversations(conversation_id, text: Query):
     text.id = conversation_id
 
     # Generate Response
-    ai_response = ChatChain(text.question, text.id)  
+    ai_response = ChatChain(text.query, text.id)  
     validated_response = Response(**ai_response)
-    
+
     # Create message_id
     message_id = getMessageID(conversation_id=text.id)
-
+    
     # Store record in "messages" collection
     messages_repository = MessagesRepository(database=database)
     message = MessageRecord(conversation_id = text.id
                             , message_id=message_id
-                            , message_human=validated_response.message_human
-                            , message_ai=validated_response.message_ai
+                            , answer=validated_response.answer
+                            , query=validated_response.query
                             , timestamp=validated_response.timestamp)
     messages_repository.save(message)
 
@@ -110,15 +108,19 @@ async def conversations(conversation_id, text: Query):
     return {"output": validated_response}
 
 @app.post("/messages/{conversation_id}")
-async def messages(conversation_id, feedback: Feedback):
-    feedback.id = conversation_id
+async def messages(conversation_id, user_feedback: Feedback):
+    user_feedback.id = conversation_id
+
+    # Get latest message_id
+    result = database["messages"].find_one({'conversation_id': conversation_id}, sort=[('timestamp', pymongo.DESCENDING)])
+    message_id = result['message_id']
 
     # Update message collection with feedback
     database["messages"].update_one(
-            {'conversation_id': feedback.id, "message_id": feedback.message_id}, 
-            {'$set': {"feedback": feedback.user_feedback}})   
+            {'conversation_id': user_feedback.id, "message_id": message_id}, 
+            {'$set': {"feedback": user_feedback.feedback}})   
 
-    return {"output": feedback} 
+    return {"output": user_feedback} 
 
 
 @app.get("/health")

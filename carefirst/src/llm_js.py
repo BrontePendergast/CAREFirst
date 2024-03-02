@@ -110,7 +110,7 @@ llm = SelectLLM()
 prompt = ChatPromptTemplate.from_template("Answer No to this: {question}")
 output_parser = StrOutputParser()
 
-config = RailsConfig.from_path("data/config")
+#config = RailsConfig.from_path("data/config")
 #guardrails = RunnableRails(config, input_key="question", output_key="answer")
 
 
@@ -196,14 +196,14 @@ def ChatChain(question, conversation_id):
     
     # JS Add Below
     timestamp = datetime.now()
-    output = conversation_id, result["answer"].content, result["history"]["chat_history"][0].content, result["history"]["chat_history"][1].content, result["question"], result["docs"][0].page_content, timestamp
+    output = conversation_id, result["answer"].content, result["question"], result["docs"][0].metadata, timestamp
 
     #return output
 
     # # # JS Add Below to convert to dictionary
 
-    keys =  ["conversation_id", "answer", "message_human", "message_ai", "question", "source", "timestamp"]
-    values = [output[0], output[1], output[2], output[3], output[4], output[5], output[6]]
+    keys =  ["conversation_id", "answer", "query", "source", "timestamp"]
+    values = [output[0], output[1], output[2], output[3], output[4]]
 
     output_dict = dict(zip(keys, values))
 

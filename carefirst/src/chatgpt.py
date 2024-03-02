@@ -25,4 +25,5 @@ result = ChatChain('What kind of cream should I use for a burn', '77')
 for key in result:
     print(key)
     print(result[key])
+    print(type(result[key]))
 
