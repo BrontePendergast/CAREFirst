@@ -3,6 +3,7 @@ import os
 from operator import itemgetter
 from typing import List
 import ast
+import pandas as pd
 
 # orchestration
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
@@ -16,9 +17,9 @@ from langchain.memory import ConversationBufferMemory
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.output_parsers import StrOutputParser
 from langchain.output_parsers.pydantic import PydanticOutputParser
-
-# scripts
-from retrieval import *
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Qdrant
+from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 
 # guardrails
 from nemoguardrails import RailsConfig
@@ -101,7 +102,6 @@ node_prompt = PromptTemplate(
     {graph}
     """,
     input_variables=["question", "graph"],
-   # partial_variables={"format_instructions": node_parser.get_format_instructions()},
 )
 
 
@@ -128,7 +128,21 @@ follow_prompt = ChatPromptTemplate.from_messages([follow_system_prompt, follow_h
 #######################################
 
 
-db = FAISS.load_local("./data/guidelines/transformed_redcross_w_metadata.pifaiss_index", embeddings)
+QDRANT_URL = os.getenv("POETRY_QDRANT_URL")
+QDRANT_KEY = os.getenv("POETRY_QDRANT_KEY")
+
+docs = pd.read_pickle("./data/guidelines/redcross_w_metadata.pickle")
+# default is "sentence-transformers/all-mpnet-base-v2"
+embeddings = HuggingFaceEmbeddings()
+# by default accesses existing collection
+db = Qdrant.from_documents(
+    docs,
+    embeddings,
+    url=QDRANT_URL,
+    prefer_grpc=True,
+    api_key=QDRANT_KEY,
+    collection_name="redcross",
+)
 retriever = db.as_retriever(search_kwargs={"k": 1})
 
 
@@ -170,17 +184,35 @@ guardrails = RunnableRails(config, input_key="question", output_key="answer")
 
 
 #######################################
+# Conversation history
+#######################################
+
+
+MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
+DATABASE_NAME = "carefirstdb"
+CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
+
+
+#######################################
 # Chatbot modules
 #######################################
 
 
-# memory
-memory = ConversationBufferMemory(
-        return_messages=True, output_key="answer", input_key="question"
-    )
+def ChatChain(question, conversation_id = 'Test123'):
 
-def ChatChain(question):
+    # load message history
+    message_history = MongoDBChatMessageHistory(
+        session_id=conversation_id,
+        connection_string=CONNECTION_STRING,
+        database_name=DATABASE_NAME,
+        collection_name="chat_histories",
+        )
 
+    # buffer the memory from history
+    memory = ConversationBufferMemory(
+        return_messages=True, output_key="answer", input_key="question", chat_memory=message_history)
+    
     # First we add a step to load memory
     # This adds a "memory" key to the input object
     loaded_memory = RunnablePassthrough.assign(
@@ -261,9 +293,9 @@ def ChatChain(question):
 
     if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
 
-        memory.save_context({"question": question}, 
-                            {"answer": guardrail_result['answer']})
-        
+        message_history.add_user_message(question)
+        message_history.add_ai_message(guardrail_result['answer'])
+
         return guardrail_result['answer']
     
     # And now we put it all together!
@@ -273,7 +305,7 @@ def ChatChain(question):
     result = chain.invoke({"question": question})
 
     # # store answer in memory
-    memory.save_context({"question": question}, 
-                        {"answer": result["answer"]})
+    message_history.add_user_message(question)
+    message_history.add_ai_message(result["answer"])
 
     return result
