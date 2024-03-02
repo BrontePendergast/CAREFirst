@@ -19,7 +19,7 @@ from llm import *
 
 def ChatDemo(question):
 
-    result = ChatChain(question)
+    result = ChatChain(question = question, demo = True)
 
     # if guardrails are alerted:
     if isinstance(result, str):      

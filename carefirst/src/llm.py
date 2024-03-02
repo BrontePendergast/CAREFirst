@@ -4,6 +4,7 @@ from operator import itemgetter
 from typing import List
 import ast
 import pandas as pd
+from datetime import datetime
 
 # orchestration
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
@@ -199,7 +200,7 @@ CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefi
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test123'):
+def ChatChain(question, conversation_id = 'Test123', demo = False):
 
     # load message history
     message_history = MongoDBChatMessageHistory(
@@ -262,7 +263,8 @@ def ChatChain(question, conversation_id = 'Test123'):
 
         if info['node']['relationship'] == 'None':
             answer_chain = {"question": lambda x: info["question"], 
-                            "graph": {"scenarios": lambda x : info["scenarios"], "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+                            "graph": {"scenarios": lambda x : info["scenarios"], 
+                                      "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
         else:
             answer_chain = {"question": lambda x: info["question"], 
                             "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
@@ -304,8 +306,25 @@ def ChatChain(question, conversation_id = 'Test123'):
     # run chain
     result = chain.invoke({"question": question})
 
-    # # store answer in memory
+    # store answer in memory
     message_history.add_user_message(question)
     message_history.add_ai_message(result["answer"])
 
-    return result
+    # Demo expects all output fields
+    if demo:
+        return result
+    
+    page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
+    document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
+    source = page_num + ' of ' + document
+
+    # expected response from the app
+    response = {
+        "conversation_id": conversation_id,
+        "answer": result["answer"],
+        "query": question,
+        "source": source,
+        "timestamp": datetime.now()
+    }
+
+    return response
