@@ -1,0 +1,36 @@
+#header-container {
+    min-height: 100px;
+    background-color: #407481;
+    position: relative;
+    font-size: 20px;
+}
+
+#logo {
+    height: auto;
+    width: 125px;
+}
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: lightgrey;
+}
+
+#slogan {
+    position: absolute;
+    right: 0%;
+    margin-right: 10px;
+}
+
+#slogan:hover {
+    color: white;
+}
+
+
+@media only screen and (max-width: 800px){
+    #slogan {
+        visibility: hidden;
+    }
+}
