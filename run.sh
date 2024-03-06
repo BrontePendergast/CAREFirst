@@ -3,7 +3,6 @@ BACKEND_FOLDER=carefirst
 FRONTEND_FOLDER=webapp
 NAMESPACE=carefirst
 
-
 # ### BACKEND DOCKERFILE
 cd ${BACKEND_FOLDER}
 pwd
@@ -33,7 +32,7 @@ cd ../${FRONTEND_FOLDER}/client
 pwd
 IMAGE_NAME_FRONTEND=frontend
 
-# remove image in case this script was run before
+# # remove image in case this script was run before
 docker image rm ${IMAGE_NAME_FRONTEND}:latest
 
 echo "Build your docker container"
@@ -46,10 +45,10 @@ pwd
 
 # echo "Apply your Deployments and Services"
 kubectl apply -f infra/namespace.yaml --namespace=${NAMESPACE}
+kubectl config set-context --current --namespace=${NAMESPACE}
 
 echo "Apply your k8s namespace"
 kubectl apply -f infra --namespace=${NAMESPACE}
-kubectl config set-context --current --namespace=${NAMESPACE}
 kubectl get all --namespace=${NAMESPACE}
 
 # echo "Start minikube tunnel"

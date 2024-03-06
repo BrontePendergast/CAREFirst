@@ -21,28 +21,3 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
-      #   readinessProbe:
-      #     httpGet:
-      #       path: /health
-      #       port: 8000
-      #     initialDelaySeconds: 3
-      #     periodSeconds: 3
-      #   livenessProbe:
-      #     httpGet:
-      #       path: /health
-      #       port: 8000
-      #     initialDelaySeconds: 10
-      #     periodSeconds: 60   
-      # - name: busybox
-      #   image: busybox:latest
-      #   command:
-      #     - /bin/sh
-      #     - -c
-      #     - sleep 1000
-      # initContainers:
-      # - name: verify-redis-dns
-      #   image: busybox:latest
-      #   command: ['sh', '-c', "until nc -vz service-redis 6379; do echo 'waiting for redis service from DNS'; sleep 2; done"]
-      # - name: verify-redis-ready
-      #   image: busybox:latest
-      #   command:  ["sh", "-c", "until (printf 'PING\r\n';) | nc service-redis 6379; do echo 'waiting for redis to PONG'; sleep 1; done"]

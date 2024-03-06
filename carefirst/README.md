@@ -1,2 +1,0 @@
-## run.sh 
-run.sh is located in the Carefirst directory and implements the yaml files located in the infra/ directory. It builds docker images for both the backend and frontend and deploys them with minicube.
