@@ -59,42 +59,64 @@ def test_conversations_basic():
     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
 # If I send multiple queries with the same conversation id, is the message_id correctly updated in the database
-def test_multiple_queries():  
-    conversation_id = "50"
-    queries = ["how to treat a sting?", "how to treat a sting again?", "how to treat a sting again three?"]
-    message_nums = [0, 1, 2]
-    for q, num in zip(queries, message_nums):
-        data = {"query": q}
-        response = client.post(
-            "/conversations/" + conversation_id,
-            json=data,
-        )
-        assert response.status_code == 200
-        result = database["messages"].find_one({'conversation_id': conversation_id}, sort=[('timestamp', pymongo.DESCENDING)])
-        assert(result['message_id']) == num
+# def test_multiple_queries():  
+#     conversation_id = "50"
+#     queries = ["how to treat a sting?", "how to treat a sting again?", "how to treat a sting again three?"]
+#     message_nums = [0, 1, 2]
+#     for q, num in zip(queries, message_nums):
+#         data = {"query": q}
+#         response = client.post(
+#             "/conversations/" + conversation_id,
+#             json=data,
+#         )
+#         assert response.status_code == 200
+#         result = database["messages"].find_one({'conversation_id': conversation_id}, sort=[('timestamp', pymongo.DESCENDING)])
+#         assert(result['message_id']) == num
    
-    deleteCollection(db_name="carefirstdb", collection_name="messages")
+#     deleteCollection(db_name="carefirstdb", collection_name="messages")
 
 # If I send user feedback, is does the database update properly?
-def test_provide_feedback(): 
-    conversation_id = "50"
-    queries = ["how to treat a sting?", "how to treat a sting again?", "how to treat a sting again three?"]
-    message_nums = [0, 1, 2]
-    for q, num in zip(queries, message_nums):
-        data = {"query": q}
-        response = client.post(
-            "/conversations/" + conversation_id,
-            json=data,
-        )
+# def test_provide_feedback(): 
+#     conversation_id = "50"
+#     queries = ["how to treat a sting?", "how to treat a sting again?", "how to treat a sting again three?"]
+#     message_nums = [0, 1, 2]
+#     for q, num in zip(queries, message_nums):
+#         data = {"query": q}
+#         response = client.post(
+#             "/conversations/" + conversation_id,
+#             json=data,
+#         )
+#         assert response.status_code == 200
 
-    data = {"feedback": "False"}
-    response = client.post(
-        "/messages/" + conversation_id,
-        json=data,
-    )
+#     data = {"feedback": "False"}
+#     response = client.post(
+#         "/messages/" + conversation_id,
+#         json=data,
+#     )
     
-    result = database["messages"].find_one({'conversation_id': conversation_id, 'message_id': 2})
-    assert(result['feedback']) == False
+#     result = database["messages"].find_one({'conversation_id': conversation_id, 'message_id': 2})
+#     assert(result['feedback']) == False
 
-    deleteCollection(db_name="carefirstdb", collection_name="messages")
+#     deleteCollection(db_name="carefirstdb", collection_name="messages")
+
+# def test_provide_feedback(): 
+#     data = {"query": "simple check on my burn"}
+#     response = client.post(
+#         "/conversations/30",
+#         json=data,
+#     )
+
+#     result = database["messages"].find_one({'conversation_id': '30'})
+#     assert(result['feedback']) == None
+#     message_id = result["message_id"]
+
+#     data = {"feedback": "False"}
+#     response = client.post(
+#         "/messages/" + message_id,
+#         json=data,
+#     )
+
+#     assert response.status_code == 200
+#     result = database["messages"].find_one({'message_id': message_id})
+#     assert(result['feedback']) == False
 

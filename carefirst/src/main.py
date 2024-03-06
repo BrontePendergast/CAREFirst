@@ -20,12 +20,8 @@ import pymongo
 from pymongo import MongoClient
 from pydantic_mongo import AbstractRepository, ObjectIdField
 
-# Model
-from src.llm_js import ChatChain
-#from llm_js import ChatChain
-
 from src.db_mongo import getURI
-#from db_mongo import getURI
+from src.llm_js import ChatChain
 
 # MongoDB
 connection_string= getURI()
@@ -74,16 +70,14 @@ class Feedback(BaseModel, extra='ignore'):
   
 def getMessageID():
 
-    # size of string
+    # Generate random string of length N
     N = 7
- 
-    # random string
     message_id = ''.join(random.choices(string.ascii_uppercase +
                                 string.digits, k=N))
     return message_id
 
 @app.post("/conversations/{conversation_id}")
-@cache(expire=60)
+#@cache(expire=60)
 async def conversations(conversation_id, text: Query):
 
     text.id = conversation_id
@@ -143,12 +137,11 @@ async def hello(name: str):
     return {"message": f"Hello {name}"}
 
 
+# #Redis
+# LOCAL_REDIS_URL = "redis://localhost:6379/"
 
-#Redis
-LOCAL_REDIS_URL = "redis://localhost:6379/"
-
-@app.on_event("startup")
-def startup():
-    HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
-    redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+# @app.on_event("startup")
+# def startup():
+#     HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
+#     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
+#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
