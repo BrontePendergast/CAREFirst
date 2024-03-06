@@ -1,8 +1,7 @@
 ---
-namespace: jhsmith
-bases:
-  - ../../bases
-patches:
-  - path: patch-deployment-lab4.yaml
-    target:
-      kind: Deployment
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rmarin
+resources:
+  - ../../base
+  - ./namespace.yaml

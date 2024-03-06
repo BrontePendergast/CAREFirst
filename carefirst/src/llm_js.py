@@ -202,7 +202,7 @@ def ChatChain(question, conversation_id):
 
     # # # JS Add Below to convert to dictionary
 
-    keys =  ["conversation_id", "answer", "query", "source", "timestamp"]
+    keys =  ["conversation_id", "answer", "query", "source", "timestamp_responseout"]
     values = [output[0], output[1], output[2], output[3], output[4]]
 
     output_dict = dict(zip(keys, values))
