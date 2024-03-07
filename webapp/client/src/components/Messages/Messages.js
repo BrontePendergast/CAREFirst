@@ -35,6 +35,7 @@ function Messages() {
     };
 
     const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
     useEffect(() => {
         console.log('Updated messages:', messages);
       }, [messages]); // Add messages as a dependency to the useEffect
@@ -70,7 +71,13 @@ function Messages() {
     }
 
     async function receiveMessage(message) {
+        setIsTyping(true);
+        document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
+        console.log(document.getElementById("individual-messages-div").scrollTop);
+        console.log(document.getElementById("individual-messages-div").scrollHeight);
         var output = await API.sendQuery(message);
+        setIsTyping(false);
+        // document.getElementById("typingCheck").style.visiblity = "hidden";
         var new_messages_received = [{'sender': 'bot', 'message': output}];
         console.log("messages");
         console.log(messages);
@@ -116,6 +123,7 @@ function Messages() {
     }
 
     return (
+        <>
         <Container fluid>
             <Container fluid id="individual-messages-div">
             {messages.map((message, i) => {
@@ -123,7 +131,6 @@ function Messages() {
                     return (
                     <Row className={"individual-message-div"}>
                         <Col className={message.sender+" message-container mr-auto ml-0"} xs={"auto"}>
-                        <Col></Col>
                             {message.message}
                             <div class="thumbs-container">
                                 <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
@@ -143,6 +150,19 @@ function Messages() {
                 }
                         
             })}
+            {isTyping &&
+                    <Row className={"individual-message-div"} id="typingCheck">
+                        <Col className={"bot message-container mr-auto ml-0"} xs={"auto"}>
+                        <div class="ticontainer">
+                            <div class="tiblock">
+                            <div class="tidot"></div>
+                            <div class="tidot"></div>
+                            <div class="tidot"></div>
+                            </div>
+                        </div>
+                        </Col>
+                    </Row>
+        }
         </Container>
         <Row>
           <Col id="bottom-div">
@@ -157,6 +177,7 @@ function Messages() {
           </Col>
         </Row>
         </Container>
+      </>
     );
   }
   
