@@ -1,3 +1,28 @@
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Set a width for the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  opacity: 0;
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* "thin" or "auto" depending on your preference */
+}
+
+/* Style the thumb in Firefox */
+html::-moz-scrollbar-thumb {
+  opacity: 0;
+}
+
+/* Optional: Style the track (the area the thumb moves on) */
+html::-moz-scrollbar-track {
+  background-color: #eee; /* Color of the track */
+}
+
+
 .App {
   text-align: center;
 }
@@ -10,7 +35,7 @@ body {
   /* border-style: solid; */
   border-radius: 3%;
   /* border-color: gray; */
-  height: 500px;
+  height: 600px;
   /* box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3);  */
   background-color: rgb(250,250,250);
   position: relative;

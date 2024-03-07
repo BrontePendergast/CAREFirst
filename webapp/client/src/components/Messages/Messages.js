@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 
 import './Messages.css'
 import { Form, Row, Col, Button } from "react-bootstrap";
+
+import API from '../../utils/API';
 
 function Messages() {
 
@@ -33,16 +35,50 @@ function Messages() {
     };
 
     const [messages, setMessages] = useState([]);
+    useEffect(() => {
+        console.log('Updated messages:', messages);
+      }, [messages]); // Add messages as a dependency to the useEffect
 
     async function sendMessage(e) {
 
-        var message = document.getElementById("input-text");
-        console.log(message.value);
-        if (message.value.length > 0) {
-            var new_messages = [{'sender': 'you', 'message': message.value}, {'sender': 'bot', 'message': "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}];
-            setMessages([...messages, ...new_messages]);
+        const messageSetter = () => {
+            return new Promise((resolve) => {
+                console.log('messages 1');
+                console.log(messages);
+                setMessages((prevMessages) => [...prevMessages, ...new_messages]);
+                console.log('messages should be set now');
+                console.log(messages);
+                resolve("success");
+            });
+        };
+
+        var message = document.getElementById("input-text").value;
+        console.log("message value");
+        console.log(message);
+        if (message.length > 0) {
+            // var output = await API.sendQuery(message.value);
+            var new_messages = [{'sender': 'you', 'message': message}];
+            console.log(new_messages);
+            // var new_messages = [{'sender': 'you', 'message': message.value}, {'sender': 'bot', 'message': output}];
+            const set_message =  messageSetter();
             document.getElementById("input-text").value = "";
+            console.log("sendMessage");
+            console.log(messages);
+            receiveMessage(message);        
         }
+
+    }
+
+    async function receiveMessage(message) {
+        var output = await API.sendQuery(message);
+        var new_messages_received = [{'sender': 'bot', 'message': output}];
+        console.log("messages");
+        console.log(messages);
+        await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
+        document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
+        console.log(document.getElementById("individual-messages-div").scrollTop);
+        console.log(document.getElementById("individual-messages-div").scrollHeight);
+        console.log(messages);
 
     }
 

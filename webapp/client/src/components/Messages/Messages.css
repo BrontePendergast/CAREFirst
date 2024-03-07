@@ -42,7 +42,7 @@
   }
 
   #individual-messages-div {
-    height: 450px;
+    height: 580px;
     padding-bottom: 30px !important;
     overflow-y: scroll;
   }
@@ -57,6 +57,7 @@
   .you {
     padding: 8px;
     background-color: gray;
+    color: white;
     max-width: 70%;
     border-radius: 10px;
     margin-bottom: 25px;
