@@ -25,8 +25,8 @@ from langchain_core.runnables import RunnableParallel
 from langchain.memory import ConversationBufferMemory
 
 # scripts
-#from retrieval import *  
-from src.retrieval import *     # Jess add src.
+from retrieval import *  
+#from src.retrieval import *     # Jess add src.
 
 # guardrails
 from nemoguardrails import RailsConfig
