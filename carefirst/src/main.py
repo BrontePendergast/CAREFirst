@@ -140,19 +140,19 @@ async def hello(name: str):
     return {"message": f"Hello {name}"}
 
 #Code that Charlie needed to run locally
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:3000", "http://localhost:8000"],  # Allow all origins
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allow all HTTP methods
-#     allow_headers=["*"],  # Allow all headers
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:8000"],  # Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
-# #Redis
-# LOCAL_REDIS_URL = "redis://localhost:6379/"
+#Redis
+LOCAL_REDIS_URL = "redis://localhost:6379/"
 
-# @app.on_event("startup")
-# def startup():
-#     HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
-#     redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
-#     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+@app.on_event("startup")
+def startup():
+    HOST_URL = os.environ.get("REDIS_URL", LOCAL_REDIS_URL)
+    redis = asyncio.from_url(HOST_URL, encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
