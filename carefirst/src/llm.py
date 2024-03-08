@@ -94,7 +94,7 @@ node_prompt = PromptTemplate(
     Respond with the value of the 'node'. 
     The 'relationship' will be 'None' if there is no way to choose between existing relationships in the Knowledge graph. 
     If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, include this in your response. 
-    Remember the topic should already exist in the graph.
+    Remember that the node should already exist in the graph.
     Think step by step.
 
     Provide your response in JSON format with the identified node and relationship
@@ -200,7 +200,7 @@ CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefi
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test123', demo = False):
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
 
     # load message history
     message_history = MongoDBChatMessageHistory(
@@ -224,7 +224,7 @@ def ChatChain(question, conversation_id = 'Test123', demo = False):
     standalone_question = {
         "standalone_question": {
             "question": lambda x: x["question"],
-            "chat_history": lambda x: get_buffer_string(x["chat_history"]),
+            "chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history",
         }
         | CONDENSE_QUESTION_PROMPT
         | llm
@@ -261,10 +261,14 @@ def ChatChain(question, conversation_id = 'Test123', demo = False):
     # Function to check if follow up is required or direct answer
     def RequireQuestion(info):
 
-        if info['node']['relationship'] == 'None':
-            answer_chain = {"question": lambda x: info["question"], 
-                            "graph": {"scenarios": lambda x : info["scenarios"], 
-                                      "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+        if followup: 
+            if info['node']['relationship'] == 'None':
+                answer_chain = {"question": lambda x: info["question"], 
+                                "graph": {"scenarios": lambda x : info["scenarios"], 
+                                        "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+            else:
+                answer_chain = {"question": lambda x: info["question"], 
+                                "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
         else:
             answer_chain = {"question": lambda x: info["question"], 
                             "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
@@ -288,17 +292,20 @@ def ChatChain(question, conversation_id = 'Test123', demo = False):
         "docs": itemgetter("docs"),
     }
 
-    simple_chain = prompt | llm 
-    chain_with_guardrails = guardrails | simple_chain 
+    # guardrails aren't on by default to allow for testing and evaluation
+    if guardrails:
 
-    guardrail_result = chain_with_guardrails.invoke({"question": question})
+        simple_chain = prompt | llm 
+        chain_with_guardrails = guardrails | simple_chain 
 
-    if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
+        guardrail_result = chain_with_guardrails.invoke({"question": question})
 
-        message_history.add_user_message(question)
-        message_history.add_ai_message(guardrail_result['answer'])
+        if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
 
-        return guardrail_result['answer']
+            message_history.add_user_message(question)
+            message_history.add_ai_message(guardrail_result['answer'])
+
+            return guardrail_result['answer']
     
     # And now we put it all together!
     chain = loaded_memory | standalone_question | retrieved_documents | graph | answer
