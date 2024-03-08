@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict, Optional
 from typing_extensions import TypedDict
 from pydantic import BaseModel, Extra, ValidationError, validator, ConfigDict
@@ -108,6 +109,7 @@ async def conversations(conversation_id, text: Query):
     messages_repository.save(message)
 
     # Return Response
+    #return validated_response
     return {"output": validated_response}
 
 @app.post("/messages/{message_id}")
@@ -124,6 +126,7 @@ async def messages(message_id, user_feedback: Feedback):
                 {'$set': {"feedback": user_feedback.feedback}})   
 
         return {"output": user_feedback} 
+        #return user_feedback
     
     else:
         return
@@ -136,6 +139,14 @@ async def health():
 async def hello(name: str):
     return {"message": f"Hello {name}"}
 
+#Code that Charlie needed to run locally
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["http://localhost:3000", "http://localhost:8000"],  # Allow all origins
+#     allow_credentials=True,
+#     allow_methods=["*"],  # Allow all HTTP methods
+#     allow_headers=["*"],  # Allow all headers
+# )
 
 # #Redis
 # LOCAL_REDIS_URL = "redis://localhost:6379/"
