@@ -34,7 +34,7 @@ function Messages() {
         }
     };
 
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.'}]);
     const [isTyping, setIsTyping] = useState(false);
     useEffect(() => {
         console.log('Updated messages:', messages);
