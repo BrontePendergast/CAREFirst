@@ -208,18 +208,6 @@ memory = ConversationBufferMemory(
 
 
 def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
-
-    # # load message history
-    # message_history = MongoDBChatMessageHistory(
-    #     session_id=conversation_id,
-    #     connection_string=CONNECTION_STRING,
-    #     database_name=DATABASE_NAME,
-    #     collection_name="chat_histories",
-    #     )
-
-    # # buffer the memory from history
-    # memory = ConversationBufferMemory(
-    #     return_messages=True, output_key="answer", input_key="question", chat_memory=message_history)
     
     # First we add a step to load memory
     # This adds a "memory" key to the input object
