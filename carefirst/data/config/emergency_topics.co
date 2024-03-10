@@ -1,0 +1,22 @@
+
+define user ask about choking
+  "choking"
+
+define user ask about breathing
+  "Can't breath"
+
+
+define bot inform choking
+  "Your medical situation is critical. Please call EMS/9-1-1"
+
+define bot inform breathing
+  "Your medical situation is critical. Please call EMS/9-1-1"
+
+
+define flow 
+  user ask about choking
+  bot inform choking
+
+define flow 
+  user ask about breathing
+  bot inform breathing

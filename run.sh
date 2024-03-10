@@ -96,14 +96,12 @@ echo "testing '/health' endpoint. expect status code of 200 returned"
 curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:8000/health"
 
 echo "testing '/conversations' endpoint. expect status code of 200 returned"
-# curl -X POST -H 'Content-Type: application/json' localhost:8000/conversations/999 -d \
-# '{"query": "bee sting"}'
 curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/conversations/999" -H 'Content-Type: application/json' -d \
 '{"query": "bee sting"}'
 
 # echo "testing '/messages' endpoint. expect status code of 200 returned"
-# curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/messages/555" -H 'Content-Type: application/json' -d \
-# '{"feedback": False}'
+curl -o /dev/null -s -w "%{http_code}\n" -X POST "http://localhost:8000/messages/555" -H 'Content-Type: application/json' -d \
+'{"feedback": "True"}'
 
 echo "testing '/frontend' endpoint. expect status code of 200 returned"
 curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://localhost:3000"

@@ -22,7 +22,7 @@ from pymongo import MongoClient
 from pydantic_mongo import AbstractRepository, ObjectIdField
 
 from src.db_mongo import getURI
-from src.llm_js import ChatChain
+from src.llm_js import *
 
 # MongoDB
 connection_string= getURI()
@@ -42,7 +42,7 @@ class Response(BaseModel):
     query: str
     source: dict
     #model: str
-    timestamp_responseout: datetime
+    timestamp: datetime
 
     model_config = ConfigDict(validate_assignment=True)
 
@@ -50,20 +50,20 @@ class Response(BaseModel):
         for field, value in new_data.items():
             setattr(self, field, value)
 
-class MessageRecord(BaseModel):
-    id: ObjectIdField = None
-    conversation_id: str
-    message_id: str
-    answer: str
-    query: str
-    feedback: Optional[bool] = None
-    timestamp_sent_query: datetime
-    timestamp_sent_response: datetime
-    response_duration: datetime
+# class MessageRecord(BaseModel):
+#     id: ObjectIdField = None
+#     conversation_id: str
+#     message_id: str
+#     answer: str
+#     query: str
+#     feedback: Optional[bool] = None
+#     timestamp_sent_query: datetime
+#     timestamp_sent_response: datetime
+#     response_duration: datetime
 
-class MessagesRepository(AbstractRepository[MessageRecord]):
-   class Meta:
-      collection_name = 'messages'
+# class MessagesRepository(AbstractRepository[MessageRecord]):
+#    class Meta:
+#       collection_name = 'messages'
 
 class Feedback(BaseModel, extra='ignore'):
     #id: Optional[str] = None
@@ -93,20 +93,20 @@ async def conversations(conversation_id, text: Query):
     validated_response.update(message_id = message_id)
 
     # Calculate response duration
-    response_duration = validated_response.timestamp_responseout - timestamp_queryin                         
+    response_duration = validated_response.timestamp - timestamp_queryin                         
     duration_in_s = response_duration.total_seconds()
     
     # # Store record in "messages" collection
-    messages_repository = MessagesRepository(database=database)
-    message = MessageRecord(conversation_id = text.id
-                            , message_id=message_id
-                            , answer=validated_response.answer
-                            , query=validated_response.query
-                            , timestamp_sent_query = timestamp_queryin
-                            , timestamp_sent_response=validated_response.timestamp_responseout
-                            , response_duration=duration_in_s)
+    # messages_repository = MessagesRepository(database=database)
+    # message = MessageRecord(conversation_id = text.id
+    #                         , message_id=message_id
+    #                         , answer=validated_response.answer
+    #                         , query=validated_response.query
+    #                         , timestamp_sent_query = timestamp_queryin
+    #                         , timestamp_sent_response=validated_response.timestamp
+    #                         , response_duration=duration_in_s)
 
-    messages_repository.save(message)
+    # messages_repository.save(message)
 
     # Return Response
     #return validated_response

@@ -5,8 +5,8 @@ from pymongo.server_api import ServerApi
 from dotenv import load_dotenv, dotenv_values 
 
 load_dotenv() 
-MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
-MONGODB_USERNAME = os.getenv("MONGODB_USERNAME")
+MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
 
 def getURI():
     
@@ -62,4 +62,4 @@ def viewCollection(db_name, collection_name):
 
 # addCollection(db_name="carefirstdb", collection_name="chat_histories")
 #deleteCollection(db_name="carefirstdb", collection_name="messages")
-viewCollection(db_name="carefirstdb", collection_name="messages")
+#viewCollection(db_name="carefirstdb", collection_name="messages")
