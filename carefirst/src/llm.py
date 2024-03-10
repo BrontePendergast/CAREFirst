@@ -135,7 +135,7 @@ follow_prompt = ChatPromptTemplate.from_messages([follow_system_prompt, follow_h
 QDRANT_URL = os.getenv("POETRY_QDRANT_URL")
 QDRANT_KEY = os.getenv("POETRY_QDRANT_KEY")
 
-docs = pd.read_pickle("./data/guidelines/redcross_w_metadata.pickle")
+docs = pd.read_pickle("./data/guidelines/redcross_w_metadata_v2.pickle")
 # default is "sentence-transformers/all-mpnet-base-v2"
 embeddings = HuggingFaceEmbeddings()
 # by default accesses existing collection
@@ -145,7 +145,7 @@ db = Qdrant.from_documents(
     url=QDRANT_URL,
     prefer_grpc=True,
     api_key=QDRANT_KEY,
-    collection_name="redcross",
+    collection_name="redcross_v2",
 )
 retriever = db.as_retriever(search_kwargs={"k": 3})
 

@@ -8,7 +8,7 @@ from tenacity import retry, stop_after_delay, stop_after_attempt
 from typing import List
 
 from langchain.prompts import PromptTemplate
-from langchain_core.output_parsers import PydanticOutputParser
+from langchain.output_parsers.pydantic import PydanticOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.chat_models import ChatOpenAI
 
@@ -35,9 +35,11 @@ class ScenarioTitles(BaseModel):
 parser = PydanticOutputParser(pydantic_object=ScenarioTitles)
 
 prompt = PromptTemplate(
-    template="""Extract the section titles that represent medical scenarios from this content: 
+    template="""Extract the section titles that represent distinct medical scenarios from this content: 
     {content}
     
+    If there are no distinct medical scenarios, the list can include "None"
+
     \n{format_instructions}""",
     input_variables=["content"],
     partial_variables={"format_instructions": parser.get_format_instructions()},
@@ -94,9 +96,10 @@ parser = PydanticOutputParser(pydantic_object=KnowledgeGraph)
 
 prompt = PromptTemplate(
     template="""
-      Group the scenarios below together into high level groups of related topics from the chapter on {chapter}.
-      Please using only the scenarios provided.
-      For example, all types of bites should be in the one group.
+      Group the scenarios below together into high level groups (nodes) of related topics (relationships) from the chapter on {chapter}.
+      For example, all types of bites should be in the one group. All types of stings should be in another group.
+      If the scenario is already labelled as the high level group, do not include it as a related topic.
+      Do not include irrelevant groupings, such scenarios can stay on individual nodes.
       \n{format_instructions}
       Scenarios:
       {scenarios}\n""",
@@ -157,11 +160,11 @@ for doc in documents:
         final_extracted_documents.append(doc)
 
 
-with open('../data/guidelines/redcross_w_metadata.pickle', 'wb') as f:
+with open('../data/guidelines/redcross_w_metadata_v2.pickle', 'wb') as f:
     pickle.dump(final_extracted_documents, f)
 
 
 load_and_store_embeddings(dir = '../data/guidelines/',
-                          path = 'redcross_w_metadata.pickle',
+                          path = 'redcross_w_metadata_v2.pickle',
                           from_type = 'pickle',
                           prefix = 'transformed_')
