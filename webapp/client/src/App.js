@@ -31,7 +31,7 @@ const uc_tooltip = [
     <Container className="mt-5 appcontainer">
       <Row>
         <Col md={3} className="topreasons">
-          <TopReasons title="Top Reasons for ER" reason={er_reasons} icon_class="fa-li fa-solid fa-truck-medical fa_icon_amb fa-lg" tooltip={er_tooltip} placement="right"/>
+          <TopReasons title="Top Reasons for Emergency Room" reason={er_reasons} icon_class="fa-li fa-solid fa-truck-medical fa_icon_amb fa-lg" tooltip={er_tooltip} placement="right"/>
         </Col>
         <Col md={6} className="pt-3 pl-5 pr-5 pb-0" id="messages-div">
           <Container fluid>
@@ -41,7 +41,7 @@ const uc_tooltip = [
             </Container>
         </Col>
         <Col md={3} className="topreasons">
-        <TopReasons title="Top Reasons for UC" reason={uc_reasons} icon_class="fa-li fa-solid fa-user-doctor fa_icon_doc fa-lg" tooltip={uc_tooltip} placement="left"/>
+        <TopReasons title="Top Reasons for Urgent Care" reason={uc_reasons} icon_class="fa-li fa-solid fa-user-doctor fa_icon_doc fa-lg" tooltip={uc_tooltip} placement="left"/>
         </Col>
       </Row>
     </Container>

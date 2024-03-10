@@ -7,7 +7,7 @@ import { OverlayTrigger, Popover, Row, Col } from "react-bootstrap";
 function TopReasons({title, reason, icon_class, tooltip, placement}) {
     return (
     <Container fluid>
-        <h5 class="bolder-header mb-4">{title}</h5>
+        <h6 class="bolder-header mb-4">{title}</h6>
         <ul class="fa-ul">
             {reason.map((r, i) => (
                 <OverlayTrigger placement={placement} overlay={<Popover id="popover-basic">

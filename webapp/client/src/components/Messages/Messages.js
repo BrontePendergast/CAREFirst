@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 
 import './Messages.css'
 import { Form, Row, Col, Button } from "react-bootstrap";
+
+import API from '../../utils/API';
 
 function Messages() {
 
@@ -32,17 +34,58 @@ function Messages() {
         }
     };
 
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.'}]);
+    const [isTyping, setIsTyping] = useState(false);
+    useEffect(() => {
+        console.log('Updated messages:', messages);
+      }, [messages]); // Add messages as a dependency to the useEffect
 
     async function sendMessage(e) {
 
-        var message = document.getElementById("input-text");
-        console.log(message.value);
-        if (message.value.length > 0) {
-            var new_messages = [{'sender': 'you', 'message': message.value}, {'sender': 'bot', 'message': "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}];
-            setMessages([...messages, ...new_messages]);
+        const messageSetter = () => {
+            return new Promise((resolve) => {
+                console.log('messages 1');
+                console.log(messages);
+                setMessages((prevMessages) => [...prevMessages, ...new_messages]);
+                console.log('messages should be set now');
+                console.log(messages);
+                resolve("success");
+            });
+        };
+
+        var message = document.getElementById("input-text").value;
+        console.log("message value");
+        console.log(message);
+        if (message.length > 0) {
+            // var output = await API.sendQuery(message.value);
+            var new_messages = [{'sender': 'you', 'message': message}];
+            console.log(new_messages);
+            // var new_messages = [{'sender': 'you', 'message': message.value}, {'sender': 'bot', 'message': output}];
+            const set_message =  messageSetter();
             document.getElementById("input-text").value = "";
+            console.log("sendMessage");
+            console.log(messages);
+            receiveMessage(message);        
         }
+
+    }
+
+    async function receiveMessage(message) {
+        setIsTyping(true);
+        document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
+        console.log(document.getElementById("individual-messages-div").scrollTop);
+        console.log(document.getElementById("individual-messages-div").scrollHeight);
+        var output = await API.sendQuery(message);
+        setIsTyping(false);
+        // document.getElementById("typingCheck").style.visiblity = "hidden";
+        var new_messages_received = [{'sender': 'bot', 'message': output}];
+        console.log("messages");
+        console.log(messages);
+        await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
+        document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
+        console.log(document.getElementById("individual-messages-div").scrollTop);
+        console.log(document.getElementById("individual-messages-div").scrollHeight);
+        console.log(messages);
 
     }
 
@@ -80,6 +123,7 @@ function Messages() {
     }
 
     return (
+        <>
         <Container fluid>
             <Container fluid id="individual-messages-div">
             {messages.map((message, i) => {
@@ -87,7 +131,6 @@ function Messages() {
                     return (
                     <Row className={"individual-message-div"}>
                         <Col className={message.sender+" message-container mr-auto ml-0"} xs={"auto"}>
-                        <Col></Col>
                             {message.message}
                             <div class="thumbs-container">
                                 <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
@@ -107,6 +150,19 @@ function Messages() {
                 }
                         
             })}
+            {isTyping &&
+                    <Row className={"individual-message-div"} id="typingCheck">
+                        <Col className={"bot message-container mr-auto ml-0"} xs={"auto"}>
+                        <div class="ticontainer">
+                            <div class="tiblock">
+                            <div class="tidot"></div>
+                            <div class="tidot"></div>
+                            <div class="tidot"></div>
+                            </div>
+                        </div>
+                        </Col>
+                    </Row>
+        }
         </Container>
         <Row>
           <Col id="bottom-div">
@@ -121,6 +177,7 @@ function Messages() {
           </Col>
         </Row>
         </Container>
+      </>
     );
   }
   
