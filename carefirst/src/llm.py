@@ -315,7 +315,6 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     memory.save_context({"question": question}, 
                             {"answer": result["answer"]})
 
-
     # Demo expects all output fields
     if demo:
         return result
