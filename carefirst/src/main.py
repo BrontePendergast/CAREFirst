@@ -22,7 +22,7 @@ from pymongo import MongoClient
 from pydantic_mongo import AbstractRepository, ObjectIdField
 
 from src.db_mongo import getURI
-from src.llm_js import *
+from src.llm import *
 
 # MongoDB
 connection_string= getURI()

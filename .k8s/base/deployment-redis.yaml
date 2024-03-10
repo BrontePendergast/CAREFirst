@@ -1,23 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: redis-deployment
   namespace: carefirst
-  labels: 
-    app: UI
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: UI
+      app: redis
   template:
     metadata:
       labels:
-        app: UI
+        app: redis
     spec:
       containers:
-      - name: apicontainer
-        image: frontend:latest
+      - name: redis
         imagePullPolicy: IfNotPresent
+        resources:
+            requests:
+              cpu: 200m
+              memory: 500Mi
+        image: redis:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 6379

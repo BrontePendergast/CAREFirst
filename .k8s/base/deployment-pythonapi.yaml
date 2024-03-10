@@ -19,13 +19,20 @@ spec:
       - name: apicontainer
         image: demo:latest
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
         ports:
         - containerPort: 8000
         readinessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 60
           periodSeconds: 3
         livenessProbe:
           httpGet:
@@ -46,3 +53,17 @@ spec:
       - name: verify-redis-ready
         image: busybox:latest
         command:  ["sh", "-c", "until (printf 'PING\r\n';) | nc service-redis 6379; do echo 'waiting for redis to PONG'; sleep 1; done"]
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: carefirst
+  name: pythonapi
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pythonapi
+  minReplicas: 1
+  maxReplicas: 40
+  targetCPUUtilizationPercentage: 50

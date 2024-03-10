@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: carefirst
+resources:
+  - config-map.yaml
+  - deployment-pythonapi.yaml
+  - deployment-redis.yaml
+  - service-frontend.yaml
+  - service-prediction.yaml
+  - service-redis.yaml
+  
