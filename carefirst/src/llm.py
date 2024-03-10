@@ -192,11 +192,15 @@ guardrails_run = RunnableRails(config, input_key="question", output_key="answer"
 #######################################
 
 
-MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
-MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
-DATABASE_NAME = "carefirstdb"
-CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
+# MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+# MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
+# DATABASE_NAME = "carefirstdb"
+# CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
 
+# memory
+memory = ConversationBufferMemory(
+        return_messages=True, output_key="answer", input_key="question"
+    )
 
 #######################################
 # Chatbot modules
@@ -205,17 +209,17 @@ CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefi
 
 def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
 
-    # load message history
-    message_history = MongoDBChatMessageHistory(
-        session_id=conversation_id,
-        connection_string=CONNECTION_STRING,
-        database_name=DATABASE_NAME,
-        collection_name="chat_histories",
-        )
+    # # load message history
+    # message_history = MongoDBChatMessageHistory(
+    #     session_id=conversation_id,
+    #     connection_string=CONNECTION_STRING,
+    #     database_name=DATABASE_NAME,
+    #     collection_name="chat_histories",
+    #     )
 
-    # buffer the memory from history
-    memory = ConversationBufferMemory(
-        return_messages=True, output_key="answer", input_key="question", chat_memory=message_history)
+    # # buffer the memory from history
+    # memory = ConversationBufferMemory(
+    #     return_messages=True, output_key="answer", input_key="question", chat_memory=message_history)
     
     # First we add a step to load memory
     # This adds a "memory" key to the input object
@@ -320,8 +324,9 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     result = chain.invoke({"question": question})
 
     # store answer in memory
-    message_history.add_user_message(question)
-    message_history.add_ai_message(result["answer"])
+    memory.save_context({"question": question}, 
+                            {"answer": result["answer"]})
+
 
     # Demo expects all output fields
     if demo:
