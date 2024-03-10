@@ -154,7 +154,7 @@ retriever = db.as_retriever(search_kwargs={"k": 3})
 # LLMs
 #######################################
 
-
+MODEL = "gpt-3.5-turbo-1106"
 def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
 
     if huggingface:
@@ -171,7 +171,7 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
     return llm
 
 
-llm = SelectLLM()
+llm = SelectLLM(model_name = MODEL)
 
 
 #######################################
@@ -337,7 +337,8 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         "answer": result["answer"],
         "query": question,
         "source": source,
-        "timestamp": datetime.now()
+        "timestamp": datetime.now(),
+        "model": MODEL
     }
 
     return response
