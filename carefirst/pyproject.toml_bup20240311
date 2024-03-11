@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "carefirst"
 version = "0.1.0"
-description = "holi"
+description = ""
 authors = ["Bronte Pendergast <bronpend@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.9,<3.13"
 langchain = "^0.1.4"
 pandas = "^2.2.0"
 pypdf = "^4.0.1"
@@ -16,7 +16,7 @@ openai = ">=1.10.0,<2.0.0"
 gradio = "^4.16.0"
 nemoguardrails = "^0.7.1"
 guidance = "^0.1.10"
-pydantic = "^2.4.2"
+pydantic = "2.4.2"
 black = "^24.1.1"
 ruff = "^0.2.1"
 isort = "^5.13.2"
