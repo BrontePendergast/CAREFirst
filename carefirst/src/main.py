@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Dict, Optional
-from typing_extensions import TypedDict
-from pydantic import BaseModel, Extra, ValidationError, validator, ConfigDict
+from typing import Optional
+# from typing_extensions import TypedDict
+from pydantic import BaseModel, ConfigDict
 
 import os
 from datetime import datetime
@@ -29,18 +29,17 @@ connection_string= getURI()
 client = pymongo.MongoClient(connection_string)
 database = client["carefirstdb"]
 
-app = FastAPI()
+class RequestQuery(BaseModel):
+    # id: str = ""
+    input: str
 
-class Query(BaseModel, extra='ignore'):
-    id: Optional[str] = None
-    query: str
 
 class Response(BaseModel):
     conversation_id: str
-    message_id: Optional[str] = None
+    # message_id: Optional[str] = None
     answer: str
     query: str
-    source: dict
+    source: str
     #model: str
     timestamp: datetime
 
@@ -65,36 +64,40 @@ class Response(BaseModel):
 #    class Meta:
 #       collection_name = 'messages'
 
-class Feedback(BaseModel, extra='ignore'):
+class Feedback(BaseModel):
     #id: Optional[str] = None
     feedback: bool
-  
-def getMessageID():
 
+app = FastAPI()  
+
+def getMessageID():
     # Generate random string of length N
     N = 7
     message_id = ''.join(random.choices(string.ascii_uppercase +
                                 string.digits, k=N))
     return message_id
 
-@app.post("/conversations/{conversation_id}")
-#@cache(expire=60)
-async def conversations(conversation_id, text: Query):
 
-    text.id = conversation_id
+@app.post("/conversations/{conversation_id}")
+# @cache(expire=60, coder=PickleCoder)
+async def conversations(input: RequestQuery, conversation_id: str):
+
+    # input.id =  conversation_id
+
+    # return {"id" : conversation_id, "output": response}
     
     # # Generate Response
-    timestamp_queryin = datetime.now()
-    ai_response = ChatChain(text.query, text.id)
+    # timestamp_queryin = datetime.now()
+    ai_response = ChatChain(input.input, input.id)
     validated_response = Response(**ai_response)
 
     # Create message_id
-    message_id = getMessageID()
-    validated_response.update(message_id = message_id)
+    # message_id = getMessageID()
+    # validated_response.update(message_id = message_id)
 
     # Calculate response duration
-    response_duration = validated_response.timestamp - timestamp_queryin                         
-    duration_in_s = response_duration.total_seconds()
+    # response_duration = validated_response.timestamp - timestamp_queryin                         
+    # duration_in_s = response_duration.total_seconds()
     
     # # Store record in "messages" collection
     # messages_repository = MessagesRepository(database=database)
@@ -111,9 +114,10 @@ async def conversations(conversation_id, text: Query):
     # Return Response
     #return validated_response
     return {"output": validated_response}
+    # return {"output": response}
 
 @app.post("/messages/{message_id}")
-async def messages(message_id, user_feedback: Feedback):
+async def messages( user_feedback: Feedback, message_id: str):
     #user_feedback.id = message_id
     
     #Confirm message id exists
