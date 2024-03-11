@@ -4,19 +4,19 @@ metadata:
   name: frontend
   namespace: carefirst
   labels: 
-    app: UI
+    app: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: UI
+      app: frontend
   template:
     metadata:
       labels:
-        app: UI
+        app: frontend
     spec:
       containers:
-      - name: apicontainer
+      - name: frontendcontainer
         image: frontend:latest
         imagePullPolicy: IfNotPresent
         ports:

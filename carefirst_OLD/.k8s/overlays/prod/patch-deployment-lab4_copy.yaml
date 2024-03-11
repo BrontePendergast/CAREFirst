@@ -8,14 +8,14 @@ spec:
     spec:
       containers:
         - name: lab4
-          image: w255mids.azurecr.io/rmarin/lab4:3f98367
+          image: w255mids.azurecr.io/rmarin/lab4:[TAG]
           resources:
-            requests:
-              cpu: 200m
-              memory: 64Mi
             limits:
               cpu: 500m
-              memory: 128Mi
+              memory: 500Mi
+            requests:
+              cpu: 500m
+              memory: 500Mi
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

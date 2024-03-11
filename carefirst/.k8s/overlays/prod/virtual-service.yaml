@@ -11,9 +11,9 @@ spec:
   http:
     - match:
         - uri:
-            exact: /conversations
+            exact: /predict
         - uri:
-            exact: /messages
+            exact: /bulk_predict
         - uri:
             prefix: /health
         - uri:
@@ -27,11 +27,3 @@ spec:
             host: lab4
             port:
               number: 8000
-    - match:
-        - uri:
-            exact: /
-      route:
-        - destination:
-            host: lab4
-            port:
-              number: 3000

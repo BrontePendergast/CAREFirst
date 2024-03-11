@@ -16,8 +16,8 @@ spec:
         app: api
     spec:
       containers:
-      - name: apicontainer
-        image: demo:latest
+      - name: pythonapi
+        image: pythonapi:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
@@ -25,14 +25,14 @@ spec:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 3
+          initialDelaySeconds: 90
+          periodSeconds: 5
         livenessProbe:
           httpGet:
             path: /health
             port: 8000
-          initialDelaySeconds: 60
-          periodSeconds: 10   
+          initialDelaySeconds: 90
+          periodSeconds: 5
       - name: busybox
         image: busybox:latest
         command:

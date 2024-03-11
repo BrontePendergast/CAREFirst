@@ -3,17 +3,45 @@ BACKEND_FOLDER=carefirst
 FRONTEND_FOLDER=webapp
 NAMESPACE=carefirst
 
+# Parse command-line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -q|--quit) # stop and delete
+            echo "minikube stop and delete"
+            kubectl config set-context --current --namespace=${NAMESPACE}
+            kubectl delete -f infra/deployment-frontend.yaml --namespace=${NAMESPACE}
+            kubectl delete -f infra/deployment-pythonapi.yaml --namespace=${NAMESPACE}
+            kubectl delete -f infra/deployment-redis.yaml --namespace=${NAMESPACE}
+            # minikube stop
+            # minikube delete
+            exit 1
+            ;;
+        -i|--infra) # apply infra
+            echo "apply infra"
+            kubectl apply -f infra --namespace=${NAMESPACE}
+            # minikube delete
+            exit 1
+            ;;
+        *) # Unknown option
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+
 # ### BACKEND DOCKERFILE
 cd ${BACKEND_FOLDER}
 pwd
 
-IMAGE_NAME_BACKEND=demo
+IMAGE_NAME_BACKEND=pythonapi
 
 # # remove image in case this script was run before
 # docker image rm ${IMAGE_NAME_BACKEND}:latest
 
 # # Start up Minikube
-minikube start --kubernetes-version=v1.25.4
+minikube start --kubernetes-version=v1.25.4 
 
 # # Setup your docker daemon to build with Minikube
 eval $(minikube docker-env)
@@ -49,7 +77,7 @@ kubectl config set-context --current --namespace=${NAMESPACE}
 
 echo "Apply your k8s namespace"
 kubectl apply -f infra --namespace=${NAMESPACE}
-kubectl get all --namespace=${NAMESPACE}
+# kubectl get all --namespace=${NAMESPACE}
 
 # # echo "Start minikube tunnel"
 # minikube tunnel &

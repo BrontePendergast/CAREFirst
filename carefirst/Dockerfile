@@ -1,43 +1,49 @@
-# Base Arguements to leverage across build stages
-ARG APP_DIR=/app
+# Build Application
+FROM python:3.10-slim AS build
+ARG APP_DIR=/carefirst
 
-#############
-# Build image
-#############
-FROM python:3.11-slim AS build
-ARG APP_DIR
+## Install Curl
+RUN apt-get update \
+    && apt-get install -y \
+         curl \
+         build-essential \
+         libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install curl so we can get poetry
-# install build-base and libffi-dev so we can install poetry and dependencies (compiles some code)
-RUN apt-get update && apt-get install -y \
-  curl build-essential libffi-dev \
-  && rm -rf /var/lib/apt/lists/*
+## Install Poetry
+ENV POETRY_VERSION=1.6.1
+ENV POETRY_HOME=/etc/poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH=${POETRY_HOME}/bin:${PATH}
 
-# install poetry and add to path 
-ENV POETRY_VERSION=1.4.2
-RUN curl -sSL https://install.python-poetry.org | python -
-ENV PATH /root/.local/bin:$PATH
-
-# change work directory for where our app will live
-WORKDIR ${APP_DIR}
-COPY pyproject.toml poetry.lock ./
-
-# Copy over the venv including any symbolic links, do not install development/testing libraries when install poetry dependencies
+## Setup virtual environment and run poetry install
 RUN python -m venv --copies ${APP_DIR}/venv
+WORKDIR ${APP_DIR}
+COPY pyproject.toml poetry.lock ${APP_DIR}
 RUN . ${APP_DIR}/venv/bin/activate && poetry install --only main
 
-#############
-# Deployment image
-#############
-FROM python:3.11-slim as prod
-ARG APP_DIR
+# Deploying application
+FROM python:3.10-slim as deploy
+ARG APP_DIR=/carefirst
 
+## Install Curl
+RUN apt-get update \
+    && apt-get install -y \
+         curl \
+         build-essential \
+         libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+## Copy venv and run application
+WORKDIR ${APP_DIR}
 COPY --from=build ${APP_DIR}/venv ${APP_DIR}/venv/
-ENV PATH ${APP_DIR}/venv/bin:$PATH
+ENV PATH=${APP_DIR}/venv/bin:${PATH}
+COPY . ${APP_DIR}
 
-WORKDIR ${APP_DIR}/
-COPY . ./
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD [ "curl", "-f", "http://localhost:8000/health"]
 
-HEALTHCHECK --start-period=30s CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=2)"
+# HEALTHCHECK --interval=5s --timeout=10s --start-period=5s --retries=3 \
+#   CMD curl -f http://localhost:8000/health || exit 1
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

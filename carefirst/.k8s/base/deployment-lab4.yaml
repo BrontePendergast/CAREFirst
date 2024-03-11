@@ -19,9 +19,9 @@ spec:
       containers:
         - name: lab4
           image: lab4:latest
-          # env:
-          # - name: REDIS_URL
-          #   value: redis://:thisisapassword@redis:6379
+          env:
+          - name: REDIS_URL
+            value: redis://:thisisapassword@redis:6379
           resources:
             requests:
               cpu: 250m

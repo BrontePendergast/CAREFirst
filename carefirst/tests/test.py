@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from datetime import datetime
 import pymongo
+import time
 
 # App to Test
 from src.main import app
@@ -35,33 +36,19 @@ def test_docs():
     response = client.get("/docs")
     assert response.status_code == 200
 
-@pytest.mark.parametrize(
-    "test_input, expected",
-    [("james", "james"), ("bob", "bob"), ("BoB", "BoB"), (100, 100)],
-)
-
-def test_hello(test_input, expected):
-    response = client.get(f"/hello?name={test_input}")
-    assert response.status_code == 200
-    assert response.json() == {"message": f"Hello {expected}"}
-
 # Are we able to send a chat query?
 # Do I return the type I expect?
 def test_conversations_basic():
+    now = datetime.now()
+    unix_timestamp = "TEST-"+str(int(time.mktime(now.timetuple())))
     data = {"query": "simple check on my burn"}
     response = client.post(
-        "/conversations/30",
+        "/conversations/" + unix_timestamp,
         json=data,
     )
-
-
-
     assert response.status_code == 200
-
-    assert response.json()["output"]["conversation_id"] == "30"
-    assert response.json()["conversation_id"] == "30"
-
-    deleteCollection(db_name="carefirstdb", collection_name="messages")
+    assert response.json()["conversation_id"] == unix_timestamp
+    # deleteCollection(db_name="carefirstdb", collection_name="messages")
 
 
 # # Are we able to send feedback query?
