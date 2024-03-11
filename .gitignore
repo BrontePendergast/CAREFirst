@@ -1,3 +1,6 @@
+# pkl
+*.pkl
+
 # env
 .env
 
