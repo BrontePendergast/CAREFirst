@@ -16,8 +16,10 @@ export default {
         }
       )
       .then((response) => {
-        console.log(response['data']['output']['answer']);
-        return response['data']['output']['answer'];
+        // console.log(response['data']['output']['answer']);
+        // console.log(response['data']['answer']);
+        // return response['data']['output']['answer'];
+        return response['data']['answer'];
         // console.log(JSON.stringify(response)['data']['output']['answer']);
       })
       .catch((error) => {
