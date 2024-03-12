@@ -1,5 +1,22 @@
 #!/bin/bash
-
+# -- Set up initial variables
+BACKEND_FOLDER=carefirst
+FRONTEND_FOLDER=webapp
+NAMESPACE=rmarin
+ACR_DOMAIN=w255mids.azurecr.io
+TAG=latest
+IMAGE_PREFIX=rmarin
+# -- Virtual Service HOST and URL
+export KNS=$IMAGE_PREFIX
+# export VSVC_HOST=$(kubectl get virtualservice -n $KNS $IMAGE_NAME -o jsonpath='{.spec.hosts[0]}')
+export VSVC_HOST=$KNS.mids255.com
+export VSVC_URL=https://$VSVC_HOST
+export HEALTH_URL=$VSVC_URL/health
+# -- Misc Variables
+timeout_seconds=120
+wait_seconds=5
+total_seconds=0
+request_count=0
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
@@ -15,77 +32,36 @@ while [[ "$#" -gt 0 ]]; do
     shift
 done
 
-
-# -- Set up initial variables
-# -- ACR and Docker Registry
-ACR_DOMAIN=w255mids.azurecr.io
-# IMAGE_NAME=${PWD##*/}
-IMAGE_NAME=carefirst
-# TAG=$(git rev-parse --short HEAD)
-TAG=latest
-# IMAGE_PREFIX=$(az account list --all | jq '.[].user.name' | grep -i berkeley.edu | awk -F@ '{print $1}' | tr -d '"' | tr -d "." | tr '[:upper:]' '[:lower:]' | tr '_' '-' | uniq)
-IMAGE_PREFIX=carefirst
-IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
-# -- Virtual Service HOST and URL
-export KNS=$IMAGE_PREFIX
-# export VSVC_HOST=$(kubectl get virtualservice -n $KNS $IMAGE_NAME -o jsonpath='{.spec.hosts[0]}')
-export VSVC_HOST=$KNS.mids255.com
-export VSVC_URL=https://$VSVC_HOST
-export HEALTH_URL=$VSVC_URL/health
-# -- Misc Variables
-timeout_seconds=120
-wait_seconds=5
-total_seconds=0
-request_count=0
-json_data='{
-    "MedInc" : 8.3252,
-    "HouseAge" : 41,
-    "AveRooms" : 6.98412698,
-    "AveBedrms" : 1.02380952,
-    "Population" : 322,
-    "AveOccup" : 2.55555556,
-    "Latitude" : 37.88,
-    "Longitude" : -122.23
-}'
-bulk_json_data='{
-    "houses": [
-        {
-            "MedInc": 8.3252,
-            "HouseAge": 41,
-            "AveRooms": 6.98412698,
-            "AveBedrms": 1.02380952,
-            "Population": 322,
-            "AveOccup": 2.55555556,
-            "Latitude": 37.88,
-            "Longitude": -122.23
-        },
-        {
-            "MedInc": 8.3252,
-            "HouseAge": 41,
-            "AveRooms": 6.98412698,
-            "AveBedrms": 1.02380952,
-            "Population": 322,
-            "AveOccup": 2.55555556,
-            "Latitude": 37.88,
-            "Longitude": -122.23
-        }
-    ]
-}'
-
-
-# Create TAG and feed it to deployment yaml # FQDN = Fully-Qualified Domain Name
-echo " -- Create lab4 deployment yaml"
-sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-lab4_copy.yaml > .k8s/overlays/prod/patch-deployment-lab4.yaml
-
-echo " -- Build and push ${IMAGE_NAME}:${TAG} to ${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
+# acr login
+echo " -- acr login"
 az acr login --name w255mids &> /dev/null
-docker build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} .
+
+# Build pythonapi image
+cd ${BACKEND_FOLDER}
+IMAGE_NAME=pythonapi
+IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
+echo " -- Build and push ${IMAGE_NAME}:${TAG} to ${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
+docker build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} . 
 docker tag ${IMAGE_NAME}:${TAG} ${IMAGE_FQDN}:${TAG}
 docker push ${IMAGE_FQDN}:${TAG}
 
+# Build frontend image
+cd ../${FRONTEND_FOLDER}/client
+IMAGE_NAME=frontend
+IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
+echo " -- Build and push ${IMAGE_NAME}:${TAG} to ${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
+docker build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} . 
+docker tag ${IMAGE_NAME}:${TAG} ${IMAGE_FQDN}:${TAG}
+docker push ${IMAGE_FQDN}:${TAG}
 
-# echo " -- Deploy ${IMAGE_NAME}:${TAG} on AKS"
-# kustomize build .k8s/overlays/prod | kubectl apply -f -
+# Go back to root
+cd ../../
+
+
+#  -- Deploy ${IMAGE_NAME}:${TAG} on AKS
+echo " -- Deploy ${IMAGE_NAME}:${TAG} on AKS"
+kubectl config use-context w255-aks
+kustomize build .k8s/overlays/prod | kubectl apply -f -
 
 # # -- Test if service is Up
 # echo " -- Test if service is up on: $HEALTH_URL"

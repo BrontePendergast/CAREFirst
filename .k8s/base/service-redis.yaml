@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: service-redis
-  namespace: carefirst
+  namespace: rmarin
 spec:
   selector:
     app: redis

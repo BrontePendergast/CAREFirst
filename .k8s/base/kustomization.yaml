@@ -1,12 +1,13 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: carefirst
+namespace: rmarin
 resources:
   - config-map.yaml
+  - deployment-frontend.yaml
   - deployment-pythonapi.yaml
   - deployment-redis.yaml
   - service-frontend.yaml
-  - service-prediction.yaml
+  - service-pythonapi.yaml
   - service-redis.yaml
   

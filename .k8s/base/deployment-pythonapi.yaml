@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pythonapi
-  namespace: carefirst
+  namespace: rmarin
   labels: 
     app: api
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: api
@@ -16,16 +16,9 @@ spec:
         app: api
     spec:
       containers:
-      - name: apicontainer
-        image: demo:latest
+      - name: pythonapi
+        image: pythonapi:latest
         imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            cpu: 250m
-            memory: 64Mi
-          limits:
-            cpu: 500m
-            memory: 128Mi
         ports:
         - containerPort: 8000
         readinessProbe:
@@ -57,7 +50,7 @@ spec:
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  namespace: carefirst
+  namespace: rmarin
   name: pythonapi
 spec:
   scaleTargetRef:

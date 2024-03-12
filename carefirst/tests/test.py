@@ -23,6 +23,9 @@ connection_string= getURI()
 client = pymongo.MongoClient(connection_string)
 database = client["carefirstdb"]
 
+now = datetime.now()
+unix_timestamp = "TEST-"+str(int(time.mktime(now.timetuple())))
+
 @pytest.fixture(autouse=True)
 def _init_cache() -> Generator[Any, Any, None]:
     FastAPICache.init(InMemoryBackend())
@@ -36,11 +39,19 @@ def test_docs():
     response = client.get("/docs")
     assert response.status_code == 200
 
+
+def test_openapi():
+    response = client.get("/openapi.json")
+    assert response.status_code == 200
+
+# Test Healthcheck test
+def test_healthcheck():
+    response = client.get("/health")
+    assert response.status_code == 200
+
 # Are we able to send a chat query?
 # Do I return the type I expect?
 def test_conversations_basic():
-    now = datetime.now()
-    unix_timestamp = "TEST-"+str(int(time.mktime(now.timetuple())))
     data = {"query": "simple check on my burn"}
     response = client.post(
         "/conversations/" + unix_timestamp,
@@ -48,6 +59,16 @@ def test_conversations_basic():
     )
     assert response.status_code == 200
     assert response.json()["conversation_id"] == unix_timestamp
+    # deleteCollection(db_name="carefirstdb", collection_name="messages")
+
+def test_messages_basic():
+    data = {"feedback": "True"}
+    response = client.post(
+        "/messages/" + unix_timestamp,
+        json=data,
+    )
+    assert response.status_code == 200
+    # assert response.json()["modified_count"] == 1
     # deleteCollection(db_name="carefirstdb", collection_name="messages")
 
 

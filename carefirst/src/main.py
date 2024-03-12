@@ -9,14 +9,14 @@ import string
 import random
 import numpy as np
 
-# Mongo
-import pymongo
-from pymongo import MongoClient
-from pydantic_mongo import AbstractRepository, ObjectIdField
+# # Mongo
+# import pymongo
+# from pymongo import MongoClient
+# from pydantic_mongo import AbstractRepository, ObjectIdField
 
-# LLM
-from src.db_mongo import getURI
-from src.llm import ChatChain
+# # LLM
+# from src.db_mongo import getURI
+# from src.llm import ChatChain
 
 # Cache
 from fastapi_cache import FastAPICache
@@ -25,13 +25,10 @@ from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 from fastapi_cache.coder import PickleCoder
 
-# Load the Model once
-# model = joblib.load("model_pipeline.pkl")
-
-# Connect to MongoDB
-connection_string= getURI()
-client = pymongo.MongoClient(connection_string)
-database = client["carefirstdb"]
+# # Connect to MongoDB
+# connection_string= getURI()
+# client = pymongo.MongoClient(connection_string)
+# database = client["carefirstdb"]
 
 class RequestQuery(BaseModel):
     id: Optional[str] = None
@@ -61,20 +58,20 @@ class ResponseFeedback(BaseModel):
     status: str
     modified_count: int
 
-class MessageRecord(BaseModel):
-    id: ObjectIdField = None
-    conversation_id: str
-    message_id: str
-    answer: str
-    query: str
-    feedback: Optional[bool] = None
-    timestamp_sent_query: datetime
-    timestamp_sent_response: datetime
-    response_duration: float
+# class MessageRecord(BaseModel):
+#     id: ObjectIdField = None
+#     conversation_id: str
+#     message_id: str
+#     answer: str
+#     query: str
+#     feedback: Optional[bool] = None
+#     timestamp_sent_query: datetime
+#     timestamp_sent_response: datetime
+#     response_duration: float
 
-class MessagesRepository(AbstractRepository[MessageRecord]):
-   class Meta:
-      collection_name = 'messages'
+# class MessagesRepository(AbstractRepository[MessageRecord]):
+#    class Meta:
+#       collection_name = 'messages'
 
 
 # Initiate fastapi
@@ -180,7 +177,7 @@ async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     description="Returns HTTP Status 200 with timestamp in ISO8601 format",
 )
 async def health_check():
-    return {"time": f"{datetime.datetime.now().isoformat()}"}
+    return {"time": f"{datetime.now().isoformat()}"}
 
 
 @app.on_event("startup")

@@ -8,14 +8,14 @@ spec:
     spec:
       containers:
         - name: pythonapi
-          image: w255mids.azurecr.io/carefirst/pythonapi:latest
+          image: w255mids.azurecr.io/rmarin/pythonapi:latest
           resources:
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 99m
+              memory: 1024Mi
             requests:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 50m
+              memory: 512Mi
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

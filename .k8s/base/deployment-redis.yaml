@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-deployment
-  namespace: carefirst
+  name: redis
+  namespace: rmarin
 spec:
   replicas: 1
   selector:
@@ -18,8 +18,11 @@ spec:
         imagePullPolicy: IfNotPresent
         resources:
             requests:
-              cpu: 200m
-              memory: 500Mi
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: 99m
+              memory: 512Mi
         image: redis:latest
         ports:
         - containerPort: 6379

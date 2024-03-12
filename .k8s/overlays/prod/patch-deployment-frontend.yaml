@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          image: w255mids.azurecr.io/rmarin/frontend:latest
+          resources:
+            limits:
+              cpu: 99m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000

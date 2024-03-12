@@ -2,12 +2,12 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: pythonapi
+  name: virtualservice-pythonapi
 spec:
   hosts:
-    - carefirst.mids255.com
+    - rmarin.mids255.com
   gateways:
-    - istio-ingress/carefirst-gateway
+    - istio-ingress/rmarin-gateway
   http:
     - match:
         - uri:
@@ -20,8 +20,6 @@ spec:
             prefix: /docs
         - uri:
             prefix: /openapi.json
-        - uri:
-            prefix: /hello
       route:
         - destination:
             host: pythonapi
@@ -32,6 +30,6 @@ spec:
             exact: /
       route:
         - destination:
-            host: pythonapi
+            host: frontend
             port:
               number: 3000
