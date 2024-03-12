@@ -119,11 +119,19 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     query.id = conversation_id
 
 
-    # Generate Response
-    timestamp_queryin = datetime.now()
-    ai_response = ChatChain(query.query, query.id)
-    validated_response = Response(**ai_response)
-    
+    # # Generate Response
+    # timestamp_queryin = datetime.now()
+    # ai_response = ChatChain(query.query, query.id)
+    # validated_response = Response(**ai_response)
+    validated_response = {
+        "message_id":"TEST-whatever",
+        "conversation_id":conversation_id,
+        "answer":"comoestas",
+        "query":"holi",
+        "source":"TEST",
+        "model":"TEST-None",
+        "timestamp":"2024-03-12T15:52:16.954444"
+    }
 
     # Create message_id
     message_id = getMessageID()
@@ -131,20 +139,20 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
 
     # Calculate response duration
-    response_duration = validated_response.timestamp - timestamp_queryin                         
-    duration_in_s = response_duration.total_seconds()
+    # response_duration = validated_response.timestamp - timestamp_queryin                         
+    # duration_in_s = response_duration.total_seconds()
 
 
-    # Store record in "messages" collection
-    messages_repository = MessagesRepository(database=database)
-    message = MessageRecord(conversation_id = query.id
-                            , message_id=message_id
-                            , answer=validated_response.answer
-                            , query=validated_response.query
-                            , timestamp_sent_query = timestamp_queryin
-                            , timestamp_sent_response=validated_response.timestamp
-                            , response_duration=duration_in_s)
-    messages_repository.save(message)
+    # # Store record in "messages" collection
+    # messages_repository = MessagesRepository(database=database)
+    # message = MessageRecord(conversation_id = query.id
+    #                         , message_id=message_id
+    #                         , answer=validated_response.answer
+    #                         , query=validated_response.query
+    #                         , timestamp_sent_query = timestamp_queryin
+    #                         , timestamp_sent_response=validated_response.timestamp
+    #                         , response_duration=duration_in_s)
+    # messages_repository.save(message)
 
 
     # Return response
@@ -160,24 +168,28 @@ async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     feedback.id = message_id
     
     
-    # Update message collection with feedback
-    try:    
-        update_result = database["messages"].update_one(
-            {"message_id": feedback.id}, 
-            {'$set': {"feedback": feedback.feedback}})   
+    # # Update message collection with feedback
+    # try:    
+    #     update_result = database["messages"].update_one(
+    #         {"message_id": feedback.id}, 
+    #         {'$set': {"feedback": feedback.feedback}})   
         
-        if update_result.matched_count < 1:
-            # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
-            return {"id":feedback.id,
-                "status": "Error",
-                "modified_count":update_result.matched_count}
-        else:    
-            return {"id":feedback.id,
-                "status": "Success",
-                "modified_count":update_result.modified_count}
+    #     if update_result.matched_count < 1:
+    #         # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
+    #         return {"id":feedback.id,
+    #             "status": "Error",
+    #             "modified_count":update_result.matched_count}
+    #     else:    
+    #         return {"id":feedback.id,
+    #             "status": "Success",
+    #             "modified_count":update_result.modified_count}
     
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Error | " + str(e))
+    # except Exception as e:
+    #     raise HTTPException(status_code=500, detail="Error | " + str(e))
+
+    return {"id":feedback.id,
+                "status": "TEST-whatever",
+                "modified_count":0}
 
 @app.get(
     "/health",
