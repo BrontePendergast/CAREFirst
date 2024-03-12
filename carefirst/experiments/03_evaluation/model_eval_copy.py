@@ -6,6 +6,7 @@ from rouge import Rouge
 from openai import OpenAI
 import os
 import sys
+from tenacity import retry, stop_after_delay, stop_after_attempt
 
 
 client = OpenAI(api_key=os.getenv('POETRY_OPENAI_API_KEY'))
@@ -36,6 +37,7 @@ openai.api_key = os.getenv("POETRY_OPENAI_API_KEY")
 
 
 model = 'gpt-3.5-turbo-0125'
+@retry(stop=(stop_after_delay(20)|stop_after_attempt(5)))
 def gpt3_response(prompt, model):
     response = client.chat.completions.create(
         model=model,
@@ -44,6 +46,11 @@ def gpt3_response(prompt, model):
         max_tokens=50
     )
     return response.choices[0].message.content
+
+@retry(stop=(stop_after_delay(20)|stop_after_attempt(5)))
+def chatbot_response_fun(prompt):
+    chatbot_response = ChatChain(prompt)
+    return chatbot_response
 
 # TODO add in intents data - must be mapped to correct page numbers as well
 # examples = ["What to do if Cuts?",
@@ -81,8 +88,16 @@ scores = []
 import re
 import random
 
+sample_intents = random.sample(intents, 500)
+print(type(sample_intents))
+print(len(sample_intents))
+
 scores = []
-for intent in intents:
+for intent in sample_intents:
+
+    memory = ConversationBufferMemory(
+        return_messages=True, output_key="answer", input_key="question"
+    )
     #
     prompt = intent['question']
     # similar to the model adding 1 to account for 0 index start
@@ -91,8 +106,7 @@ for intent in intents:
     # Get response from GPT-3.5
     gpt3_answer = gpt3_response(prompt, model)
     # TODO import 02_llm.py ChatDemo
-    test_id = "Test" + str(random.randint(0,1000))
-    chatbot_response = ChatChain(prompt, conversation_id=test_id)
+    chatbot_response = chatbot_response_fun(prompt)
     chatbot_page = int(''.join(re.findall(r'\d+', chatbot_response["source"])))
     chatbot_answer = chatbot_response['answer']
     #
@@ -116,12 +130,17 @@ for intent in intents:
      'rouge_l_f1_gpt3': float(rouge.get_scores(gpt3_answer, intent['answer'])[0]['rouge-l']['f']),
      'rouge_l_f1_chatbot': float(rouge.get_scores(chatbot_answer, intent['answer'])[0]['rouge-l']['f'])
     }
+    
     # append to a list
     scores.append(results)
+    print(results)
+    scores_df = pd.DataFrame(scores)
+    scores_df['page_match'] = scores_df.apply(lambda x: 1 if x['page'] == x['chatbot_page'] else 0, axis = 1)
+    scores_df.to_csv('./data/intent/model_evaluation_v1.csv')
 
-scores_df = pd.DataFrame(scores)
-scores_df['page_match'] = scores_df.apply(lambda x: 1 if x['page'] == x['chatbot_page'] else 0, axis = 1)
-scores_df.to_csv('./data/intent/model_evaluation_v1.csv')
+# scores_df = pd.DataFrame(scores)
+# scores_df['page_match'] = scores_df.apply(lambda x: 1 if x['page'] == x['chatbot_page'] else 0, axis = 1)
+# scores_df.to_csv('./data/intent/model_evaluation_v1.csv')
 
 # average similarity with cosine and rouge
 print(scores_df[[

@@ -147,7 +147,7 @@ db = Qdrant.from_documents(
     api_key=QDRANT_KEY,
     collection_name="redcross_v2",
 )
-retriever = db.as_retriever(search_kwargs={"k": 3})
+retriever = db.as_retriever(search_kwargs={"k": 1})
 
 
 #######################################
