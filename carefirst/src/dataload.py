@@ -8,7 +8,8 @@ import pandas as pd
 def load_and_store_embeddings(dir = '../data/guidelines/', 
                               path = 'redcross_guidelines.pdf', 
                               from_type = 'pdf',
-                              prefix = ''):
+                              prefix = '',
+                              vector = 'qdrant'):
    
     if from_type == 'pdf':
         # load and split document by page
@@ -30,7 +31,7 @@ def load_and_store_embeddings(dir = '../data/guidelines/',
     embeddings = HuggingFaceEmbeddings()
 
     db = FAISS.from_documents(docs, embeddings)
-    db.save_local(dir + prefix + path[:-4] + "faiss_index")
+    db.save_local(dir + prefix + path[:-4] + vector + "_index")
 
     return f"PDF has converted to text and then to embeddings and stored here {dir + path[:-4]+ 'faiss_index'}"
 
@@ -38,8 +39,7 @@ def load_and_store_embeddings(dir = '../data/guidelines/',
 if __name__ == "__main__":
     
     pdfs = ['redcross_guidelines.pdf', 
-            'ifrc_guidelines.pdf', 
-            'who_guidelines.pdf']
+            'ifrc_guidelines.pdf']
 
     # convert all pdfs
     for pdf in pdfs:
