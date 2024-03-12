@@ -84,7 +84,7 @@ with gr.Blocks() as demo:
         
     with gr.Accordion("Model Design"):
         with gr.Row():
-            gr.Image('experiments/02_demos/images/model_steps.png') 
+            gr.Image('experiments/02_demos/images/model_steps_v3.png') 
 
     with gr.Accordion("Engineered Flow "):
         with gr.Row():
