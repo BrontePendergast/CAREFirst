@@ -11,11 +11,11 @@ spec:
           image: w255mids.azurecr.io/rmarin/frontend:latest
           resources:
             limits:
-              cpu: 99m
-              memory: 512Mi
+              cpu: 1000m
+              memory: 1024Mi
             requests:
-              cpu: 50m
-              memory: 256Mi
+              cpu: 500m
+              memory: 512Mi
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

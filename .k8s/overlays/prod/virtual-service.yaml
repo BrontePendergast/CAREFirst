@@ -1,4 +1,3 @@
----
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -11,25 +10,55 @@ spec:
   http:
     - match:
         - uri:
-            exact: /conversations
+            prefix: /conversations
         - uri:
-            exact: /messages
+            prefix: /messages
         - uri:
-            prefix: /health
+            exact: /health
         - uri:
-            prefix: /docs
+            exact: /docs
         - uri:
-            prefix: /openapi.json
+            exact: /openapi.json
       route:
         - destination:
             host: pythonapi
             port:
               number: 8000
+      corsPolicy:  # Aquí se agrega la política de CORS para las rutas de pythonapi
+        allowOrigins:
+        - exact: "http://localhost:3000"
+        - exact: "http://localhost:8000"
+        - prefix: "https://rmarin.mids255.com"
+        allowMethods:
+        - POST
+        - GET
+        - OPTIONS  # Asegúrate de incluir OPTIONS si quieres manejar solicitudes de preflight
+        allowCredentials: true  # Cambia a 'false' si no necesitas credenciales como cookies o auth headers
+        allowHeaders:
+        - X-Custom-Header
+        - Authorization
+        - Access-Control-Allow-Origin
+        maxAge: "24h"
     - match:
         - uri:
-            exact: /
+            prefix: /
       route:
         - destination:
             host: frontend
             port:
               number: 3000
+      corsPolicy:  # Y también para las rutas de frontend si es necesario
+        allowOrigins:
+        - exact: "http://localhost:3000"
+        - exact: "http://localhost:8000"
+        - exact: "https://rmarin.mids255.com"
+        allowMethods:
+        - POST
+        - GET
+        - OPTIONS 
+        allowCredentials: true
+        allowHeaders:
+        - X-Custom-Header
+        - Authorization
+        - Access-Control-Allow-Origin
+        maxAge: "24h"

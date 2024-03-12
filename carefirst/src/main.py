@@ -77,6 +77,26 @@ class ResponseFeedback(BaseModel):
 # Initiate fastapi
 app = FastAPI()
 
+#Code that Charlie needed to run locally
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["http://localhost:3000", 
+#                    "http://localhost:8000",
+#                    "https://rmarin.mids255.com",
+#                    "*"],  # Allow all origins
+#     allow_credentials=True,
+#     allow_methods=["*"],  # Allow all HTTP methods
+#     allow_headers=["Access-Control-Allow-Origin",
+#                    "*"]  # Allow all headers
+# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:8000", "https://rmarin.mids255.com"],  # Specify your allowed origins
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Specify your allowed methods
+    allow_headers=["*"]  # Allow all headers, adjust as necessary
+)
 
 # messageID funciton
 def getMessageID():
@@ -85,18 +105,6 @@ def getMessageID():
     message_id = ''.join(random.choices(string.ascii_uppercase +
                                 string.digits, k=N))
     return message_id
-
-
-#Code that Charlie needed to run locally
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000", 
-                   "http://localhost:8000",
-                    "*"],  # Allow all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
-)
 
 
 # Conversations endpoint
@@ -182,5 +190,5 @@ async def health_check():
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://service-redis:6379")
+    redis = aioredis.from_url("redis://redis:6379")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")

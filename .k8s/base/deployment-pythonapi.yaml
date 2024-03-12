@@ -6,7 +6,7 @@ metadata:
   labels: 
     app: api
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: api
@@ -19,6 +19,13 @@ spec:
       - name: pythonapi
         image: pythonapi:latest
         imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
         ports:
         - containerPort: 8000
         readinessProbe:
@@ -35,6 +42,13 @@ spec:
           periodSeconds: 10   
       - name: busybox
         image: busybox:latest
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
         command:
           - /bin/sh
           - -c
@@ -42,10 +56,24 @@ spec:
       initContainers:
       - name: verify-redis-dns
         image: busybox:latest
-        command: ['sh', '-c', "until nc -vz service-redis 6379; do echo 'waiting for redis service from DNS'; sleep 2; done"]
+        command: ['sh', '-c', "until nc -vz redis 6379; do echo 'waiting for redis service from DNS'; sleep 2; done"]
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
       - name: verify-redis-ready
         image: busybox:latest
-        command:  ["sh", "-c", "until (printf 'PING\r\n';) | nc service-redis 6379; do echo 'waiting for redis to PONG'; sleep 1; done"]
+        command:  ["sh", "-c", "until (printf 'PING\r\n';) | nc redis 6379; do echo 'waiting for redis to PONG'; sleep 1; done"]
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler

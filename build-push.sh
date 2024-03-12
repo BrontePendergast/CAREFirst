@@ -21,6 +21,21 @@ request_count=0
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
+        -q|--quit) # stop and delete
+            echo "kustomize delete"
+            kubectl config use-context w255-aks
+            kustomize build .k8s/overlays/prod | kubectl delete -f -
+            # minikube stop
+            # minikube delete
+            exit 1
+            ;;
+        -i|--infra) # apply infra
+            echo "kustomize apply"
+            kubectl config use-context w255-aks
+            kustomize build .k8s/overlays/prod | kubectl apply -f -
+            # minikube delete
+            exit 1
+            ;;
         -v|--verbose) # Verbose mode, display responses on console
             VERBOSE=true
             ;;

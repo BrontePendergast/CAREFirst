@@ -1,0 +1,38 @@
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: virtualservice-pythonapi
+spec:
+  hosts:
+    - rmarin.mids255.com
+  gateways:
+    - istio-ingress/rmarin-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /conversations
+        - uri:
+            prefix: /messages
+        - uri:
+            exact: /health
+        - uri:
+            exact: /docs
+        - uri:
+            exact: /openapi.json
+      route:
+        - destination:
+            host: pythonapi
+            port:
+              number: 8000
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: frontend
+            port:
+              number: 3000
+
+
+    

@@ -6,7 +6,7 @@ metadata:
   labels: 
     app: frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
@@ -19,5 +19,12 @@ spec:
       - name: frontend
         image: frontend:latest
         imagePullPolicy: IfNotPresent
+        resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
         ports:
         - containerPort: 3000
