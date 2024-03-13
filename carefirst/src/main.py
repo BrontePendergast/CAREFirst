@@ -92,9 +92,16 @@ app = FastAPI()
 # )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8000", "https://rmarin.mids255.com"],  # Specify your allowed origins
+    allow_origins=["http://localhost:3000",
+                   "http://localhost:8000",
+                   "https://rmarin.mids255.com",
+                   "*"],  # Specify your allowed origins
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Specify your allowed methods
+    allow_methods=["GET",
+                   "POST",
+                   "PUT",
+                   "DELETE",
+                   "OPTIONS"],  # Specify your allowed methods
     allow_headers=["*"]  # Allow all headers, adjust as necessary
 )
 

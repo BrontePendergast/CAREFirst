@@ -25,29 +25,12 @@ spec:
             host: pythonapi
             port:
               number: 8000
-      corsPolicy:
-        allowOrigins:
-        - exact: "http://localhost:3000"
-        - exact: "http://localhost:8000"
-        - exact: "https://rmarin.mids255.com"
-        - exact: "*"
-        allowMethods:
-        - POST
-        - GET
-        - OPTIONS 
-        allowCredentials: false
-        allowHeaders:
-        - X-Custom-Header
-        - Authorization
-        - Access-Control-Allow-Origin
-        - "*"
-        maxAge: "24h"
     - route:
       - destination:
           host: frontend
           port:
             number: 3000
-      corsPolicy:
+      corsPolicy:  # Y también para las rutas de frontend si es necesario
         allowOrigins:
         - exact: "http://localhost:3000"
         - exact: "http://localhost:8000"
@@ -57,12 +40,7 @@ spec:
         - POST
         - GET
         - OPTIONS 
-        allowCredentials: false
+        allowCredentials: true
         allowHeaders:
-        - X-Custom-Header
-        - Authorization
-        - Access-Control-Allow-Origin
         - "*"
         maxAge: "24h"
-
-    

@@ -4,7 +4,7 @@ export default {
   sendQuery: function (query) {
     return axios
       .post(
-        'http://localhost:8000/conversations/9999/',
+        'https://rmarin.mids255.com:8000/conversations/9999',
         {
           query: query,
         },
