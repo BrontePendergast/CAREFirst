@@ -11,11 +11,11 @@ spec:
           image: w255mids.azurecr.io/rmarin/pythonapi:latest
           resources:
             limits:
+              cpu: 2000m
+              memory: 2048Mi
+            requests:
               cpu: 1000m
               memory: 1024Mi
-            requests:
-              cpu: 500m
-              memory: 512Mi
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -24,12 +24,12 @@ spec:
               scheme: HTTP
               path: /health
               port: 8000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 60
             periodSeconds: 10
           livenessProbe:
             httpGet:
               scheme: HTTP
               path: /health
               port: 8000
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 20

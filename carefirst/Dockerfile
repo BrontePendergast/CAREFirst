@@ -38,10 +38,12 @@ RUN apt-get update \
 WORKDIR ${APP_DIR}
 COPY --from=build ${APP_DIR}/venv ${APP_DIR}/venv/
 ENV PATH=${APP_DIR}/venv/bin:${PATH}
-COPY ./.k8s ${APP_DIR}
-COPY ./data ${APP_DIR}
-COPY ./infra ${APP_DIR}
-COPY ./tests ${APP_DIR}
+COPY . ${APP_DIR}
+# COPY ./.k8s ${APP_DIR}
+# COPY ./data ${APP_DIR}
+# COPY ./infra ${APP_DIR}
+# COPY ./tests ${APP_DIR}
+
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD [ "curl", "-f", "http://localhost:8000/health"]

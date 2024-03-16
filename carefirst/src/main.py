@@ -9,14 +9,14 @@ import string
 import random
 import numpy as np
 
-# # Mongo
-# import pymongo
-# from pymongo import MongoClient
-# from pydantic_mongo import AbstractRepository, ObjectIdField
+# Mongo
+import pymongo
+from pymongo import MongoClient
+from pydantic_mongo import AbstractRepository, ObjectIdField
 
-# # LLM
-# from src.db_mongo import getURI
-# from src.llm import ChatChain
+# LLM
+from src.db_mongo import getURI
+from src.llm import ChatChain
 
 # Cache
 from fastapi_cache import FastAPICache
@@ -25,10 +25,10 @@ from fastapi_cache.decorator import cache
 from redis import asyncio as aioredis
 from fastapi_cache.coder import PickleCoder
 
-# # Connect to MongoDB
-# connection_string= getURI()
-# client = pymongo.MongoClient(connection_string)
-# database = client["carefirstdb"]
+# Connect to MongoDB
+connection_string= getURI()
+client = pymongo.MongoClient(connection_string)
+database = client["carefirstdb"]
 
 class RequestQuery(BaseModel):
     id: Optional[str] = None
@@ -58,38 +58,26 @@ class ResponseFeedback(BaseModel):
     status: str
     modified_count: int
 
-# class MessageRecord(BaseModel):
-#     id: ObjectIdField = None
-#     conversation_id: str
-#     message_id: str
-#     answer: str
-#     query: str
-#     feedback: Optional[bool] = None
-#     timestamp_sent_query: datetime
-#     timestamp_sent_response: datetime
-#     response_duration: float
+class MessageRecord(BaseModel):
+    id: ObjectIdField = None
+    conversation_id: str
+    message_id: str
+    answer: str
+    query: str
+    feedback: Optional[bool] = None
+    timestamp_sent_query: datetime
+    timestamp_sent_response: datetime
+    response_duration: float
 
-# class MessagesRepository(AbstractRepository[MessageRecord]):
-#    class Meta:
-#       collection_name = 'messages'
+class MessagesRepository(AbstractRepository[MessageRecord]):
+   class Meta:
+      collection_name = 'messages'
 
 
 # Initiate fastapi
 app = FastAPI()
 
 #Code that Charlie needed to run locally
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:3000", 
-#                    "http://localhost:8000",
-#                    "https://rmarin.mids255.com",
-#                    "*"],  # Allow all origins
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allow all HTTP methods
-#     allow_headers=["Access-Control-Allow-Origin",
-#                    "*"]  # Allow all headers
-# )
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000",
@@ -127,18 +115,18 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
 
     # # Generate Response
-    # timestamp_queryin = datetime.now()
-    # ai_response = ChatChain(query.query, query.id)
-    # validated_response = Response(**ai_response)
-    validated_response = {
-        "message_id":"TEST-whatever",
-        "conversation_id":conversation_id,
-        "answer":"comoestas",
-        "query":"holi",
-        "source":"TEST",
-        "model":"TEST-None",
-        "timestamp":"2024-03-12T15:52:16.954444"
-    }
+    timestamp_queryin = datetime.now()
+    ai_response = ChatChain(query.query, query.id)
+    validated_response = Response(**ai_response)
+    # validated_response = {
+    #     "message_id":"TEST-whatever",
+    #     "conversation_id":conversation_id,
+    #     "answer":"comoestas",
+    #     "query":"holi",
+    #     "source":"TEST",
+    #     "model":"TEST-None",
+    #     "timestamp":"2024-03-12T15:52:16.954444"
+    # }
 
     # Create message_id
     message_id = getMessageID()
@@ -146,20 +134,20 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
 
     # Calculate response duration
-    # response_duration = validated_response.timestamp - timestamp_queryin                         
-    # duration_in_s = response_duration.total_seconds()
+    response_duration = validated_response.timestamp - timestamp_queryin                         
+    duration_in_s = response_duration.total_seconds()
 
 
-    # # Store record in "messages" collection
-    # messages_repository = MessagesRepository(database=database)
-    # message = MessageRecord(conversation_id = query.id
-    #                         , message_id=message_id
-    #                         , answer=validated_response.answer
-    #                         , query=validated_response.query
-    #                         , timestamp_sent_query = timestamp_queryin
-    #                         , timestamp_sent_response=validated_response.timestamp
-    #                         , response_duration=duration_in_s)
-    # messages_repository.save(message)
+    # Store record in "messages" collection
+    messages_repository = MessagesRepository(database=database)
+    message = MessageRecord(conversation_id = query.id
+                            , message_id=message_id
+                            , answer=validated_response.answer
+                            , query=validated_response.query
+                            , timestamp_sent_query = timestamp_queryin
+                            , timestamp_sent_response=validated_response.timestamp
+                            , response_duration=duration_in_s)
+    messages_repository.save(message)
 
 
     # Return response
@@ -175,28 +163,28 @@ async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     feedback.id = message_id
     
     
-    # # Update message collection with feedback
-    # try:    
-    #     update_result = database["messages"].update_one(
-    #         {"message_id": feedback.id}, 
-    #         {'$set': {"feedback": feedback.feedback}})   
+    # Update message collection with feedback
+    try:    
+        update_result = database["messages"].update_one(
+            {"message_id": feedback.id}, 
+            {'$set': {"feedback": feedback.feedback}})   
         
-    #     if update_result.matched_count < 1:
-    #         # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
-    #         return {"id":feedback.id,
-    #             "status": "Error",
-    #             "modified_count":update_result.matched_count}
-    #     else:    
-    #         return {"id":feedback.id,
-    #             "status": "Success",
-    #             "modified_count":update_result.modified_count}
+        if update_result.matched_count < 1:
+            # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
+            return {"id":feedback.id,
+                "status": "Error",
+                "modified_count":update_result.matched_count}
+        else:    
+            return {"id":feedback.id,
+                "status": "Success",
+                "modified_count":update_result.modified_count}
     
-    # except Exception as e:
-    #     raise HTTPException(status_code=500, detail="Error | " + str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error | " + str(e))
 
-    return {"id":feedback.id,
-                "status": "TEST-whatever",
-                "modified_count":0}
+    # return {"id":feedback.id,
+    #             "status": "TEST-whatever",
+    #             "modified_count":0}
 
 @app.get(
     "/health",

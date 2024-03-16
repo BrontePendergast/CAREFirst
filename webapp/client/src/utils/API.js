@@ -2,9 +2,11 @@ import axios from "axios";
 
 export default {
   sendQuery: function (query) {
+    const uniqueId = Math.floor(Date.now() / 1000)
+    const endpointUrl = `https://rmarin.mids255.com/conversations/${uniqueId}`;
     return axios
       .post(
-        'https://rmarin.mids255.com:8000/conversations/9999',
+        endpointUrl,
         {
           query: query,
         },

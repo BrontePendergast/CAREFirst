@@ -36,6 +36,13 @@ while [[ "$#" -gt 0 ]]; do
             # minikube delete
             exit 1
             ;;
+        -f|--frontend) # apply infra
+            echo " -- Build Frontend Only"
+            kubectl config use-context w255-aks
+            kustomize build .k8s/overlays/prod | kubectl apply -f -
+            # minikube delete
+            exit 1
+            ;;
         -v|--verbose) # Verbose mode, display responses on console
             VERBOSE=true
             ;;
@@ -48,8 +55,8 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # acr login
-echo " -- acr login"
-az acr login --name w255mids &> /dev/null
+# echo " -- acr login"
+# az acr login --name w255mids &> /dev/null
 
 # Build pythonapi image
 cd ${BACKEND_FOLDER}
