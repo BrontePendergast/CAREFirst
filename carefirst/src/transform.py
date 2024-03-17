@@ -23,10 +23,7 @@ from dataload import *
 ###########################
 
 
-rc_docs = pd.read_pickle(r'../data/guidelines/redcross_guidelines.pickle')
-
-# TODO move this filtering to dataload script as single source of truth
-documents = rc_docs[13:205]
+documents = pd.read_pickle(r'../data/guidelines/redcross_guidelines.pickle')
 
 class TagsEnum(str, Enum):
     prevention = "Prevention", 
@@ -168,11 +165,7 @@ for doc in documents:
         final_extracted_documents.append(doc)
 
 
+# store transformed data
 with open('../data/guidelines/redcross_w_metadata_v3.pickle', 'wb') as f:
     pickle.dump(final_extracted_documents, f)
 
-
-load_and_store_embeddings(dir = '../data/guidelines/',
-                          path = 'redcross_w_metadata_v3.pickle',
-                          from_type = 'pickle',
-                          prefix = 'transformed_')
