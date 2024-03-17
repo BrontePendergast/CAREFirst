@@ -3644,6 +3644,23 @@ urllib3 = ">=1.26.14,<3"
 fastembed = ["fastembed (==0.1.1)"]
 
 [[package]]
+name = "rank-bm25"
+version = "0.2.2"
+description = "Various BM25 algorithms for document ranking"
+optional = false
+python-versions = "*"
+files = [
+    {file = "rank_bm25-0.2.2-py3-none-any.whl", hash = "sha256:7bd4a95571adadfc271746fa146a4bcfd89c0cf731e49c3d1ad863290adbe8ae"},
+    {file = "rank_bm25-0.2.2.tar.gz", hash = "sha256:096ccef76f8188563419aaf384a02f0ea459503fdf77901378d4fd9d87e5e51d"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[package.extras]
+dev = ["pytest"]
+
+[[package]]
 name = "referencing"
 version = "0.33.0"
 description = "JSON Referencing + Python"
@@ -5416,4 +5433,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.13"
-content-hash = "6efc7a58a2212da16953161e0d686f7ffec4bf098b3844aea3d6a7966d15086a"
+content-hash = "ded59d50d46711eb2839104f0321b6d486c098005d15cbde8be07ced1a53ef31"
