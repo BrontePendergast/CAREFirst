@@ -1,7 +1,4 @@
 # packages required
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-
 import sys
 import os
 import random
@@ -28,12 +25,12 @@ def ChatDemo(question):
                        guardrails = True, 
                        followup = True)
 
-    # if guardrails are alerted:
-    if isinstance(result, str):      
-        return result, None, None, None, None, None, None
+    all_options = []
+    for doc in result['docs']:
+        all_options.extend(doc.metadata['scenarios']) 
 
     scenarios = ExtractNode({'node':result['node'],
-                             'scenarios': str(result['docs'][0].metadata['scenarios'])})
+                             'scenarios': str(all_options)})
 
     page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
     document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
@@ -51,7 +48,6 @@ def ChatDemo(question):
 
 
 import gradio as gr
-# my_theme = gr.Theme.from_hub("gradio/glass")
 
 try:
     demo.close()
