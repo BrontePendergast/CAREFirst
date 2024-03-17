@@ -1,11 +1,10 @@
-import json
 import os
 import pandas as pd
 import pickle
 import re
-import sys
 from tenacity import retry, stop_after_delay, stop_after_attempt
 from typing import List
+from enum import Enum
 
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers.pydantic import PydanticOutputParser
@@ -29,17 +28,23 @@ rc_docs = pd.read_pickle(r'../data/guidelines/redcross_guidelines.pickle')
 # TODO move this filtering to dataload script as single source of truth
 documents = rc_docs[13:205]
 
-class ScenarioTitles(BaseModel):
-    Scenario_titles: list[str] = Field(description="a list of section titles in the content referring to a specific medical scenario")
+class TagsEnum(str, Enum):
+    prevention = "Prevention", 
+    care = "Care",
+    call = "Call",
+    signs = "Signs and symptoms",
+    causes = "Causes"
+
+class ScenarioTitles(BaseModel, use_enum_values=True):
+    Medical_Scenarios: list[str] = Field(description="a list of all medical titles discussed in the text")
+    Tags: list[TagsEnum] = Field(description="a list of all themes being discussed in the text")
 
 parser = PydanticOutputParser(pydantic_object=ScenarioTitles)
 
 prompt = PromptTemplate(
-    template="""Extract the section titles that represent distinct medical scenarios from this content: 
+    template="""Extract all titles that represent distinct medical scenarios from the following text and all tags of the themes.
+    Text: 
     {content}
-    
-    If there are no distinct medical scenarios, the list can include "None"
-
     \n{format_instructions}""",
     input_variables=["content"],
     partial_variables={"format_instructions": parser.get_format_instructions()},
@@ -54,10 +59,13 @@ def chain(info):
 
 # add in a flag for title pages
 for doc in documents:
+    print(doc.page_content)
     # add in extracted properties
     properties = chain({"content": doc.page_content})
     print(properties)
-    doc.metadata["Scenario_titles"] = properties['Scenario_titles']
+    doc.metadata["Scenario_titles"] = properties['Medical_Scenarios']
+    doc.metadata["Tags"] = list(set(properties['Tags']))
+    print(doc.metadata["Tags"])
     # get number of words
     page_content = doc.page_content
     num_words = len(page_content.split())
@@ -160,11 +168,11 @@ for doc in documents:
         final_extracted_documents.append(doc)
 
 
-with open('../data/guidelines/redcross_w_metadata_v2.pickle', 'wb') as f:
+with open('../data/guidelines/redcross_w_metadata_v3.pickle', 'wb') as f:
     pickle.dump(final_extracted_documents, f)
 
 
 load_and_store_embeddings(dir = '../data/guidelines/',
-                          path = 'redcross_w_metadata_v2.pickle',
+                          path = 'redcross_w_metadata_v3.pickle',
                           from_type = 'pickle',
                           prefix = 'transformed_')
