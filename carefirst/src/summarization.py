@@ -62,6 +62,9 @@ The context may include synonyms to what is provided in the question:
 {context}
 
 The user asked: {question}
+
+Assistant:
+
 """
 
 ANSWER_PROMPT = ChatPromptTemplate.from_template(template)

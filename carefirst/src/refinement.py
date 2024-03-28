@@ -25,11 +25,14 @@ NODE_PROMPT = PromptTemplate(
     The user has provided the following message: \n {question}. 
     Given the following knowledge graph of nodes and their related topics, which node in the graph does this response relate to and which relationship is of interest? 
     Respond with the value of the 'node'. 
-    The 'relationship' will be 'None' if it is unclear from the user message which scenario the user is interested in. 
     If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, reference this as the associated relationship. 
-    Remember that the node should already exist as a node in the graph.
-    Remember that the user may use synonyms or less confident wording and you should infer the appropriate node
-    Possible synonyms include: {keywords}
+
+    Remember that the 'relationship' will be 'None' if it is unclear from the user message which scenario the user is interested in. 
+    Remember that the 'relationship' will be 'Other' when the users specific scenario isn't included.
+    Remember that the node should already exist as a node in the graph. The relationship should already exist in connection to that node.
+    Remember that the user may use synonyms or less confident wording and you should infer the appropriate node and relationship.
+    For example, synonyms from this user's message include: {keywords}
+    
     Think step by step.
 
     Provide your response in JSON format with the identified node and relationship
@@ -84,13 +87,13 @@ follow_parser = PydanticOutputParser(pydantic_object=FollowUp)
 FOLLOW_UP_SYSTEM_PROMPT = SystemMessagePromptTemplate.from_template(
     template="""
     The user has a question and you have narrowed down that the answer is related to several scenarios. 
-    Ask the user a follow up question to identify which specific scenario they are referring to.
+    Your role is to ask the user a follow up question to identify which specific scenario they are referring to.
     """
     )
 
 
 FOLLOW_UP_HUMAN_PROMPT = HumanMessagePromptTemplate.from_template(
-    template = "User question: \n {question} \n Scenarios: \n{graph}", 
+    template = "User question: \n {question} \n Scenarios: \n{graph}\n Assistant:", 
     input_variables=["question", "graph"]
     )
 

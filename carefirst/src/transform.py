@@ -128,7 +128,6 @@ for row in range(len(title_df)):
     scenarios[chapter] = {}
     # prepare the nested scenarios
     scenarios[chapter]['Scenarios'] = []
-    #scenarios[title_df['Chapter_title'][row]]['Follow up Questions'] = []
     # for each page 
     for idx in range(title_df['idx'][row], title_df['lead_idx'][row]):
         # add the scenario to the complete chapter list
@@ -141,7 +140,14 @@ for row in range(len(title_df)):
     print(scenarios[chapter]['Scenarios'])
     # get a knowledge graph of these scenarios
     knowledge_graph = chain({"chapter": chapter, "scenarios": scenarios[chapter]['Scenarios']})
-    knowledge_graph = [dict(scenario) for scenario in knowledge_graph['graph']]
+    # add Other as fallback
+    fallback = []
+    for scenario in knowledge_graph['graph']:
+        scenario_dict = dict(scenario)
+        scenario_dict['relationships'].append('Other')
+        fallback.append(scenario_dict)
+    # update knowledge_graph
+    knowledge_graph = fallback
     print(knowledge_graph)
     scenarios[chapter]['Knowledge Graph'] = knowledge_graph
     graphs.append(knowledge_graph)
@@ -166,6 +172,6 @@ for doc in documents:
 
 
 # store transformed data
-with open('../data/guidelines/redcross_w_metadata_v3.pickle', 'wb') as f:
+with open('../data/guidelines/redcross_w_metadata_v4.pickle', 'wb') as f:
     pickle.dump(final_extracted_documents, f)
 

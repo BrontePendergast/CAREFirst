@@ -17,10 +17,11 @@ import qdrant_client
 
 
 EXISTS = True
+COLLECTION_NAME = "redcross_v4"
 QDRANT_URL = os.getenv("POETRY_QDRANT_URL")
 QDRANT_KEY = os.getenv("POETRY_QDRANT_KEY")
 
-docs = pd.read_pickle("./data/guidelines/redcross_w_metadata_v3.pickle")
+docs = pd.read_pickle("./data/guidelines/redcross_w_metadata_v4.pickle")
 # default is "sentence-transformers/all-mpnet-base-v2"
 embeddings = HuggingFaceEmbeddings()
 # by default accesses existing collection
@@ -32,7 +33,7 @@ if EXISTS:
     )
 
     db = Qdrant(
-        client=client, collection_name="redcross_v3", 
+        client=client, collection_name=COLLECTION_NAME, 
         embeddings=embeddings,
     )
 else:
@@ -42,7 +43,7 @@ else:
         url=QDRANT_URL,
         prefer_grpc=True,
         api_key=QDRANT_KEY,
-        collection_name="redcross_v3",
+        collection_name=COLLECTION_NAME,
         force_recreate=True
     )
 

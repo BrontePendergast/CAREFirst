@@ -22,6 +22,8 @@ from guardrails import *
 
 
 MODEL = "gpt-3.5-turbo-1106"
+MODEL_ANSWER = "mistralai/Mistral-7B-Instruct-v0.2"
+
 def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
 
     if huggingface:
@@ -29,7 +31,10 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
         repo_id = model_name #"mistralai/Mistral-7B-v0.1"  
 
         llm = HuggingFaceHub(
-            repo_id=repo_id, model_kwargs={"temperature": 0.5}
+            repo_id=repo_id, model_kwargs={"temperature": 0.1, 
+                                           "max_new_tokens": 1000, 
+                                           "return_full_text": False,
+                                           "num_beams": 4}
             )
     
     else:
@@ -38,7 +43,11 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
     return llm
 
 
-llm = SelectLLM(model_name = MODEL)
+llm_answer = SelectLLM(model_name = MODEL_ANSWER,
+                       huggingface = True)
+
+llm = SelectLLM(model_name = MODEL,
+                huggingface = False)
 
 
 #######################################
@@ -81,7 +90,8 @@ get_knowledge_graph = (
     {
         "question": itemgetter("question"), 
         "keywords": itemgetter("keywords"),
-        "graph": lambda x: ExtractScenarios(x["docs"])
+        "graph": lambda x: ExtractScenarios(x["docs"]),
+        "format_instructions": lambda x: node_parser.get_format_instructions()
     }
     | NODE_PROMPT
     | llm
@@ -109,7 +119,7 @@ def RequireQuestion(info):
             "context": lambda x: info["context"]
         } 
         | ANSWER_PROMPT 
-        | llm
+        | llm_answer
     )
         
     # follow ups aren't on by default to allow for testing and evaluation
@@ -128,7 +138,7 @@ def RequireQuestion(info):
                         "graph": lambda x: graph
                     }
                     | FOLLOW_UP_PROMPT 
-                    | llm
+                    | llm_answer
                 )
             except: print(f"follow up failed with node: {info['node']}")
 

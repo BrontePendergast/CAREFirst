@@ -26,7 +26,7 @@ def load_and_store_text(page_from,
 
 if __name__ == "__main__":
     
-    pdfs = [{"name": "redcross_guidelines.pdf", "page_from": 13, "page_to": 205},
+    pdfs = [{"name": "redcross_guidelines.pdf", "page_from": 10, "page_to": 205},
             {"name": "ifrc_guidelines.pdf", "page_from": 99, "page_to": 380}]
 
     # convert all pdfs
