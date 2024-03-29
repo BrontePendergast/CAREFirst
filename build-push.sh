@@ -1,12 +1,22 @@
 #!/bin/bash
 # -- Set up initial variables
+timestamp=$(date +%Y%m%d)
 VERSION=$(git rev-parse --short HEAD)
 BACKEND_FOLDER=carefirst
 FRONTEND_FOLDER=webapp
 NAMESPACE=rmarin
 ACR_DOMAIN=w255mids.azurecr.io
 # TAG=latest
-TAG=$(git rev-parse --short HEAD)
+ENV="$(git symbolic-ref HEAD 2>/dev/null)" ||
+ENV="(unnamed branch)"
+ENV=${ENV##refs/heads/}
+if [[ $ENV = 'prod' ]] || [[ $ENV = 'master' ]] || [[ $ENV = 'main' ]]; then
+    ENVName=''
+else
+    ENVName=$ENV-
+fi
+commitID=$(git rev-parse --short HEAD)
+TAG=$ENVName$commitID
 IMAGE_PREFIX=rmarin
 # -- Virtual Service HOST and URL
 export KNS=$IMAGE_PREFIX
@@ -22,6 +32,7 @@ request_count=0
 
 echo " -- Deploy CAREFirst Version:${TAG}"
 sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
+sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-frontend_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-frontend.yaml
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
