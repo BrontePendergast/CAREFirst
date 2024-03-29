@@ -14,8 +14,8 @@ spec:
               cpu: 2000m
               memory: 2048Mi
             requests:
-              cpu: 1500m
-              memory: 1024Mi
+              cpu: 1900m
+              memory: 1512Mi
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
