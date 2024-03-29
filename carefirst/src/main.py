@@ -107,7 +107,7 @@ def getMessageID():
     "/conversations/{conversation_id}",
     response_model=Response
 )
-@cache(expire=60, coder=PickleCoder)
+# @cache(expire=60, coder=PickleCoder)
 async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     
     # Set ID to conversation
@@ -116,7 +116,7 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
     # # Generate Response
     timestamp_queryin = datetime.now()
-    ai_response = ChatChain(query.query, query.id)
+    ai_response = ChatChain(question=query.query, conversation_id=query.id)
     validated_response = Response(**ai_response)
     # validated_response = {
     #     "message_id":"TEST-whatever",
@@ -158,7 +158,7 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
         "/messages/{message_id}",
         response_model=ResponseFeedback
 )
-@cache(expire=60, coder=PickleCoder)
+# @cache(expire=60, coder=PickleCoder)
 async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     feedback.id = message_id
     

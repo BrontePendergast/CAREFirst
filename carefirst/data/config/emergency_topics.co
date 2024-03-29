@@ -1,9 +1,12 @@
 
 define user ask about choking
   "choking"
+  "something stuck in my throat"
 
 define user ask about breathing
-  "Can't breath"
+  "I can't breathe"
+  "I'm having difficulty breathing"
+  "I am struggling to breathe"
 
 
 define bot inform choking
