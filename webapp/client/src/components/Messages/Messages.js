@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 
 import './Messages.css'
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { OverlayTrigger, Popover, Form, Row, Col, Button } from "react-bootstrap";
 
 import API from '../../utils/API';
 
@@ -34,8 +34,19 @@ function Messages() {
         }
     };
 
-    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.'}]);
+    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A'}]);
     const [isTyping, setIsTyping] = useState(false);
+    const [conversation_id, setConversationID] = useState(makeid(6));
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    const setShowTooltipTrue = function(){
+        setShowTooltip(true);
+    };
+
+    const setShowTooltipFalse = function(){
+        setShowTooltip(false);
+    };
+
     useEffect(() => {
         console.log('Updated messages:', messages);
       }, [messages]); // Add messages as a dependency to the useEffect
@@ -58,7 +69,7 @@ function Messages() {
         console.log(message);
         if (message.length > 0) {
             // var output = await API.sendQuery(message.value);
-            var new_messages = [{'sender': 'you', 'message': message}];
+            var new_messages = [{'sender': 'you', 'message': message, 'page': 'N/A'}];
             console.log(new_messages);
             // var new_messages = [{'sender': 'you', 'message': message.value}, {'sender': 'bot', 'message': output}];
             const set_message =  messageSetter();
@@ -75,10 +86,12 @@ function Messages() {
         document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
         console.log(document.getElementById("individual-messages-div").scrollTop);
         console.log(document.getElementById("individual-messages-div").scrollHeight);
-        var output = await API.sendQuery(message);
+        var output = await API.sendQuery(message, conversation_id);
+        var answer = output["answer"];
+        var page = output["page"];
         setIsTyping(false);
         // document.getElementById("typingCheck").style.visiblity = "hidden";
-        var new_messages_received = [{'sender': 'bot', 'message': output}];
+        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page}];
         console.log("messages");
         console.log(messages);
         await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
@@ -122,6 +135,22 @@ function Messages() {
         }
     }
 
+    // document.getElementById("page-tooltip").onmouseover = function(){
+    //     setShowTooltip(true);
+    // };
+
+    // document.getElementById("page-tooltip").onmouseleave = function(){
+    //     setShowTooltip(false);
+    // };
+
+    // document.getElementsByClassName("bot").onmouseover = function(){
+    //     setShowTooltip(true);
+    // };
+
+    // document.getElementsByClassName("bot").onmouseleave = function(){
+    //     setShowTooltip(false);
+    // };
+
     return (
         <>
         <Container fluid>
@@ -129,15 +158,23 @@ function Messages() {
             {messages.map((message, i) => {
                 if (message.sender=='bot'){
                     return (
+                    <OverlayTrigger placement='top' show={showTooltip} overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id="popover-basic page-tooltip">
+                    <Popover.Header as="h3"><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
+                    <Popover.Body>
+                    Page {message.page}
+                    </Popover.Body>
+                    </Popover>}>
                     <Row className={"individual-message-div"}>
-                        <Col className={message.sender+" message-container mr-auto ml-0"} xs={"auto"}>
+                        <Col className={message.sender+" message-container mr-auto ml-0"} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
                             <div class="thumbs-container">
                                 <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
                                 <Button className="thumbs-down btn" id={"thumbs-down-"+i} onClick={thumbSelected}>👎</Button>
                             </div>
                         </Col>
-                    </Row>)
+                    </Row>
+                    </OverlayTrigger>
+                    )
                 }
                 else{
                     return (
