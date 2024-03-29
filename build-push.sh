@@ -60,8 +60,8 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # acr login
-# echo " -- acr login"
-# az acr login --name w255mids &> /dev/null
+echo " -- acr login"
+az acr login --name w255mids &> /dev/null
 
 # Build pythonapi image
 cd ${BACKEND_FOLDER}
