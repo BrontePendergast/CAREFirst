@@ -1,3 +1,6 @@
+#patch-deployment-pythonapi.yaml
+*patch-deployment-pythonapi.yaml
+
 # pkl
 *.pkl
 

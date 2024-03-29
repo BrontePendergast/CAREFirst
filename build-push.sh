@@ -1,10 +1,12 @@
 #!/bin/bash
 # -- Set up initial variables
+VERSION=$(git rev-parse --short HEAD)
 BACKEND_FOLDER=carefirst
 FRONTEND_FOLDER=webapp
 NAMESPACE=rmarin
 ACR_DOMAIN=w255mids.azurecr.io
-TAG=latest
+# TAG=latest
+TAG=$(git rev-parse --short HEAD)
 IMAGE_PREFIX=rmarin
 # -- Virtual Service HOST and URL
 export KNS=$IMAGE_PREFIX
@@ -17,6 +19,9 @@ timeout_seconds=120
 wait_seconds=5
 total_seconds=0
 request_count=0
+
+echo " -- Deploy CAREFirst V ${TAG}"
+sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
