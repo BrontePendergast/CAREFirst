@@ -20,7 +20,7 @@ wait_seconds=5
 total_seconds=0
 request_count=0
 
-echo " -- Deploy CAREFirst V ${TAG}"
+echo " -- Deploy CAREFirst Version:${TAG}"
 sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
 
 # Parse command-line arguments
