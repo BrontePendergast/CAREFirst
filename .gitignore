@@ -1,3 +1,12 @@
+#patch-deployment-pythonapi.yaml
+patch-deployment-pythonapi.yaml
+
+# pkl
+*.pkl
+
+# env
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

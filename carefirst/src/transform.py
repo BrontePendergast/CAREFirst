@@ -1,14 +1,13 @@
-import json
 import os
 import pandas as pd
 import pickle
 import re
-import sys
 from tenacity import retry, stop_after_delay, stop_after_attempt
 from typing import List
+from enum import Enum
 
 from langchain.prompts import PromptTemplate
-from langchain_core.output_parsers import PydanticOutputParser
+from langchain.output_parsers.pydantic import PydanticOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.chat_models import ChatOpenAI
 
@@ -16,7 +15,7 @@ openai_api_key = os.getenv("POETRY_OPENAI_API_KEY")
 openai_api_model = 'gpt-3.5-turbo-0125'
 
 # load in db and embeddings
-from dataload import *
+from dataload import load_and_store_text
 
 
 ###########################
@@ -24,20 +23,25 @@ from dataload import *
 ###########################
 
 
-rc_docs = pd.read_pickle(r'../data/guidelines/redcross_guidelines.pickle')
+documents = pd.read_pickle(r'../data/guidelines/redcross_guidelines.pickle')
 
-# TODO move this filtering to dataload script as single source of truth
-documents = rc_docs[13:205]
+class TagsEnum(str, Enum):
+    prevention = "Prevention", 
+    care = "Care",
+    call = "Call",
+    signs = "Signs and symptoms",
+    causes = "Causes"
 
-class ScenarioTitles(BaseModel):
-    Scenario_titles: list[str] = Field(description="a list of section titles in the content referring to a specific medical scenario")
+class ScenarioTitles(BaseModel, use_enum_values=True):
+    Medical_Scenarios: list[str] = Field(description="a list of all medical titles discussed in the text")
+    Tags: list[TagsEnum] = Field(description="a list of all themes being discussed in the text")
 
 parser = PydanticOutputParser(pydantic_object=ScenarioTitles)
 
 prompt = PromptTemplate(
-    template="""Extract the section titles that represent medical scenarios from this content: 
+    template="""Extract all titles that represent distinct medical scenarios from the following text and all tags of the themes.
+    Text: 
     {content}
-    
     \n{format_instructions}""",
     input_variables=["content"],
     partial_variables={"format_instructions": parser.get_format_instructions()},
@@ -52,10 +56,13 @@ def chain(info):
 
 # add in a flag for title pages
 for doc in documents:
+    print(doc.page_content)
     # add in extracted properties
     properties = chain({"content": doc.page_content})
     print(properties)
-    doc.metadata["Scenario_titles"] = properties['Scenario_titles']
+    doc.metadata["Scenario_titles"] = properties['Medical_Scenarios']
+    doc.metadata["Tags"] = list(set(properties['Tags']))
+    print(doc.metadata["Tags"])
     # get number of words
     page_content = doc.page_content
     num_words = len(page_content.split())
@@ -94,9 +101,10 @@ parser = PydanticOutputParser(pydantic_object=KnowledgeGraph)
 
 prompt = PromptTemplate(
     template="""
-      Group the scenarios below together into high level groups of related topics from the chapter on {chapter}.
-      Please using only the scenarios provided.
-      For example, all types of bites should be in the one group.
+      Group the scenarios below together into high level groups (nodes) of related topics (relationships) from the chapter on {chapter}.
+      For example, all types of bites should be in the one group. All types of stings should be in another group.
+      If the scenario is already labelled as the high level group, do not include it as a related topic.
+      Do not include irrelevant groupings, such scenarios can stay on individual nodes.
       \n{format_instructions}
       Scenarios:
       {scenarios}\n""",
@@ -120,7 +128,6 @@ for row in range(len(title_df)):
     scenarios[chapter] = {}
     # prepare the nested scenarios
     scenarios[chapter]['Scenarios'] = []
-    #scenarios[title_df['Chapter_title'][row]]['Follow up Questions'] = []
     # for each page 
     for idx in range(title_df['idx'][row], title_df['lead_idx'][row]):
         # add the scenario to the complete chapter list
@@ -133,7 +140,14 @@ for row in range(len(title_df)):
     print(scenarios[chapter]['Scenarios'])
     # get a knowledge graph of these scenarios
     knowledge_graph = chain({"chapter": chapter, "scenarios": scenarios[chapter]['Scenarios']})
-    knowledge_graph = [dict(scenario) for scenario in knowledge_graph['graph']]
+    # add Other as fallback
+    fallback = []
+    for scenario in knowledge_graph['graph']:
+        scenario_dict = dict(scenario)
+        scenario_dict['relationships'].append('Other')
+        fallback.append(scenario_dict)
+    # update knowledge_graph
+    knowledge_graph = fallback
     print(knowledge_graph)
     scenarios[chapter]['Knowledge Graph'] = knowledge_graph
     graphs.append(knowledge_graph)
@@ -157,11 +171,7 @@ for doc in documents:
         final_extracted_documents.append(doc)
 
 
-with open('../data/guidelines/redcross_w_metadata.pickle', 'wb') as f:
+# store transformed data
+with open('../data/guidelines/redcross_w_metadata_v4.pickle', 'wb') as f:
     pickle.dump(final_extracted_documents, f)
 
-
-load_and_store_embeddings(dir = '../data/guidelines/',
-                          path = 'redcross_w_metadata.pickle',
-                          from_type = 'pickle',
-                          prefix = 'transformed_')

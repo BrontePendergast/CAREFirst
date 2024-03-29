@@ -3,6 +3,9 @@ import os
 from operator import itemgetter
 from typing import List
 import ast
+import pandas as pd
+from datetime import datetime
+from dotenv import load_dotenv, dotenv_values 
 
 # orchestration
 from langchain_core.runnables import RunnableLambda, RunnablePassthrough
@@ -16,15 +19,16 @@ from langchain.memory import ConversationBufferMemory
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.output_parsers import StrOutputParser
 from langchain.output_parsers.pydantic import PydanticOutputParser
-
-# scripts
-from retrieval import *
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Qdrant
+from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 
 # guardrails
 from nemoguardrails import RailsConfig
 from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails
 from tenacity import retry, stop_after_attempt
 
+load_dotenv() 
 
 #######################################
 # Prompts
@@ -68,14 +72,14 @@ class Node(BaseModel):
     relationship: str = Field(description="The specific topic if mentioned by the user", default = 'None')
 
 # function to extract the node:
-def ExtractNode(info):
-    scenarios = ast.literal_eval(info['scenarios'])
-    # run through list
-    for scenario in scenarios:
-        if info['node']['node'] == scenario['node']:
-            identified = scenario
-    # return the one identified by the model
-    return identified
+# def ExtractNode(info):
+#     scenarios = ast.literal_eval(info['scenarios'])
+#     # run through list
+#     for scenario in scenarios:
+#         if info['node']['node'] == scenario['node']:
+#             identified = scenario
+#     # return the one identified by the model
+#     return identified
 
 SCENARIO_PROMPT = PromptTemplate.from_template(template="{scenarios}")
 
@@ -92,7 +96,7 @@ node_prompt = PromptTemplate(
     Respond with the value of the 'node'. 
     The 'relationship' will be 'None' if there is no way to choose between existing relationships in the Knowledge graph. 
     If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, include this in your response. 
-    Remember the topic should already exist in the graph.
+    Remember that the node should already exist in the graph.
     Think step by step.
 
     Provide your response in JSON format with the identified node and relationship
@@ -101,7 +105,6 @@ node_prompt = PromptTemplate(
     {graph}
     """,
     input_variables=["question", "graph"],
-   # partial_variables={"format_instructions": node_parser.get_format_instructions()},
 )
 
 
@@ -128,7 +131,21 @@ follow_prompt = ChatPromptTemplate.from_messages([follow_system_prompt, follow_h
 #######################################
 
 
-db = FAISS.load_local("./data/guidelines/transformed_redcross_w_metadata.pifaiss_index", embeddings)
+QDRANT_URL = os.getenv("POETRY_QDRANT_URL")
+QDRANT_KEY = os.getenv("POETRY_QDRANT_KEY")
+
+docs = pd.read_pickle("./data/guidelines/redcross_w_metadata.pickle")
+# default is "sentence-transformers/all-mpnet-base-v2"
+embeddings = HuggingFaceEmbeddings()
+# by default accesses existing collection
+db = Qdrant.from_documents(
+    docs,
+    embeddings,
+    url=QDRANT_URL,
+    prefer_grpc=True,
+    api_key=QDRANT_KEY,
+    collection_name="redcross",
+)
 retriever = db.as_retriever(search_kwargs={"k": 1})
 
 
@@ -148,7 +165,8 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
             )
     
     else:
-        llm = ChatOpenAI(model_name=model_name)
+        openai.api_key = os.getenv("OPENAI_API_KEY")        # JS Add
+        llm = ChatOpenAI(model_name=model_name, openai_api_key=openai.api_key) # JS add openai key
     
     return llm
 
@@ -170,17 +188,35 @@ guardrails = RunnableRails(config, input_key="question", output_key="answer")
 
 
 #######################################
+# Conversation history
+#######################################
+
+
+MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
+DATABASE_NAME = "carefirstdb"
+CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
+
+
+#######################################
 # Chatbot modules
 #######################################
 
 
-# memory
-memory = ConversationBufferMemory(
-        return_messages=True, output_key="answer", input_key="question"
-    )
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
 
-def ChatChain(question):
+    # load message history
+    message_history = MongoDBChatMessageHistory(
+        session_id=conversation_id,
+        connection_string=CONNECTION_STRING,
+        database_name=DATABASE_NAME,
+        collection_name="chat_histories",
+        )
 
+    # buffer the memory from history
+    memory = ConversationBufferMemory(
+        return_messages=True, output_key="answer", input_key="question", chat_memory=message_history)
+    
     # First we add a step to load memory
     # This adds a "memory" key to the input object
     loaded_memory = RunnablePassthrough.assign(
@@ -191,7 +227,7 @@ def ChatChain(question):
     standalone_question = {
         "standalone_question": {
             "question": lambda x: x["question"],
-            "chat_history": lambda x: get_buffer_string(x["chat_history"]),
+            "chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history",
         }
         | CONDENSE_QUESTION_PROMPT
         | llm
@@ -228,9 +264,14 @@ def ChatChain(question):
     # Function to check if follow up is required or direct answer
     def RequireQuestion(info):
 
-        if info['node']['relationship'] == 'None':
-            answer_chain = {"question": lambda x: info["question"], 
-                            "graph": {"scenarios": lambda x : info["scenarios"], "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+        if followup: 
+            if info['node']['relationship'] == 'None':
+                answer_chain = {"question": lambda x: info["question"], 
+                                "graph": {"scenarios": lambda x : info["scenarios"], 
+                                        "node": lambda x: info['node']} | RunnableLambda(ExtractNode)} | follow_up
+            else:
+                answer_chain = {"question": lambda x: info["question"], 
+                                "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
         else:
             answer_chain = {"question": lambda x: info["question"], 
                             "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
@@ -254,17 +295,20 @@ def ChatChain(question):
         "docs": itemgetter("docs"),
     }
 
-    simple_chain = prompt | llm 
-    chain_with_guardrails = guardrails | simple_chain 
+    # guardrails aren't on by default to allow for testing and evaluation
+    if guardrails:
 
-    guardrail_result = chain_with_guardrails.invoke({"question": question})
+        simple_chain = prompt | llm 
+        chain_with_guardrails = guardrails | simple_chain 
 
-    if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
+        guardrail_result = chain_with_guardrails.invoke({"question": question})
 
-        memory.save_context({"question": question}, 
-                            {"answer": guardrail_result['answer']})
-        
-        return guardrail_result['answer']
+        if guardrail_result['answer'] in ["Your medical situation is critical. Please call EMS/9-1-1", "I'm sorry, I can't respond to that."]:
+
+            message_history.add_user_message(question)
+            message_history.add_ai_message(guardrail_result['answer'])
+
+            return guardrail_result['answer']
     
     # And now we put it all together!
     chain = loaded_memory | standalone_question | retrieved_documents | graph | answer
@@ -272,8 +316,27 @@ def ChatChain(question):
     # run chain
     result = chain.invoke({"question": question})
 
-    # # store answer in memory
-    memory.save_context({"question": question}, 
-                        {"answer": result["answer"]})
+    # store answer in memory
+    message_history.add_user_message(question)
+    message_history.add_ai_message(result["answer"])
 
-    return result
+    # Demo expects all output fields
+    if demo:
+        return result
+    
+    page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
+    document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
+    source = page_num + ' of ' + document
+
+    # expected response from the app
+    response = {
+        "conversation_id": conversation_id,
+        "answer": result["answer"],
+        "query": question,
+        "source": source,
+        "timestamp": datetime.now()
+    }
+
+    return response
+
+#print(ChatChain('I have a burn', conversation_id = 'Test456', demo = False, guardrails = False, followup = False))

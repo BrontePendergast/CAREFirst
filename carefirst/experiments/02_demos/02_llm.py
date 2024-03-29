@@ -1,9 +1,7 @@
 # packages required
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-
 import sys
 import os
+import random
 
 # run from carefirst directory
 os.chdir(os.getcwd() + '/../../')
@@ -14,19 +12,25 @@ sys.path.append(sys.path[0] + '/../../')
 # load in chatbot
 from llm import *
 
+# create a new test ID for this demo, to remain constant while demo is running
+test_id = "Test" + str(random.randint(0,1000))
 
 ##################### demo
 
 def ChatDemo(question):
 
-    result = ChatChain(question)
+    result = ChatChain(question = question, 
+                       conversation_id = test_id,
+                       demo = True,
+                       guardrails = True, 
+                       followup = True)
 
-    # if guardrails are alerted:
-    if isinstance(result, str):      
-        return result, None, None, None, None, None, None
+    all_options = []
+    for doc in result['docs']:
+        all_options.extend(doc.metadata['scenarios']) 
 
     scenarios = ExtractNode({'node':result['node'],
-                             'scenarios': str(result['docs'][0].metadata['scenarios'])})
+                             'scenarios': str(all_options)})
 
     page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
     document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
@@ -37,10 +41,11 @@ def ChatDemo(question):
               result["question"], 
               result["node"],
               scenarios, 
-              result["docs"][0].page_content,
+              "\n".join([doc.page_content for doc in result["docs"]]),
               source)
     
     return output
+
 
 import gradio as gr
 
@@ -51,17 +56,12 @@ except:
     print("No demo running")
 
 with gr.Blocks() as demo:
-
-    gr.Markdown(
+    with gr.Row():
+        gr.Image('experiments/02_demos/images/carefirst_banner.png')
+    with gr.Row():
+        gr.Markdown(
 """
-## CAREFirst - Conversation demo
-Steps taken:
-1. Red Cross pdf was converted to text 
-2. Text was converted to embeddings with sentence-transformers all-mpnet-base-v2
-3. Information is retrieved based on similarity to the query with Facebook AI Similarity Search (Faiss) Vector Database
-4. GPT-3.5 turbo takes in context and conversation history to answer questions    
-5. NeMo guardrails to respond immediately to call 911 given certain input
-6. Identify when a follow up question is required based on extracted relationships in the data.           
+## User Experience      
 """)
     with gr.Row():
         with gr.Column():
@@ -77,22 +77,28 @@ Steps taken:
                                            "How do you treat a sprain?",
                                            "Which medicine to take if I get a mild fever?"],
                                 inputs = [inputs])
-    with gr.Row():
-        with gr.Column():   
-            history = gr.Textbox(label="Conversation History", lines=1)
-        with gr.Column(): 
-            with gr.Row():
-                reword = gr.Textbox(label="Reworded Question", lines=1)
-            with gr.Row():
-                node = gr.Textbox(label="Identified node and relationship", lines=1)
-            with gr.Row():
-                scenarios = gr.Textbox(label="Possible scenarios", lines=1)
-        with gr.Column():
-            with gr.Row():
-                page_content = gr.Textbox(label="Document Content", lines=1)
-            with gr.Row():
-                reference = gr.Textbox(label="Reference", lines=1)
-    
+        
+    with gr.Accordion("Model Design"):
+        with gr.Row():
+            gr.Image('experiments/02_demos/images/model_steps_v3.png') 
+
+    with gr.Accordion("Engineered Flow "):
+        with gr.Row():
+            with gr.Column():   
+                history = gr.Textbox(label="Conversation History", lines=1)
+            with gr.Column(): 
+                with gr.Row():
+                    reword = gr.Textbox(label="Reworded Question", lines=1)
+                with gr.Row():
+                    node = gr.Textbox(label="Identified node and relationship", lines=1)
+                with gr.Row():
+                    scenarios = gr.Textbox(label="Possible scenarios", lines=1)
+            with gr.Column():
+                with gr.Row():
+                    page_content = gr.Textbox(label="Document Content", lines=1)
+                with gr.Row():
+                    reference = gr.Textbox(label="Reference", lines=1)
+ 
     btn.click(fn=ChatDemo, 
               inputs=[inputs], 
               outputs=[answer, history, reword, node, scenarios, page_content, reference])
