@@ -22,34 +22,7 @@ class Node(BaseModel):
     thought: str = Field(description="One sentence thought behind choosing whether the relationship is One, Many or Other")
     identified: ScenarioEnum = Field(description="Description of whether the related scenario known, other or none", default = 'None')
 
-
-
 node_parser = PydanticOutputParser(pydantic_object=Node)
-
-
-# NODE_PROMPT = PromptTemplate(
-#     template="""
-#     The user has provided the following message: \n {question}. 
-#     Given the following knowledge graph of nodes and their related topics, which node in the graph does this response relate to and which relationship is of interest? 
-#     Respond with the value of the 'node'. 
-
-#     Think step by step.
-
-#     Thought: Is it clear which relationship within a node that the user is messaging about?
-
-#     If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, reference that the associated relationship is identified = 'Known'. 
-#     If the user's response could match multiple 'relationship' options, reference that the associated relationship is identified = 'Many'.
-#     If the user's response makes a clear reference to a 'relationship' that does not exist in the knowledge graph, reference that the associated relationship is identified = 'Other'.
-
-#     Remember that the node should already exist as a node in the graph. 
-#     Remember that the user may use synonyms or less confident wording.
-#     Do not make assumptions about the type of medical scenario the user is referring to.
-
-#     Knowledge graph:
-#     {graph}
-#     """,
-#     input_variables=["question", "graph"],
-# )
 
 node_system_prompt = SystemMessagePromptTemplate.from_template(
     template="""
@@ -74,7 +47,7 @@ node_system_prompt = SystemMessagePromptTemplate.from_template(
     {format_instructions}
     """,
     input_variables=["graph", "keywords", "format_instructions"])
-
+    # Does a synonyms from this user's message help determine the relationship? synonyms: {keywords}
 
 node_human_prompt = HumanMessagePromptTemplate.from_template(
     template = "Human Message: \n {question}", 
