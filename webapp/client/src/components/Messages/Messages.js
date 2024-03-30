@@ -34,7 +34,7 @@ function Messages() {
         }
     };
 
-    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A'}]);
+    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A', 'message_id': makeid(6)}]);
     const [isTyping, setIsTyping] = useState(false);
     const [conversation_id, setConversationID] = useState(makeid(6));
     const [showTooltip, setShowTooltip] = useState({"message-0": false});
@@ -121,7 +121,7 @@ function Messages() {
         var page = output["page"];
         setIsTyping(false);
         // document.getElementById("typingCheck").style.visiblity = "hidden";
-        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page}];
+        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': makeid(6)}];
         console.log("messages");
         console.log(messages);
         await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
@@ -141,9 +141,12 @@ function Messages() {
 
     function thumbSelected(e) {
         console.log(e.target);
+        console.log("message id: "+e.target.dataset.messageid);
         var thumb = document.getElementById(e.target.id);
+        var messageId = e.target.dataset.messageid;
         var thumb_up = e.target.id.replace("thumbs-down", "thumbs-up");
         var thumb_down = e.target.id.replace("thumbs-up", "thumbs-down");
+        var feedback_obj = {};
 
         var other_thumb = "";
         if (thumb.id===thumb_up){
@@ -155,14 +158,32 @@ function Messages() {
 
         if (thumb.style.backgroundColor=='green'){
             thumb.style.backgroundColor = '#407481';
+            // feedback_obj['feedback'] = "";
         }
         else if ((thumb.style.backgroundColor!='green') && (other_thumb.style.backgroundColor=='green')){
             other_thumb.style.backgroundColor = '#407481';
             thumb.style.backgroundColor = 'green';
+
+            if (e.target.id.includes('thumbs-up')) {
+                feedback_obj['feedback'] = "True";
+            }
+            else {
+                feedback_obj['feedback'] = "False";
+            }
+            API.sendFeedback(feedback_obj, messageId);
         }
         else {
             thumb.style.backgroundColor = 'green';
+
+            if (e.target.id.includes('thumbs-up')) {
+                feedback_obj['feedback'] = "True";
+            }
+            else {
+                feedback_obj['feedback'] = "False";
+            }
+            API.sendFeedback(feedback_obj, messageId);
         }
+        // API.sendFeedback(feedback_obj, messageId);
     }
 
     // document.getElementById("page-tooltip").onmouseover = function(){
@@ -198,8 +219,8 @@ function Messages() {
                         <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
                             <div class="thumbs-container">
-                                <Button className="thumbs-up btn" id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
-                                <Button className="thumbs-down btn" id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
+                                <Button className="thumbs-up btn" data-messageid={message.message_id} id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
+                                <Button className="thumbs-down btn" data-messageid={message.message_id} id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
                             </div>
                         </Col>
                     </Row>
