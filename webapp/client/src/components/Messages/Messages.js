@@ -37,14 +37,44 @@ function Messages() {
     const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A'}]);
     const [isTyping, setIsTyping] = useState(false);
     const [conversation_id, setConversationID] = useState(makeid(6));
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] = useState({"message-0": false});
 
-    const setShowTooltipTrue = function(){
-        setShowTooltip(true);
+    const setShowTooltipTrue = function(event){
+        // alert(event.target.id.substr(event.target.id.length-1));
+        const targ = event.target.id.replace("popover-basic ", "");
+        console.log(event.target);
+        console.log(targ);
+        console.log(showTooltip);
+        if (showTooltip.hasOwnProperty(targ)){
+            console.log("it's there");
+            const new_obj = showTooltip;
+            new_obj[targ] = true;
+            setShowTooltip({...showTooltip, ...new_obj});
+            console.log(showTooltip);
+        }
+        else{
+            var added = {};
+            added[targ] = true;
+            setShowTooltip({...showTooltip, ...added})
+        };
     };
 
-    const setShowTooltipFalse = function(){
-        setShowTooltip(false);
+    const setShowTooltipFalse = function(event){
+        const targ = event.target.id.replace("popover-basic ", "");
+        console.log(targ);
+        console.log(showTooltip);
+        if (showTooltip.hasOwnProperty(targ)){
+            console.log("it's there");
+            const new_obj = showTooltip;
+            new_obj[targ] = false;
+            setShowTooltip({...showTooltip, ...new_obj});
+            console.log(showTooltip);
+        }
+        else{
+            var added = {};
+            added[targ] = false;
+            setShowTooltip({...showTooltip, ...added})
+        };
     };
 
     useEffect(() => {
@@ -158,14 +188,14 @@ function Messages() {
             {messages.map((message, i) => {
                 if (message.sender=='bot'){
                     return (
-                    <OverlayTrigger placement='top' show={showTooltip} overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id="popover-basic page-tooltip">
-                    <Popover.Header as="h3"><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
-                    <Popover.Body>
+                    <OverlayTrigger placement='top' show={showTooltip['message-'+i] || showTooltip['pop-'+i]}  overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id={"popover-basic pop-"+i}>
+                    <Popover.Header as="h3" id={"pop-"+i}><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
+                    <Popover.Body id={"pop-"+i}>
                     Page {message.page}
                     </Popover.Body>
                     </Popover>}>
                     <Row className={"individual-message-div"}>
-                        <Col className={message.sender+" message-container mr-auto ml-0"} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
+                        <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
                             <div class="thumbs-container">
                                 <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
