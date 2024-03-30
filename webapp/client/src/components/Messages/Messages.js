@@ -34,17 +34,47 @@ function Messages() {
         }
     };
 
-    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A'}]);
+    const [messages, setMessages] = useState([{'sender': 'bot', 'message': 'If this is a medical emergency, please dial 911 immediately or go to the nearest emergency room.', 'page': 'N/A', 'message_id': makeid(6)}]);
     const [isTyping, setIsTyping] = useState(false);
     const [conversation_id, setConversationID] = useState(makeid(6));
-    const [showTooltip, setShowTooltip] = useState(false);
+    const [showTooltip, setShowTooltip] = useState({"message-0": false});
 
-    const setShowTooltipTrue = function(){
-        setShowTooltip(true);
+    const setShowTooltipTrue = function(event){
+        // alert(event.target.id.substr(event.target.id.length-1));
+        const targ = event.target.id.replace("popover-basic ", "").replace("thumbs-up-"+event.target.id.substr(event.target.id.length-1)+" ", "").replace("thumbs-down-"+event.target.id.substr(event.target.id.length-1)+" ", "");
+        console.log(event.target);
+        console.log(targ);
+        console.log(showTooltip);
+        if (showTooltip.hasOwnProperty(targ)){
+            console.log("it's there");
+            const new_obj = showTooltip;
+            new_obj[targ] = true;
+            setShowTooltip({...showTooltip, ...new_obj});
+            console.log(showTooltip);
+        }
+        else{
+            var added = {};
+            added[targ] = true;
+            setShowTooltip({...showTooltip, ...added})
+        };
     };
 
-    const setShowTooltipFalse = function(){
-        setShowTooltip(false);
+    const setShowTooltipFalse = function(event){
+        const targ = event.target.id.replace("popover-basic ", "").replace("thumbs-up-"+event.target.id.substr(event.target.id.length-1)+" ", "").replace("thumbs-down-"+event.target.id.substr(event.target.id.length-1)+" ", "");
+        console.log(targ);
+        console.log(showTooltip);
+        if (showTooltip.hasOwnProperty(targ)){
+            console.log("it's there");
+            const new_obj = showTooltip;
+            new_obj[targ] = false;
+            setShowTooltip({...showTooltip, ...new_obj});
+            console.log(showTooltip);
+        }
+        else{
+            var added = {};
+            added[targ] = false;
+            setShowTooltip({...showTooltip, ...added})
+        };
     };
 
     useEffect(() => {
@@ -91,7 +121,7 @@ function Messages() {
         var page = output["page"];
         setIsTyping(false);
         // document.getElementById("typingCheck").style.visiblity = "hidden";
-        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page}];
+        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': makeid(6)}];
         console.log("messages");
         console.log(messages);
         await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
@@ -111,9 +141,12 @@ function Messages() {
 
     function thumbSelected(e) {
         console.log(e.target);
+        console.log("message id: "+e.target.dataset.messageid);
         var thumb = document.getElementById(e.target.id);
+        var messageId = e.target.dataset.messageid;
         var thumb_up = e.target.id.replace("thumbs-down", "thumbs-up");
         var thumb_down = e.target.id.replace("thumbs-up", "thumbs-down");
+        var feedback_obj = {};
 
         var other_thumb = "";
         if (thumb.id===thumb_up){
@@ -125,14 +158,32 @@ function Messages() {
 
         if (thumb.style.backgroundColor=='green'){
             thumb.style.backgroundColor = '#407481';
+            // feedback_obj['feedback'] = "";
         }
         else if ((thumb.style.backgroundColor!='green') && (other_thumb.style.backgroundColor=='green')){
             other_thumb.style.backgroundColor = '#407481';
             thumb.style.backgroundColor = 'green';
+
+            if (e.target.id.includes('thumbs-up')) {
+                feedback_obj['feedback'] = "True";
+            }
+            else {
+                feedback_obj['feedback'] = "False";
+            }
+            API.sendFeedback(feedback_obj, messageId);
         }
         else {
             thumb.style.backgroundColor = 'green';
+
+            if (e.target.id.includes('thumbs-up')) {
+                feedback_obj['feedback'] = "True";
+            }
+            else {
+                feedback_obj['feedback'] = "False";
+            }
+            API.sendFeedback(feedback_obj, messageId);
         }
+        // API.sendFeedback(feedback_obj, messageId);
     }
 
     // document.getElementById("page-tooltip").onmouseover = function(){
@@ -158,18 +209,18 @@ function Messages() {
             {messages.map((message, i) => {
                 if (message.sender=='bot'){
                     return (
-                    <OverlayTrigger placement='top' show={showTooltip} overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id="popover-basic page-tooltip">
-                    <Popover.Header as="h3"><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
-                    <Popover.Body>
+                    <OverlayTrigger placement='top' show={showTooltip['message-'+i] || showTooltip['pop-'+i]}  overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id={"popover-basic pop-"+i}>
+                    <Popover.Header as="h3" id={"pop-"+i}><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
+                    <Popover.Body id={"pop-"+i}>
                     Page {message.page}
                     </Popover.Body>
                     </Popover>}>
-                    <Row className={"individual-message-div"}>
-                        <Col className={message.sender+" message-container mr-auto ml-0"} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
+                    <Row className={"individual-message-div"} id={"message-"+i}>
+                        <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
                             <div class="thumbs-container">
-                                <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
-                                <Button className="thumbs-down btn" id={"thumbs-down-"+i} onClick={thumbSelected}>👎</Button>
+                                <Button className="thumbs-up btn" data-messageid={message.message_id} id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
+                                <Button className="thumbs-down btn" data-messageid={message.message_id} id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
                             </div>
                         </Col>
                     </Row>
