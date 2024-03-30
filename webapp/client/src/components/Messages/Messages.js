@@ -41,7 +41,7 @@ function Messages() {
 
     const setShowTooltipTrue = function(event){
         // alert(event.target.id.substr(event.target.id.length-1));
-        const targ = event.target.id.replace("popover-basic ", "");
+        const targ = event.target.id.replace("popover-basic ", "").replace("thumbs-up-"+event.target.id.substr(event.target.id.length-1)+" ", "").replace("thumbs-down-"+event.target.id.substr(event.target.id.length-1)+" ", "");
         console.log(event.target);
         console.log(targ);
         console.log(showTooltip);
@@ -60,7 +60,7 @@ function Messages() {
     };
 
     const setShowTooltipFalse = function(event){
-        const targ = event.target.id.replace("popover-basic ", "");
+        const targ = event.target.id.replace("popover-basic ", "").replace("thumbs-up-"+event.target.id.substr(event.target.id.length-1)+" ", "").replace("thumbs-down-"+event.target.id.substr(event.target.id.length-1)+" ", "");
         console.log(targ);
         console.log(showTooltip);
         if (showTooltip.hasOwnProperty(targ)){
@@ -194,12 +194,12 @@ function Messages() {
                     Page {message.page}
                     </Popover.Body>
                     </Popover>}>
-                    <Row className={"individual-message-div"}>
+                    <Row className={"individual-message-div"} id={"message-"+i}>
                         <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
                             <div class="thumbs-container">
-                                <Button className="thumbs-up btn" id={"thumbs-up-"+i} onClick={thumbSelected}>👍</Button>
-                                <Button className="thumbs-down btn" id={"thumbs-down-"+i} onClick={thumbSelected}>👎</Button>
+                                <Button className="thumbs-up btn" id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
+                                <Button className="thumbs-down btn" id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
                             </div>
                         </Col>
                     </Row>
