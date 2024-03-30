@@ -74,9 +74,8 @@ with gr.Blocks() as demo:
                 reword = gr.Textbox(label="Reworded Question", lines=1)
                 history = gr.Textbox(label="Conversation History", lines=1)
             with gr.Column():
-                with gr.Row():
-                    page_content = gr.Textbox(label="Document Content", lines=1)
-                    reference = gr.Textbox(label="Reference", lines=1)
+                page_content = gr.Textbox(label="Document Content", lines=1)
+                reference = gr.Textbox(label="Reference", lines=1)
         
     with gr.Accordion("Refinement"):
         with gr.Row():
