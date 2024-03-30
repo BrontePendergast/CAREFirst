@@ -170,6 +170,9 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
     
     return llm
 
+# # huggingface models
+# llm_answer = SelectLLM(model_name = MODEL_ANSWER,
+#                        huggingface = True)
 
 llm = SelectLLM()
 
@@ -185,6 +188,12 @@ output_parser = StrOutputParser()
 
 config = RailsConfig.from_path("data/config")
 guardrails = RunnableRails(config, input_key="question", output_key="answer")
+# gpt
+llm_answer = SelectLLM(model_name = MODEL,
+                       huggingface = False)
+
+llm = SelectLLM(model_name = MODEL,
+                huggingface = False)
 
 
 #######################################
@@ -233,6 +242,32 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         | llm
         | StrOutputParser(),
     }
+# first we'll calculate the standalone question
+standalone_question = (
+    {
+        "question": lambda x: x["question"],
+        "chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history",
+        "format_instructions": lambda x: message_parser.get_format_instructions()
+    }
+    | CONDENSE_QUESTION_PROMPT
+    | llm
+    | message_parser
+    | dict
+)
+
+
+# first we'll calculate the standalone question
+keywords = (
+    {
+        "question": lambda x: x["question"],
+        "chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history",
+        "format_instructions": lambda x: keyword_parser.get_format_instructions()
+    }
+    | KEYWORD_PROMPT
+    | llm
+    | keyword_parser
+    | dict
+)
 
     # Now we retrieve the documents
     retrieved_documents = {
@@ -275,6 +310,37 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         else:
             answer_chain = {"question": lambda x: info["question"], 
                             "context": lambda x: info["context"]} | ANSWER_PROMPT | llm
+# Function to check if follow up is required or direct answer
+def RequireQuestion(info):
+    # by default answer the question, unless a follow up can be determined
+    answer_chain = (
+        {
+            "question": lambda x: info["question"], 
+            "context": lambda x: info["context"]
+        } 
+        | ANSWER_PROMPT 
+        | llm_answer
+    )
+        
+    # follow ups aren't on by default to allow for testing and evaluation
+    if info["follow_up"]: 
+
+        if info['node']['identified'] == 'Many':
+            try:
+                graph = ExtractNode({"scenarios": info["scenarios"], 
+                                     "node": info["node"]})
+                if graph == 'Failed':
+                    raise Exception("follow up failed")
+                
+                answer_chain = (
+                    {
+                        "question": lambda x: info["question"], 
+                        "graph": lambda x: graph
+                    }
+                    | FOLLOW_UP_PROMPT 
+                    | llm_answer
+                )
+            except: print(f"follow up failed with node: {info['node']}")
 
         return answer_chain
 
@@ -285,6 +351,28 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
                    "context": lambda x: _combine_documents(x["docs"])} 
                    | RunnableLambda(RequireQuestion)
     )
+# function to check guardrail response before proceeding with answer
+def AnswerDecision(info):
+
+    print(f"quardrail answer: {info['guardrail_answer']}")
+
+    if info["guardrail_answer"] in ["Your medical situation is critical. Please call EMS/9-1-1", 
+                                    "I'm sorry, I can't respond to that."]:
+        return info["guardrail_answer"]
+    else:
+            
+        x = info["actual_answer"]
+
+        final_chain = (
+            {
+                "question": lambda y : x["question"],
+                "node": lambda y: x["node"],
+                "scenarios": lambda y: ExtractScenarios(x["docs"]),
+                "context": lambda y : CombineDocuments(x["docs"]),
+                "follow_up": lambda y: info["follow_up"]
+            } 
+            | RunnableLambda(RequireQuestion)
+        )
 
     # And finally, we do the part that returns the answers
     answer = {
@@ -312,6 +400,30 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     
     # And now we put it all together!
     chain = loaded_memory | standalone_question | retrieved_documents | graph | answer
+    chain = (
+          loaded_memory 
+        | { # run question and keyword prompt in parallel
+            "question": standalone_question,
+            "keywords": keywords
+          }
+        | { # document retrieval
+            "question": lambda x: x["question"]["standalone_question"],
+            "docs": RunnableLambda(Retriever),
+            "keywords": lambda x: x["keywords"]["keywords"]
+          }
+        | { # run in parallel
+            "guardrail_answer": guardrails_chain, 
+            "actual_answer": graph,
+            "follow_up": lambda x: followup
+          }
+        | { # Determine whether to give guardrail answer, follow up question or answer from document
+            "history": loaded_memory | {"chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history"},
+            "question": lambda x: x["actual_answer"]["question"],
+            "node": lambda x: x["actual_answer"]["node"],
+            "answer": RunnableLambda(AnswerDecision),
+            "docs": lambda x: x["actual_answer"]["docs"],
+          }            
+        )
     
     # run chain
     result = chain.invoke({"question": question})
