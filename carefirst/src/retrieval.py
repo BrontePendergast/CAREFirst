@@ -54,13 +54,10 @@ else:
 #######################################
 
 # initialize the bm25 retriever 
-start_time = datetime.now()
 bm25_retriever = BM25Retriever.from_documents(
     docs, 
     )
 bm25_retriever.k = 1
-end_time = datetime.now()
-print('Duration: {}'.format(end_time - start_time))
 
 def Retriever(query, k=2, tag=None):
     question = query["question"]["standalone_question"]

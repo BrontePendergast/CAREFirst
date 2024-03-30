@@ -12,7 +12,7 @@ from enum import Enum
 #######################################
 
 class ScenarioEnum(str, Enum):
-    known = "One", 
+    one = "One", 
     other = "Other",
     many = "Many"
 
@@ -20,7 +20,7 @@ class ScenarioEnum(str, Enum):
 class Node(BaseModel):
     node: str = Field(description="The high level topic node that the user's question is referring to", default = 'None')
     thought: str = Field(description="One sentence thought behind choosing whether the relationship is One, Many or Other")
-    identified: ScenarioEnum = Field(description="Description of whether the related scenario known, other or none", default = 'None')
+    identified: ScenarioEnum = Field(description="Description of whether there is one, many or other relationships ", default = 'None')
 
 node_parser = PydanticOutputParser(pydantic_object=Node)
 
@@ -35,12 +35,12 @@ node_system_prompt = SystemMessagePromptTemplate.from_template(
     
     Given the knowledge graph of nodes and their related topics, which node in the graph does this message relate to? 
 
-    In the Thought key of your response, answer the following in one sentence:
+    In the Thought key of your response, think through the following in one sentence:
     Consider the relationships linked to this node in the knowledge graph. Could the user's message be about 'One' or 'Many' of these relationships? 
-    If there are 'Many', is there 'One' that is the most likely or could they all be equally likely because there is no additional context?
+    Are there 'Many' options that are equally likely because there is no additional context?
     Could the user's message be about a 'Other' relationship not mentioned here? 
-    Does a synonyms from this user's message help determine the relationship? synonyms: {keywords}
-
+    Is there 'One' relationship in the knowledge graph that stands out? If it's close enough, choose it.
+    
     In the Identified key, provide the answer of 'One', 'Many', 'Other'
 
     format response in JSON:
