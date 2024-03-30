@@ -12,7 +12,7 @@ from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails
 
 
 # simple prompt to have minimal impact on latency
-guardrail_prompt = ChatPromptTemplate.from_template("Should I answer this question: {question}")
+guardrail_prompt = ChatPromptTemplate.from_template("Should I answer this question? \n Respond only with 'Yes' or 'No'\n Question: {question} ")
 output_parser = StrOutputParser()
 
 config = RailsConfig.from_path("data/config")

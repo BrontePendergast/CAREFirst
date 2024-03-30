@@ -5,44 +5,87 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain.schema import format_document
 
+from enum import Enum
 
 #######################################
 # Identifying node in graph
 #######################################
 
+class ScenarioEnum(str, Enum):
+    known = "One", 
+    other = "Other",
+    many = "Many"
 
 # knowledge graph node identification prompt
 class Node(BaseModel):
     node: str = Field(description="The high level topic node that the user's question is referring to", default = 'None')
-    relationship: str = Field(description="The specific topic if mentioned by the user", default = 'None')
+    thought: str = Field(description="One sentence thought behind choosing whether the relationship is One, Many or Other")
+    identified: ScenarioEnum = Field(description="Description of whether the related scenario known, other or none", default = 'None')
+
 
 
 node_parser = PydanticOutputParser(pydantic_object=Node)
 
 
-NODE_PROMPT = PromptTemplate(
+# NODE_PROMPT = PromptTemplate(
+#     template="""
+#     The user has provided the following message: \n {question}. 
+#     Given the following knowledge graph of nodes and their related topics, which node in the graph does this response relate to and which relationship is of interest? 
+#     Respond with the value of the 'node'. 
+
+#     Think step by step.
+
+#     Thought: Is it clear which relationship within a node that the user is messaging about?
+
+#     If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, reference that the associated relationship is identified = 'Known'. 
+#     If the user's response could match multiple 'relationship' options, reference that the associated relationship is identified = 'Many'.
+#     If the user's response makes a clear reference to a 'relationship' that does not exist in the knowledge graph, reference that the associated relationship is identified = 'Other'.
+
+#     Remember that the node should already exist as a node in the graph. 
+#     Remember that the user may use synonyms or less confident wording.
+#     Do not make assumptions about the type of medical scenario the user is referring to.
+
+#     Knowledge graph:
+#     {graph}
+#     """,
+#     input_variables=["question", "graph"],
+# )
+
+node_system_prompt = SystemMessagePromptTemplate.from_template(
     template="""
-    The user has provided the following message: \n {question}. 
-    Given the following knowledge graph of nodes and their related topics, which node in the graph does this response relate to and which relationship is of interest? 
-    Respond with the value of the 'node'. 
-    If the user's response references a specific 'relationship' to a topic that is included in the knowledge graph, reference this as the associated relationship. 
-
-    Remember that the 'relationship' will be 'None' if it is unclear from the user message which scenario the user is interested in. 
-    Remember that the 'relationship' will be 'Other' when the users specific scenario isn't included.
-    Remember that the node should already exist as a node in the graph. The relationship should already exist in connection to that node.
-    Remember that the user may use synonyms or less confident wording and you should infer the appropriate node and relationship.
-    For example, synonyms from this user's message include: {keywords}
-    
-    Think step by step.
-
-    Provide your response in JSON format with the identified node and relationship
+    The user will provide a message and your role is to link this message to the knowledge graph.
 
     Knowledge graph:
     {graph}
-    """,
-    input_variables=["question", "keywords", "graph"],
-)
 
+    ======================
+    
+    Given the knowledge graph of nodes and their related topics, which node in the graph does this message relate to? 
+
+    In the Thought key of your response, answer the following in one sentence:
+    Consider the relationships linked to this node in the knowledge graph. Could the user's message be about 'One' or 'Many' of these relationships? 
+    If there are 'Many', is there 'One' that is the most likely or could they all be equally likely because there is no additional context?
+    Could the user's message be about a 'Other' relationship not mentioned here? 
+    Does a synonyms from this user's message help determine the relationship? synonyms: {keywords}
+
+    In the Identified key, provide the answer of 'One', 'Many', 'Other'
+
+    format response in JSON:
+    {format_instructions}
+    """,
+    input_variables=["graph", "keywords", "format_instructions"])
+
+
+node_human_prompt = HumanMessagePromptTemplate.from_template(
+    template = "Human Message: \n {question}", 
+    input_variables=["question"]
+    )
+
+
+NODE_PROMPT = ChatPromptTemplate.from_messages([node_system_prompt,
+                                                node_human_prompt])
+
+    # 
 
 # extract scenarios
 SCENARIO_PROMPT = PromptTemplate.from_template(template="{scenarios}")

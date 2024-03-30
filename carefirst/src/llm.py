@@ -42,9 +42,13 @@ def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
     
     return llm
 
+# # huggingface models
+# llm_answer = SelectLLM(model_name = MODEL_ANSWER,
+#                        huggingface = True)
 
-llm_answer = SelectLLM(model_name = MODEL_ANSWER,
-                       huggingface = True)
+# gpt
+llm_answer = SelectLLM(model_name = MODEL,
+                       huggingface = False)
 
 llm = SelectLLM(model_name = MODEL,
                 huggingface = False)
@@ -81,6 +85,20 @@ standalone_question = (
     | CONDENSE_QUESTION_PROMPT
     | llm
     | message_parser
+    | dict
+)
+
+
+# first we'll calculate the standalone question
+keywords = (
+    {
+        "question": lambda x: x["question"],
+        "chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history",
+        "format_instructions": lambda x: keyword_parser.get_format_instructions()
+    }
+    | KEYWORD_PROMPT
+    | llm
+    | keyword_parser
     | dict
 )
 
@@ -125,7 +143,7 @@ def RequireQuestion(info):
     # follow ups aren't on by default to allow for testing and evaluation
     if info["follow_up"]: 
 
-        if info['node']['relationship'] == 'None':
+        if info['node']['identified'] == 'Many':
             try:
                 graph = ExtractNode({"scenarios": info["scenarios"], 
                                      "node": info["node"]})
@@ -147,6 +165,8 @@ def RequireQuestion(info):
 
 # function to check guardrail response before proceeding with answer
 def AnswerDecision(info):
+
+    print(f"quardrail answer: {info['guardrail_answer']}")
 
     if info["guardrail_answer"] in ["Your medical situation is critical. Please call EMS/9-1-1", 
                                     "I'm sorry, I can't respond to that."]:
@@ -191,11 +211,14 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     # And now we put it all together!
     chain = (
           loaded_memory 
-        | standalone_question 
+        | { # run question and keyword prompt in parallel
+            "question": standalone_question,
+            "keywords": keywords
+          }
         | { # document retrieval
-            "question": lambda x: x["standalone_question"],
+            "question": lambda x: x["question"]["standalone_question"],
             "docs": RunnableLambda(Retriever),
-            "keywords": lambda x: x["keywords"]
+            "keywords": lambda x: x["keywords"]["keywords"]
           }
         | { # run in parallel
             "guardrail_answer": guardrails_chain, 
