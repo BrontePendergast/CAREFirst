@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: w255mids.azurecr.io/rmarin/frontend:[TAG]
+          image: w255mids.azurecr.io/[REPOSITORY]/[IMAGE_TAG]
           resources:
             limits:
               cpu: 1000m
