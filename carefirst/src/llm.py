@@ -69,7 +69,7 @@ llm = SelectLLM(model_name = MODEL,
 MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
 MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
 DATABASE_NAME = "carefirstdb"
-COLLECTION_NAME = "carefirstdb"
+COLLECTION_NAME = "chat_history"
 CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
 
 # memory - reduce to the 3 most recent messages
