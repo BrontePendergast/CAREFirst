@@ -90,15 +90,15 @@ az acr login --name w255mids &> /dev/null
 cd ${BACKEND_FOLDER}
 echo " -- Build and push ${BACKEND_IMAGE_TAG} to ${BACKEND_IMAGE_FQDN}"
 docker build --platform linux/amd64 -t ${BACKEND_IMAGE_TAG} . 
-docker tag ${BACKEND_IMAGE_TAG} ${BACKEND_IMAGE_FQDN}
-docker push ${BACKEND_IMAGE_TAG}
+docker tag ${BACKEND_IMAGE_TAG} ${BACKEND_IMAGE_FQDN_FULL}
+docker push ${BACKEND_IMAGE_FQDN_FULL}
 
 # Build frontend image
 cd ../${FRONTEND_FOLDER}/client
 echo " -- Build and push ${FRONTEND_IMAGE_TAG} to ${FRONTEND_IMAGE_FQDN}"
 docker build --platform linux/amd64 -t ${FRONTEND_IMAGE_TAG} . 
-docker tag ${FRONTEND_IMAGE_TAG} ${FRONTEND_IMAGE_FQDN}
-docker push ${FRONTEND_IMAGE_TAG}
+docker tag ${FRONTEND_IMAGE_TAG} ${FRONTEND_IMAGE_FQDN_FULL}
+docker push ${FRONTEND_IMAGE_FQDN_FULL}
 
 # Go back to root
 cd ../../
