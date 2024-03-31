@@ -116,7 +116,7 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
     # # Generate Response
     timestamp_queryin = datetime.now()
-    ai_response = ChatChain(question=query.query, conversation_id=query.id)
+    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True )
     validated_response = Response(**ai_response)
     # validated_response = {
     #     "message_id":"TEST-whatever",
