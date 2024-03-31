@@ -29,7 +29,7 @@ total_seconds=0
 request_count=0
 
 # -- Docker Tags
-IMAGE_REPOSITORY=rmarin
+IMAGE_REPOSITORY=carefirst
 
 BACKEND_IMAGE_NAME=pythonapi
 BACKEND_IMAGE_TAG=${BACKEND_IMAGE_NAME}:${TAG}
