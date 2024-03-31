@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
+import json
 
 import os
 from datetime import datetime
@@ -113,20 +114,43 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     # Set ID to conversation
     query.id = conversation_id
 
+    # Set Message Repository
+    messages_repository = MessagesRepository(database=database)
+    
+    
+    # # Conversation History
+    # conversation_history = messages_repository.find({'conversation_id': conversation_id}).sort('timestamp_sent_response', -1).limit(3)
+    # formatted_results = []
 
-    # # Generate Response
+    # # Iterate through the results
+    # for document in conversation_history:
+    #     # Extract the 'query' and 'answer' from the document
+    #     human_text = document['query']
+    #     ai_text = document['answer']
+        
+    #     # Create a new dict in the desired format
+    #     formatted_doc = [{"Human": human_text}, {"AI": ai_text}]
+    #     formatted_results.append(formatted_doc)
+
+    # Convert the list of formatted documents to a JSON string
+    # json_output = json.dumps(formatted_results)
+
+
+    # Generate Response
     timestamp_queryin = datetime.now()
     ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True )
     validated_response = Response(**ai_response)
+    # #TEST
     # validated_response = {
     #     "message_id":"TEST-whatever",
     #     "conversation_id":conversation_id,
     #     "answer":"comoestas",
     #     "query":"holi",
     #     "source":"TEST",
-    #     "model":"TEST-None",
+    #     "model":"",
     #     "timestamp":"2024-03-12T15:52:16.954444"
     # }
+    # #TEST
 
     # Create message_id
     message_id = getMessageID()
@@ -134,12 +158,11 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
 
     # Calculate response duration
-    response_duration = validated_response.timestamp - timestamp_queryin                         
+    response_duration = validated_response.timestamp - timestamp_queryin                       
     duration_in_s = response_duration.total_seconds()
 
 
     # Store record in "messages" collection
-    messages_repository = MessagesRepository(database=database)
     message = MessageRecord(conversation_id = query.id
                             , message_id=message_id
                             , answer=validated_response.answer

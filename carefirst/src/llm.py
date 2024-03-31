@@ -8,13 +8,21 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import get_buffer_string
 from langchain_core.output_parsers import StrOutputParser
 from langchain.memory import ConversationBufferWindowMemory
-from langchain_community.chat_message_histories import MongoDBChatMessageHistory
+# from langchain_community.chat_message_histories import MongoDBChatMessageHistory
+from langchain_mongodb import MongoDBChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+
 
 # carefirst functions
 from src. retrieval import Retriever, CombineDocuments
 from src. refinement import ExtractScenarios, ExtractNode, node_parser, NODE_PROMPT, FOLLOW_UP_PROMPT
 from src.summarization import ANSWER_PROMPT, CONDENSE_QUESTION_PROMPT, message_parser, keyword_parser, KEYWORD_PROMPT
 from src.guardrails import guardrail_prompt, guardrails_run
+
+# Env Variables
+from dotenv import load_dotenv, dotenv_values 
+import os
+load_dotenv() 
 
 #######################################
 # LLMs
@@ -59,16 +67,16 @@ llm = SelectLLM(model_name = MODEL,
 #######################################
 
 
-# MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
-# MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
-# DATABASE_NAME = "carefirstdb"
-# CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
+MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
+DATABASE_NAME = "carefirstdb"
+COLLECTION_NAME = "carefirstdb"
+CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
 
 # memory - reduce to the 3 most recent messages
 memory = ConversationBufferWindowMemory(
         return_messages=True, output_key="answer", input_key="question", k = 3
     )
-
 
 #######################################
 # Chatbot chains
@@ -202,6 +210,19 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
     )
 
+    # Add Mongo History to chain
+    ## Create history object from langchain_community.chat_message_histories
+    mongo_history = MongoDBChatMessageHistory(
+      connection_string=CONNECTION_STRING, 
+      database_name=DATABASE_NAME,
+      collection_name=COLLECTION_NAME,
+      session_id=conversation_id
+    )
+    ## Create chat_history [{"Human": " "}, {"AI": " "}]
+    ## https://python.langchain.com/docs/integrations/memory/mongodb_chat_message_history
+    chat_history = mongo_history.messages
+    print(chat_history)
+
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
         guardrails_chain = guardrail_prompt | (guardrails_run | llm) | StrOutputParser()
@@ -240,6 +261,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     # store answer in memory
     memory.save_context({"question": question},
                         {"answer": result["answer"]})
+    
 
     # Demo expects all output fields
     if demo:
