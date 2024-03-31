@@ -116,25 +116,6 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
     # Set Message Repository
     messages_repository = MessagesRepository(database=database)
-    
-    
-    # # Conversation History
-    # conversation_history = messages_repository.find({'conversation_id': conversation_id}).sort('timestamp_sent_response', -1).limit(3)
-    # formatted_results = []
-
-    # # Iterate through the results
-    # for document in conversation_history:
-    #     # Extract the 'query' and 'answer' from the document
-    #     human_text = document['query']
-    #     ai_text = document['answer']
-        
-    #     # Create a new dict in the desired format
-    #     formatted_doc = [{"Human": human_text}, {"AI": ai_text}]
-    #     formatted_results.append(formatted_doc)
-
-    # Convert the list of formatted documents to a JSON string
-    # json_output = json.dumps(formatted_results)
-
 
     # Generate Response
     timestamp_queryin = datetime.now()
