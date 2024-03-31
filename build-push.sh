@@ -16,9 +16,8 @@ else
 fi
 commitID=$(git rev-parse --short HEAD)
 TAG=$ENVName$commitID
-IMAGE_PREFIX=carefirst
 # -- Virtual Service HOST and URL
-export KNS=$IMAGE_PREFIX
+export KNS=rmarin
 # export VSVC_HOST=$(kubectl get virtualservice -n $KNS $IMAGE_NAME -o jsonpath='{.spec.hosts[0]}')
 export VSVC_HOST=$KNS.mids255.com
 export VSVC_URL=https://$VSVC_HOST
@@ -30,20 +29,22 @@ total_seconds=0
 request_count=0
 
 # -- Docker Tags
+IMAGE_REPOSITORY=rmarin
+
 BACKEND_IMAGE_NAME=pythonapi
 BACKEND_IMAGE_TAG=${BACKEND_IMAGE_NAME}:${TAG}
-BACKEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${BACKEND_IMAGE_NAME}"
+BACKEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_REPOSITORY}/${BACKEND_IMAGE_NAME}"
 BACKEND_IMAGE_FQDN_FULL=${BACKEND_IMAGE_FQDN}:${TAG}
 
 FRONTEND_IMAGE_NAME=frontend
 FRONTEND_IMAGE_TAG=${FRONTEND_IMAGE_NAME}:${TAG}
-FRONTEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${FRONTEND_IMAGE_NAME}"
+FRONTEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_REPOSITORY}/${FRONTEND_IMAGE_NAME}"
 FRONTEND_IMAGE_FQDN_FULL=${FRONTEND_IMAGE_FQDN}:${TAG}
 
 # -- Create deployment files
 echo " -- Deploy CAREFirst Version:${TAG}"
-sed -e "s/\[REPOSITORY\]/${KNS}/g" -e "s/\[IMAGE_TAG\]/${BACKEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
-sed -e "s/\[REPOSITORY\]/${KNS}/g" -e "s/\[IMAGE_TAG\]/${FRONTEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-frontend_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-frontend.yaml
+sed -e "s/\[REPOSITORY\]/${IMAGE_REPOSITORY}/g" -e "s/\[IMAGE_TAG\]/${BACKEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
+sed -e "s/\[REPOSITORY\]/${IMAGE_REPOSITORY}/g" -e "s/\[IMAGE_TAG\]/${FRONTEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-frontend_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-frontend.yaml
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
