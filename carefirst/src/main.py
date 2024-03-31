@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
@@ -166,25 +166,31 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     feedback.id = message_id
     
-    
     # Update message collection with feedback
     try:    
         update_result = database["messages"].update_one(
             {"message_id": feedback.id}, 
-            {'$set': {"feedback": feedback.feedback}})   
+            {'$set': {"feedback": feedback.feedback}}
+        )   
         
-        if update_result.matched_count < 1:
-            # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
-            return {"id":feedback.id,
-                "status": "Error",
-                "modified_count":update_result.matched_count}
-        else:    
-            return {"id":feedback.id,
-                "status": "Success",
-                "modified_count":update_result.modified_count}
-    
+        if update_result.matched_count == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail="Document with message_id '{}' not found.".format(feedback.id)
+            )
+        return ResponseFeedback(
+            id=feedback.id,
+            status="Success",
+            modified_count=update_result.modified_count
+        )
+    except HTTPException:
+        # Reraise the HTTPException if it's a 404 from the above check
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error | " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="An error occurred: {}".format(str(e))
+        )
 
     # return {"id":feedback.id,
     #             "status": "TEST-whatever",
