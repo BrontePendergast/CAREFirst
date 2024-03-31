@@ -10,7 +10,6 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.memory import ConversationBufferWindowMemory
 # from langchain_community.chat_message_histories import MongoDBChatMessageHistory
 from langchain_mongodb import MongoDBChatMessageHistory
-from langchain_core.runnables.history import RunnableWithMessageHistory
 
 
 # carefirst functions
