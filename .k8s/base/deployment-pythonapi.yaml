@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pythonapi
+  namespace: rmarin
+  labels: 
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: pythonapi
+        image: pythonapi:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10   
+      - name: busybox
+        image: busybox:latest
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
+        command:
+          - /bin/sh
+          - -c
+          - sleep 1000
+      initContainers:
+      - name: verify-redis-dns
+        image: busybox:latest
+        command: ['sh', '-c', "until nc -vz redis 6379; do echo 'waiting for redis service from DNS'; sleep 2; done"]
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
+      - name: verify-redis-ready
+        image: busybox:latest
+        command:  ["sh", "-c", "until (printf 'PING\r\n';) | nc redis 6379; do echo 'waiting for redis to PONG'; sleep 1; done"]
+        resources:
+          limits:
+            cpu: 30m
+            memory: 64Mi
+          requests:
+            cpu: 20m
+            memory: 32Mi
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: rmarin
+  name: pythonapi
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pythonapi
+  minReplicas: 1
+  maxReplicas: 40
+  targetCPUUtilizationPercentage: 50

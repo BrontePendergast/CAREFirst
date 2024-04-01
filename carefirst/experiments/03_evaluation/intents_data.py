@@ -17,8 +17,7 @@ openai_api_model = 'gpt-3.5-turbo'
 
 
 rc_docs = pd.read_pickle(r'../../data/guidelines/redcross_guidelines.pickle')
-# only first aid contents - TODO move this filtering to dataload script as single source of truth
-rc_docs = rc_docs[13:205]
+
 # transform to set of questions and answers
 qa_transformer = DoctranQATransformer(openai_api_key=openai_api_key, openai_api_model=openai_api_model)
 transformed_document = qa_transformer.transform_documents(rc_docs)

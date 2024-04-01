@@ -4,7 +4,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    height: auto !important;
+    height: auto;
     resize: none;
     max-height: 400px;
   }
@@ -42,14 +42,14 @@
   }
 
   #individual-messages-div {
-    height: 580px;
+    height: 500px;
     padding-bottom: 30px !important;
     overflow-y: scroll;
   }
 
   .individual-message-div {
     width: 100%;
-    font-size: 14px;
+    font-size: 18px;
     margin: 10px;
 
   }
@@ -58,17 +58,14 @@
     padding: 8px;
     background-color: gray;
     color: white;
-    max-width: 70%;
+    max-width: 80%;
     border-radius: 10px;
-    margin-bottom: 25px;
-    margin-top: -10px;
   }
-
   .bot {
     padding: 8px;
     background-color: #407481;
     color: white;
-    max-width: 70%;
+    max-width: 80%;
     border-radius: 10px;
     margin-bottom: 50px;
   }

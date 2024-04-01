@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: rmarin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        imagePullPolicy: IfNotPresent
+        resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: 99m
+              memory: 512Mi
+        image: redis:latest
+        ports:
+        - containerPort: 6379

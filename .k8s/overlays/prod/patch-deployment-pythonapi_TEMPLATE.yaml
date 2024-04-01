@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: not-important
+spec:
+  template:
+    spec:
+      containers:
+        - name: pythonapi
+          image: w255mids.azurecr.io/[REPOSITORY]/[IMAGE_TAG]
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 2048Mi
+            requests:
+              cpu: 1900m
+              memory: 1512Mi
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 20

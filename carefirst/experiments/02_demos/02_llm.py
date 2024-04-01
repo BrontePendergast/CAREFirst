@@ -1,7 +1,4 @@
 # packages required
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
-
 import sys
 import os
 import random
@@ -28,12 +25,12 @@ def ChatDemo(question):
                        guardrails = True, 
                        followup = True)
 
-    # if guardrails are alerted:
-    if isinstance(result, str):      
-        return result, None, None, None, None, None, None
+    all_options = []
+    for doc in result['docs']:
+        all_options.extend(doc.metadata['scenarios']) 
 
     scenarios = ExtractNode({'node':result['node'],
-                             'scenarios': str(result['docs'][0].metadata['scenarios'])})
+                             'scenarios': str(all_options)})
 
     page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
     document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
@@ -51,7 +48,6 @@ def ChatDemo(question):
 
 
 import gradio as gr
-# my_theme = gr.Theme.from_hub("gradio/glass")
 
 try:
     demo.close()
@@ -60,52 +56,45 @@ except:
     print("No demo running")
 
 with gr.Blocks() as demo:
+
     with gr.Row():
         gr.Image('experiments/02_demos/images/carefirst_banner.png')
     with gr.Row():
-        gr.Markdown(
-"""
-## User Experience      
-""")
-    with gr.Row():
         with gr.Column():
-            inputs = gr.Textbox(label="Question", lines=1)
-            btn = gr.Button("Ask")
+                inputs = gr.Textbox(label="Question", lines=1)
+                btn = gr.Button("Ask")
         with gr.Column():
-            answer = gr.Textbox(label="Answer", lines=1)
-    with gr.Row():
-        examples = gr.Examples(examples = ["What to do if Cuts?",
-                                           "how do you treat abrasions?",
-                                           "What to do if you get a sting?",
-                                           "How to remove Splinters",
-                                           "How do you treat a sprain?",
-                                           "Which medicine to take if I get a mild fever?"],
-                                inputs = [inputs])
+                answer = gr.Textbox(label="Answer", lines=1)
         
-    with gr.Accordion("Model Design"):
+    with gr.Accordion("Retrieval Augmented Generation"):
         with gr.Row():
-            gr.Image('experiments/02_demos/images/model_steps_v3.png') 
-
-    with gr.Accordion("Engineered Flow "):
-        with gr.Row():
-            with gr.Column():   
-                history = gr.Textbox(label="Conversation History", lines=1)
-            with gr.Column(): 
-                with gr.Row():
-                    reword = gr.Textbox(label="Reworded Question", lines=1)
-                with gr.Row():
-                    node = gr.Textbox(label="Identified node and relationship", lines=1)
-                with gr.Row():
-                    scenarios = gr.Textbox(label="Possible scenarios", lines=1)
             with gr.Column():
-                with gr.Row():
-                    page_content = gr.Textbox(label="Document Content", lines=1)
-                with gr.Row():
-                    reference = gr.Textbox(label="Reference", lines=1)
- 
+                gr.Image('experiments/02_demos/images/rag.png') 
+            with gr.Column(): 
+                reword = gr.Textbox(label="Reworded Question", lines=1)
+                history = gr.Textbox(label="Conversation History", lines=1)
+            with gr.Column():
+                page_content = gr.Textbox(label="Document Content", lines=1)
+                reference = gr.Textbox(label="Reference", lines=1)
+        
+    with gr.Accordion("Refinement"):
+        with gr.Row():
+            with gr.Column():
+                gr.Image('experiments/02_demos/images/refinement.png') 
+            with gr.Column():
+                node = gr.Textbox(label="Identified node and relationship", lines=1)
+            with gr.Column():
+                scenarios = gr.Textbox(label="Possible scenarios", lines=1)    
+
+    with gr.Accordion("Guardrails"):
+        with gr.Row():
+            with gr.Column(scale = 0.33):
+                gr.Image('experiments/02_demos/images/guardrails.png')  
+
     btn.click(fn=ChatDemo, 
               inputs=[inputs], 
               outputs=[answer, history, reword, node, scenarios, page_content, reference])
+    
 
 demo.launch()
 

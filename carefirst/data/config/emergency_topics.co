@@ -1,25 +1,165 @@
-
-define user ask about choking
-  "choking"
-  "something stuck in my throat"
-
 define user ask about breathing
+  "can't breath"
   "I can't breathe"
+  "I can't breath"
   "I'm having difficulty breathing"
   "I am struggling to breathe"
+  "I'm having trouble breathing"
+  "they're not breathing"
+  "not breathing"
 
+define user ask about unresponsiveness
+  "they're unresponsive"
+  "someone's unresponsive"
+  "they're not moving"
+  "someones not moving"
 
-define bot inform choking
-  "Your medical situation is critical. Please call EMS/9-1-1"
+define user ask about chest
+  "I have chest pains"
+  "I'm experiencing chest pains"
+  "my chest is in pain"
+  "I feel pressure in my chest"
+
+define user ask about bleeding
+  "uncontrollable bleeding"
+  "lot's of blood"
+  "they're bleeding a lot"
+  "won't stop bleeding"
+
+define user ask about seizure
+  "having a seizure"
+  "they're convulsing"
+
+define user ask about headaches
+  "Extremely bad headache"
+  "I have a severe headache"
+
+define user ask about speech
+  "they're not talking right"
+  "their speech has gone funny"
+  "abnormal speech"
+
+define user ask about spine
+  "Injured my head"
+  "Injured my back"
+  "Injured my neck"
+  "They've injured their head"
+  "They've injured their back"
+  "They've injured their neck"
+
+define user ask about blood
+  "blood in vomit"
+  "blood in urine"
+
+define user ask about childbirth
+  "I'm giving birth right now"
+  "the baby is coming now"
 
 define bot inform breathing
-  "Your medical situation is critical. Please call EMS/9-1-1"
+  "Your medical situation may be critical. Please call EMS/9-1-1"
 
+define bot inform unresponsiveness
+  "Your medical situation may be critical. Please call EMS/9-1-1"
 
-define flow 
-  user ask about choking
-  bot inform choking
+define bot inform chest
+  "Your medical situation may be critical. Please call EMS/9-1-1"
 
-define flow 
+define bot inform bleeding
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform seizure
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform headaches
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform speech
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform spine
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform blood
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform childbirth
+  "Your medical situation may be critical. Please call EMS/9-1-1"
+
+define flow breathing 
   user ask about breathing
   bot inform breathing
+
+define flow unresponsiveness
+  user ask about unresponsiveness
+  bot inform unresponsiveness
+
+define flow chest
+  user ask about chest
+  bot inform chest
+
+define flow bleeding
+  user ask about bleeding
+  bot inform bleeding
+
+define flow seizure
+  user ask about seizure
+  bot inform seizure
+
+define flow headaches
+  user ask about headaches
+  bot inform headaches
+
+define flow speech
+  user ask about speech
+  bot inform speech
+
+define flow spine
+  user ask about spine
+  bot inform spine
+
+define flow blood
+  user ask about blood
+  bot inform blood
+
+define flow childbirth
+  user ask about childbirth
+  bot inform childbirth
+
+# define niceties
+define user express greeting
+    "hello"
+    "hi"
+    "what's up?"
+
+define bot express greeting
+    "Hello! Thanks for using Carefirst AI, how can I assist you?"
+
+define flow greeting
+    user express greeting
+    bot express greeting
+
+define user express thanks
+    "thanks"
+    "thanks for your help"
+    "very happy with your service"
+
+define bot express thanks
+    "You're welcome! Thanks for using Carefirst AI."
+
+define flow thanks
+    user express thanks
+    bot express thanks
+
+define user express conversation
+    "ok"
+    "cool"
+    "sure"
+    "will do"
+    "no worries"
+
+define bot express conversation
+    "If you have any more questions or need further information, feel free to ask."
+
+define flow conversation
+    user express conversation
+    bot express conversation

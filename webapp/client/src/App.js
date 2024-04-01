@@ -23,7 +23,11 @@ const uc_tooltip = [
   "Sore throats are rarely a medical emergency and often accompany viruses, but they can also signal a serious infection, such as strep throat. Strep throat is caused by a highly contagious bacteria, and if left untreated, it can worsen and cause serious complications.",
   "UTIs are common bacterial infections that affect women more often than men. Since UTIs don’t typically resolve on their own, and because they share symptoms with other gynecological problems, such as sexually transmitted diseases, it’s important to see a medical provider for an accurate diagnosis and treatment.",
   "If you’re struggling with an eye infection, such as pink eye, or you start experiencing other problematic eye issues, join the many people who visit urgent care for these reasons. Sometimes, eye infections are viral, but they can also be bacterial. Your medical provider advises you which you have, when to follow up with an eye doctor, and prescribes any necessary medication."
-]
+];
+
+window.onresize = function(event) {
+  document.getElementById("individual-messages-div").scrollTop = document.getElementById("individual-messages-div").scrollHeight;
+};
 
   return (
     <>
@@ -31,7 +35,7 @@ const uc_tooltip = [
     <Container className="mt-5 appcontainer">
       <Row>
         <Col md={3} className="topreasons">
-          <TopReasons title="Top Reasons for ER" reason={er_reasons} icon_class="fa-li fa-solid fa-truck-medical fa_icon_amb fa-lg" tooltip={er_tooltip} placement="right"/>
+          <TopReasons title="Top Reasons for Emergency Department" reason={er_reasons} icon_class="fa-li fa-solid fa-truck-medical fa_icon_amb fa-lg" tooltip={er_tooltip} placement="right"/>
         </Col>
         <Col md={6} className="pt-3 pl-5 pr-5 pb-0" id="messages-div">
           <Container fluid>
@@ -41,7 +45,7 @@ const uc_tooltip = [
             </Container>
         </Col>
         <Col md={3} className="topreasons">
-        <TopReasons title="Top Reasons for UC" reason={uc_reasons} icon_class="fa-li fa-solid fa-user-doctor fa_icon_doc fa-lg" tooltip={uc_tooltip} placement="left"/>
+        <TopReasons title="Top Reasons for Urgent Care" reason={uc_reasons} icon_class="fa-li fa-solid fa-user-doctor fa_icon_doc fa-lg" tooltip={uc_tooltip} placement="left"/>
         </Col>
       </Row>
     </Container>
