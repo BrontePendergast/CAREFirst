@@ -1,0 +1,692 @@
+,question,expected_answer,chatbot_answer,page,chatbot_page,cos_sim_baseline,rouge_1_f1_baseline,rouge_2_f1_baseline,rouge_l_f1_baseline,page_match
+0,What is the post-ictal phase?,"The post-ictal phase is the period after a seizure where the body rests to recover. The person will slowly regain responsiveness and may appear fatigued, confused, or disoriented.","The post-ictal phase refers to the period of time following a seizure. During this phase, the person may experience symptoms such as confusion, disorientation, fatigue, and headache. It can last anywhere from a few minutes to several hours, and",134,0,0.91053253,0.36065573281375973,0.12307691822011854,0.36065573281375973,0
+1,What should a person do if they suspect they have a concussion?,"If a person suspects they have a concussion, they should stop the activity they were engaged in when the incident occurred and seek medical attention as soon as possible. It is important to follow up with a qualified healthcare provider for a full evaluation and to receive appropriate care.","If someone suspects they have a concussion, it is important for them to seek medical attention promptly. They should not drive and should instead have someone take them to the nearest emergency room or urgent care facility. While waiting for medical help, the person should rest",118,0,0.7738041,0.46753246254005737,0.1521739080529302,0.4415584365660314,0
+2,What should I do if a sick or injured person refuses treatment?,"If an ill or injured person refuses care, you must honor their wishes. Explain to the person why you believe care is necessary, but do not touch or give care to the person, and never attempt to give the person help by force. Stay nearby, if possible, in case the person later decides to accept your help or becomes unresponsive. If you believe the person’s condition is life-threatening, call EMS/9-1-1 and communicate that a person requires medical assistance but is refusing help. The EMS personnel who arrive will deal with the situation. If the person gives consent initially but then withdraws it, stop giving care and call EMS/9-1-1 if you have not already done so.","If a sick or injured person refuses treatment, it is important to respect their decision while also trying to persuade them to seek help. Here are some steps you can take:
+
+1. Encourage open communication: Listen to the person's concerns and reasons for",17,0,0.6926544,0.2203389785693767,0.05333332930133364,0.2203389785693767,0
+3,What is one of the simplest and most important first aid methods?,One of the simplest and most important ways of providing first aid is to call for help (EMS/9-1-1).,"One of the simplest and most important first aid methods is knowing how to properly clean and protect a wound. This involves cleaning the wound with mild soap and water, applying an antibiotic ointment, and covering it with a clean bandage to protect it",18,0,0.62074757,0.43999999551200003,0.2333333292722223,0.43999999551200003,0
+4,What is the hand position for baby compression?,Two fingers on the middle of the chest (just below the nipple line),"To perform baby compression as part of infant CPR, place two fingers (index and middle) in the center of the infant's chest, just below the nipple line. Use your fingers to compress the chest about 1.5 inches, at a rate",72,0,0.511499,0.2553191453508375,0.15384615029585808,0.2553191453508375,0
+5,What is the recommended volume of adult compression?,Just enough volume to make the chest start to rise (1 second per breath),The recommended compression depth for adults during CPR (cardiopulmonary resuscitation) is at least 2 inches (5cm). This applies to both chest compressions and the depth at which you should press down on the chest to help circ,72,0,0.46079028,0.1333333292246915,0.040816322632236945,0.1333333292246915,0
+6,What should you use to hold bandages in place?,Safety pins,"You can use adhesive bandage strips, medical tape, or cohesive bandage wraps to hold bandages in place. Make sure the bandage is secure but not too tight to restrict circulation.",12,0,0.36147064,0.0,0.0,0.0,0
+7,What would you do if a person's condition was caused by hypoglycemia?,Ingesting sugar will help improve his or her condition.,"If a person's condition was caused by hypoglycemia (low blood sugar), it is important to act quickly to help them feel better. Here are some steps you can take:
+
+1. Offer them something sugary to eat or drink,",133,0,0.53287905,0.13636363310950422,0.0,0.09090908765495878,0
+8,What are the symptoms of tinnitus?,"Red, scaling rings on the skin","Tinnitus is the perception of noise or ringing in the ears when no external sound is present. Common symptoms of tinnitus include:
+
+1. Ringing, buzzing, hissing, or clicking sounds in the ears.
+2. Hearing the sound in one",184,0,0.08037124,0.05882352650519045,0.0,0.05882352650519045,0
+9,What's more important than keeping a person still in the event of a potential spinal cord injury?,"It is more important to treat life-threatening conditions than it is to keep the person still. If the person has a potential spinal injury and is not breathing, opening the airway and starting CPR immediately are more important than protecting the spine from further damage.","In the event of a potential spinal cord injury, the most important thing to prioritize above keeping a person still is ensuring that they have an open airway and are able to breathe. If the injured person is not breathing or their airway is obstructed",116,0,0.74450684,0.3943661921920254,0.13953487872363457,0.3943661921920254,0
+10,What should you do to prevent the person from attempting to remove the object and blowing their nose?,Prevent the person from attempting to remove the object and from blowing their nose.,"To prevent the person from attempting to remove the object and blowing their nose, it is important to calmly communicate with them and advise against doing so. You can explain the potential risks and suggest alternative methods such as seeing a medical professional or using nasal sprays",101,0,0.7557193,0.3703703669135803,0.30508474232691757,0.3703703669135803,0
+11,What is the recommended compression depth for adults during CPR?,"When providing CPR to an adult, you should perform compressions with a depth of at least 5 cm (about 2 in.), but avoid excessive depths greater than 6 cm (about 2.5 in.).",The recommended compression depth for adults during CPR is at least 2 inches (5 centimeters) but not greater than 2.4 inches (6 centimeters). It is important to push down firmly and allow the chest to fully recoil between compressions,70,0,0.88144183,0.3076923027218935,0.05633802321761599,0.27692307195266275,0
+12,Why are children more vulnerable to injury?,Children are more vulnerable to injury because their bodies are more susceptible to injury and they are typically less aware of risks and hazards in their environments.,"Children are more vulnerable to injury for several reasons. One key factor is their physical characteristics, such as smaller size and developing muscles and bones, which can make them more prone to accidents and injuries. Children also have less coordination and balance than adults, which",196,0,0.8304982,0.3103448230677765,0.14705881896193787,0.3103448230677765,0
+13,What care should be taken for any life threatening conditions?,Care for any life-threatening conditions should be given first.,"If someone is experiencing a life-threatening condition, it is important to act quickly and seek emergency medical assistance. Here are some general steps to take in case of a life-threatening emergency:
+
+1. Call emergency services: Dial 911 (or the local emergency",34,0,0.4321979,0.04545454220041345,0.0,0.04545454220041345,0
+14,What are the symptoms of hyperglycemia?,"With hyperglycemia, the body cells cannot get the sugar they need, causing waste products to build up in the body and making the person ill. This may also cause the person's breath to have a fruity or sweet odor.","Hyperglycemia, or high blood sugar, can cause a variety of symptoms, including:
+
+1. Frequent urination
+2. Increased thirst
+3. Fatigue
+4. Blurred vision
+5. Unexplained weight loss
+6",131,0,0.59269696,0.0983606507712983,0.0,0.06557376552539677,0
+15,Where should you keep your first aid kit?,In your home and vehicle,"Your first aid kit should be easily accessible and located in a central area of your home, such as the kitchen or bathroom. It is important that all family members know where it is kept and can easily find it in case of an emergency. Make sure",12,0,0.39150295,0.08695651980151234,0.0,0.043478258931947164,0
+16,What should you do if someone is experiencing life-threatening bleeding?,"If someone is experiencing life-threatening bleeding, you should have the person rest in a comfortable position. If the person prefers to lie down, or is unresponsive, drooling, or having trouble swallowing, place the person in the recovery position. Call EMS/9-1-1 and get an AED. Monitor the person's condition and provide reassurance until EMS personnel arrive.","If someone is experiencing life-threatening bleeding, it's important to act quickly. Here's what you can do:
+
+1. Call for emergency medical help immediately. Dial your local emergency number or ask someone nearby to call for help.
+2. While waiting for",59,0,0.5895354,0.2597402548085681,0.10989010499215092,0.23376622883454223,0
+17,What are the signs of infection in a puncture wound?,"Signs of infection in a puncture wound may include bleeding, bruising, and a hole where the object went through the skin.","Signs of infection in a puncture wound may include:
+
+1. Increased pain, redness, swelling, or warmth around the wound
+2. Pus or cloudy fluid draining from the wound
+3. Development of a foul odor coming from the",92,0,0.84694207,0.3749999952170139,0.2592592545953361,0.3749999952170139,0
+18,What should you do if a child or baby suffers a seizure during a high fever?,"If a child or baby suffers a seizure during a high fever, follow the care steps for febrile seizures.","If a child or baby suffers a seizure during a high fever, it is crucial to stay calm and follow these steps:
+
+1. Ensure the safety of the child by removing any nearby objects that could harm them during the seizure.
+2. Place the child",193,0,0.7718531,0.45283018432182276,0.36065573354474606,0.45283018432182276,0
+19,How can you approach medical advice in the marine environment?,"In a marine environment, medical advice can be accessed through:
+1. Mobile phone.
+2. Radiotelephone contact with a shore radio station.
+3. Radiotelephone contact with a nearby port or ship with a doctor on board.","When providing medical advice in the marine environment, there are a few important considerations to keep in mind:
+
+1. Safety first: Ensure the safety of the patient as well as yourself in the marine environment. Be aware of potential hazards such as rough seas,",33,0,0.6382551,0.190476185537919,0.05633802328903038,0.1587301537918873,0
+20,What precautions should you take when drinking alcohol?,Drink responsibly. Alcohol is often a factor in serious motor vehicle collisions and water injuries. Alcohol slows down your reflexes and gives you a false feeling of confidence.,"When drinking alcohol, it's important to take several precautions to ensure your safety and well-being. Here are some key precautions to keep in mind:
+
+1. Know your limits: Be aware of how much alcohol you can handle before experiencing negative effects. Pace",114,0,0.48035157,0.15873015394305884,0.0,0.12698412219702712,0
+21,What determines the severity of an allergic reaction?,The severity of an allergic reaction depends on the person.,"Several factors can determine the severity of an allergic reaction, including:
+
+1. Type of allergen: Some allergens are more potent than others and can trigger a more severe reaction.
+2. Sensitivity: The level of sensitivity or allergy that an individual",84,0,0.7129399,0.311111107654321,0.12499999695312508,0.2666666632098766,0
+22,What is the role of cholesterol in cardiovascular disease?,"Cholesterol can build up in the bloodstream and stick to the blood vessel walls, narrowing the blood vessels and reducing blood flow. This can lead to cardiovascular disease.","Cholesterol plays a key role in the development of cardiovascular disease. Over time, high levels of cholesterol in the blood can lead to the buildup of plaque in the arteries, a condition known as atherosclerosis. This buildup can restrict or block blood flow",54,0,0.8146585,0.41509433483802066,0.21212120734618925,0.41509433483802066,0
+23,What are some ways to prevent frostbite?,"Some tips to prevent frostbite include never ignoring numbness, covering up vulnerable areas, wearing mittens instead of gloves, maximizing foot insulation, wearing clothing in layers, keeping well hydrated, and keeping clothing dry and changing out of wet clothing as soon as possible.","To prevent frostbite, you should take the following precautions:
+
+1. Dress in warm, layered clothing: Wear multiple layers of loose-fitting clothing to trap body heat and protect from extreme cold.
+
+2. Protect your extremities: Wear insulated gloves or",149,0,0.8191812,0.16666666167052485,0.0,0.11111110611496937,0
+24,Where should you ride when using a sex bike?,In low-traffic areas.,"When using an exercise bike, it is important to adjust the seat to a comfortable height that allows for proper leg extension while pedaling. Your knees should be slightly bent at the lowest point of the pedal stroke. Make sure your posture is upright and your",197,0,0.17086346,0.0,0.0,0.0,0
+25,What is Hypothermia?,A person dressed appropriately for the weather conditions will take 30 minutes or more to become mildly hypothermic.,"Hypothermia is a medical emergency that occurs when the body loses heat faster than it can produce heat, causing a dangerously low body temperature. This condition can occur when a person is exposed to cold temperatures for an extended period of time, particularly if",155,0,0.6429385,0.1428571384948981,0.0,0.10714285278061242,0
+26,Should security gates be replaced with permanent surveillance?,"No, safety gates are not a substitute for constant supervision. Always monitor children closely, even if a safety gate is in place.","The decision to replace security gates with permanent surveillance would depend on various factors such as the specific security needs of the location, budget considerations, and privacy concerns. Surveillance cameras can provide continuous monitoring of an area, but they may not necessarily deter unauthorized access in",198,0,0.46055734,0.09523809090451016,0.0,0.09523809090451016,0
+27,What should you do if a glucometer is available?,Having the person check his or her blood sugar will reveal whether he or she has hyper- or hypoglycemia.,"If a glucometer is available, you can use it to measure your blood glucose levels. This can be especially important for individuals with diabetes to monitor their blood sugar levels regularly. Make sure to follow the instructions provided with the glucometer for accurate",133,0,0.46456704,0.11764705437908515,0.03333332913333387,0.11764705437908515,0
+28,What are signs and symptoms of a foreign object in the nose?,"An object in the nose may be visible, and may also cause unusual noises when the person breathes through his or her nose, bleeding, and nose deformity.","Signs and symptoms of a foreign object in the nose may include:
+- Pain or discomfort in the nose
+- Nasal congestion or difficulty breathing through the nose
+- Persistent runny nose or nasal discharge
+- Nosebleeds
+- Foul",101,0,0.703387,0.319999995032,0.1333333284222224,0.2399999950320001,0
+29,What routine information about the person should be prepared?,Routine information about the person should be prepared.,"Some routine information that can be prepared for a person includes:
+
+1. Full name
+2. Date of birth
+3. Contact information (phone number, email address)
+4. Address
+5. Emergency contact information
+6. Medical history and any",34,0,0.52442265,0.19047618739229027,0.04761904484127,0.1428571397732427,0
+30,What is the first aid under the Samaritan laws?,"A First Aider is required to use common sense and a reasonable level of skill, as well as provide only the type of emergency care that is within their training. They should act in the same manner as a 'reasonable and prudent person' would in the same situation.","The term ""Samaritan laws"" is not commonly used in first aid. However, if you are referring to providing first aid under Good Samaritan laws, these laws vary from state to state and country to country but generally protect individuals from liability when",16,0,0.4064025,0.109589036104335,0.0,0.109589036104335,0
+31,Is it true that a person with a suspected stroke does not need medical attention if their signs and symptoms dissipate?,"No, it is not true. TIA signs and symptoms will disappear within a few hours, but the person still needs to be checked by a medical professional. TIAs are warning signs and are often quickly followed by strokes. Always call EMS/9-1-1 if the person has demonstrated signs and symptoms of a TIA or stroke, even if the signs and symptoms have lessened in severity or disappeared completely.","No, that is not true. If someone is suspected of having a stroke, it is crucial that they receive immediate medical attention, even if their signs and symptoms seem to dissipate. Transient ischemic attacks (TIAs) or ""mini-strokes",59,0,0.66217464,0.3855421638380026,0.12631578476675917,0.361445778295834,0
+32,What are the international hazard symbols used for?,The international hazard symbols on product labels make it easier to identify harmful materials.,"International hazard symbols are used to communicate the presence of hazardous materials or dangerous conditions. They are typically used on containers, packaging, or signage to alert individuals to potential risks such as toxicity, flammability, corrosiveness, biohazards, and",160,0,0.756544,0.2173913001134216,0.040816322632236945,0.2173913001134216,0
+33,What is the responsibility of every adult in Canada regarding child abuse or neglect?,"Every adult in Canada has a legal duty to report child abuse or neglect, even if it is not confirmed. If you are responding to a first aid emergency and you think a child is being harmed, then there needs to be a report to child protection and/or police. Even if you are unsure, child protection needs to be informed and needs to guide the next steps. Also share your concerns with the EMS personnel who respond to the situation.","Every adult in Canada has a legal responsibility to report any suspected child abuse or neglect to the appropriate child welfare authorities. This obligation is outlined in the Child, Youth and Family Services Act. Failure to report suspected child abuse or neglect could result in legal penalties",17,0,0.83881474,0.3370786469637672,0.17391303888998122,0.31460673685140766,0
+34,Why don't you allow a woman to give birth?,Do not let the woman leave to use the restroom.,"I'm here to provide information and support, but I don't have the ability to allow or disallow anything, including a woman giving birth. Giving birth is a natural process that occurs because of biological factors and individual choices. If you have any questions",139,0,0.16012995,0.12765957137166148,0.0,0.0851063798822998,0
+35,What precautions should I take when drinking alcohol?,Drink responsibly. Alcohol is often a factor in serious motor vehicle collisions and water injuries. Alcohol slows down your reflexes and gives you a false feeling of confidence.,"When drinking alcohol, it's important to take the following precautions:
+
+1. Drink in moderation: Limit your alcohol consumption to reduce the risk of negative effects on your health and well-being.
+
+2. Stay hydrated: Drink water in between alcoholic beverages to stay",114,0,0.4882229,0.199999995138889,0.0,0.199999995138889,0
+36,How long is chickenpox contagious?,"Chickenpox is most contagious 1 to 2 days before the rash appears, and for approximately 5 days after onset, or until the lesions have become crusted.","Chickenpox is contagious until all the blisters have crusted over. This usually takes about 5 to 7 days after the rash first appears. It is important to avoid contact with people who have weakened immune systems, infants, pregnant women,",188,0,0.8597412,0.4067796561907498,0.09523809045099545,0.37288135110600407,0
+37,When should you first care?,"You should provide care first in the following situations:
+1. The person is choking or is experiencing anaphylaxis and carrying epinephrine.
+2. The person has life-threatening bleeding.
+3. The person is an unresponsive child or baby who is not breathing.","It's always important to prioritize self-care and well-being. You should start caring for yourself from a young age and continue to prioritize self-care throughout your life. Remember, taking care of yourself is essential for your overall health and happiness. If you're",33,0,0.3480308,0.15384614884733747,0.02702702203068025,0.15384614884733747,0
+38,How quickly does it grow after infection?,"Croup develops more gradually, from 24 to 72 hours after infection.","The speed at which an infection spreads and grows can vary depending on the type of pathogen involved, the individual's immune response, and factors such as the site of infection and overall health of the person. In general, some infections may progress rapidly over",191,0,0.46677625,0.042553187904029274,0.0,0.042553187904029274,0
+39,What determines the severity of an allergic reaction?,The severity of an allergic reaction depends on the person.,"The severity of an allergic reaction can be influenced by various factors, including the individual's immune system, the specific allergen involved, the route of exposure, and any underlying health conditions. 
+
+For example, someone with a stronger immune response may experience more",84,0,0.7931997,0.29787233707559985,0.20408162965431073,0.29787233707559985,0
+40,What are the common types of seizures?,"Common types of seizures include tonic-clonic or convulsive seizures, absence seizures, and focal or partial seizures.","There are several common types of seizures, including:
+
+1. Generalized seizures: involve both sides of the brain. Examples include tonic-clonic seizures (previously known as grand mal seizures), absence seizures (previously known as petit mal seizures), and",134,0,0.85815513,0.3809523766780046,0.0869565173440456,0.3333333290589569,0
+41,What is environmental illness?,The information provided does not include details about environmental illness.,"Environmental illness, also known as multiple chemical sensitivity (MCS) or sick building syndrome, is a chronic condition in which a person experiences a range of symptoms believed to be triggered by exposure to low levels of chemicals or irritants in the environment. These",157,0,0.21217218,0.0,0.0,0.0,0
+42,What do you remember the first time you help someone with speech or language impairment?,"Ask questions that can be answered with 'Yes' or 'No', give the person time to communicate, and wait for the person to finish speaking.","I don't have personal memories or experiences, as I am a computer program here to assist you. However, I can provide information and resources related to speech and language impairments if you need help. Let me know if you have any specific questions or",43,0,0.1942839,0.1785714238839287,0.0,0.1785714238839287,0
+43,What should you have to cover an injured eye?,Eye patches,"If you have an injured eye, you should cover it with a clean, sterile eye patch or gauze bandage. This can help protect the eye from further injury and also reduce the risk of infection. Make sure not to put pressure on the",12,0,0.6342532,0.0,0.0,0.0,0
+44,How can you make your workplace clean and tidy?,"Make sure that your workplace is clean and tidy. Keep floors and aisles uncluttered and make sure that there is nothing blocking stairways, work sites, or exits.","Here are some tips to help you keep your workplace clean and tidy:
+
+1. Declutter regularly: Remove unnecessary items from your workspace to avoid clutter and keep things organized.
+
+2. Wipe down surfaces: Use disinfectant wipes or a damp cloth",114,0,0.6081936,0.17241378839476829,0.06249999523925818,0.17241378839476829,0
+45,Do gloves eliminate the need for proper hygiene?,"No, wearing gloves helps to protect you from infection, but it does not eliminate the need for proper hygiene. First Aiders should always wash their hands thoroughly when they have finished giving care, even if they wore gloves the entire time.","No, gloves do not eliminate the need for proper hygiene. While gloves provide a barrier between your hands and potentially harmful substances, it is still important to practice good hygiene by washing your hands regularly, especially before and after using gloves. Proper handwashing is",23,0,0.78925663,0.31999999500088894,0.14634145841760873,0.29333332833422227,0
+46,When do you want a person from face to face position?,"You should roll a person from a face-down to a face-up position if they are unresponsive, not breathing, or if the face-down position makes it impossible to check the person's ABCs.",I'm here to help you and support you whenever you need assistance. Just let me know how I can help you further.,32,0,0.0022899164,0.047619042721088946,0.0,0.047619042721088946,0
+47,What are the common causes of shortness of breath?,"Some common causes of respiratory distress include hyperventilation, asthma or chronic obstructive pulmonary disease (COPD), pneumonia or bronchitis, allergic reactions, anaphylaxis, heart attack or heart failure, chest trauma, poisoning, drug overdose, electrocution, and certain mental health conditions.","Shortness of breath, also known as dyspnea, can be caused by a variety of factors. Some common causes include:
+
+1. Respiratory conditions: Asthma, chronic obstructive pulmonary disease (COPD), pneumonia, and other respiratory",80,0,0.6244774,0.3384615334721894,0.17910447263978627,0.30769230270295866,0
+48,When should I use hemostatic agents?,Hemostatic dressings are used in cases of life-threatening bleeding where standard first aid procedures fail or are not practical.,"Hemostatic agents are used to help control bleeding, typically in situations where more traditional methods like pressure or sutures are ineffective. You should consider using hemostatic agents in the following situations:
+
+1. In cases of severe bleeding that cannot be",62,0,0.69991463,0.32727272286942155,0.07017543427516186,0.32727272286942155,0
+49,Is first aid for both types of diabetes the same?,"Yes, first aid is the same for both types of diabetic emergencies (hyperglycemia and hypoglycemia).","First aid for diabetes can vary depending on the type of diabetes a person has. For Type 1 diabetes, first aid may involve administering glucose to help raise low blood sugar levels. For Type 2 diabetes, first aid may involve helping the person manage",132,0,0.640079,0.2083333290364584,0.03846153452662762,0.2083333290364584,0
+50,What should you do if there is a chemical or caustic substance in the eye?,"If there is a chemical or caustic substance in the eye, gently flush the eye with running water (away from the unaffected eye) for at least 15 minutes, or until EMS personnel arrive.","If a chemical or caustic substance comes into contact with the eye, it is important to act quickly and take the following steps:
+
+1. Immediately rinse the eye with lukewarm, clean water for at least 15 minutes. Hold your eyel",103,0,0.796289,0.4776119353530853,0.2816901358936719,0.44776118908442863,0
+51,How can high blood pressure be controlled?,"High blood pressure can be controlled with exercise, diet control, stress reduction, and medication.","High blood pressure can be controlled through a combination of lifestyle changes and medication. Some strategies to help control high blood pressure include:
+
+1. Adopting a healthy diet: Eating a diet that is low in salt, saturated fats, and cholesterol, and high",55,0,0.79760855,0.3673469346938775,0.2264150906372375,0.3673469346938775,0
+52,How many breaths should you give?,Give 2 breaths.,"Typically, an adult at rest breathes in and out about 12 to 20 times per minute. It's important to breathe naturally and not focus too much on the exact number of breaths. If you are feeling short of breath or experiencing",67,0,0.5761018,0.04878048644854257,0.0,0.04878048644854257,0
+53,What is a puncture wound?,"A puncture wound occurs when a hole in the skin is created by a pointed object, such as nails, pieces of glass, and animal teeth.","A puncture wound is a type of injury caused by a sharp object penetrating the skin, creating a small hole or entryway into the body. Common causes of puncture wounds include needles, nails, knives, or sharp objects. These wounds can be",92,0,0.8213173,0.35087718810710994,0.09374999531250022,0.24561403021237313,0
+54,What should you do when considering second-hand equipment or toys?,"When considering second-hand equipment or toys, first check the label and contact Health Canada to find out if there has been a recall or safety alert on that specific model.","When considering second-hand equipment or toys, there are a few important things to keep in mind:
+
+1. Safety: Ensure that the equipment or toys meet current safety standards. Check for any recalls, damages, missing parts, or signs of wear and tear",196,0,0.6041792,0.3880596965827579,0.14705881863754341,0.32835820404544447,0
+55,Where is poison ivy found?,All provinces except Newfoundland and Labrador,"Poison ivy is commonly found in North America, particularly in wooded or overgrown areas, along roadsides, and in grassy fields. It can also be found in urban areas along fences, walls, and in gardens. Poison ivy tends",167,0,0.0096925385,0.05882352650519045,0.0,0.05882352650519045,0
+56,What areas should you prioritize when conducting a hands-on check?,"When conducting a hands-on check, you should prioritize checking the head, chest, abdomen, and legs before checking the arms.","When conducting a hands-on check, it is important to prioritize the following areas:
+
+1. Safety: Check for any potential safety hazards or risks in the area, such as exposed wiring, slippery floors, or loose objects.
+
+2. Equipment and tools:",39,0,0.67276317,0.2962962919821674,0.1454545411834712,0.2962962919821674,0
+57,What should you do after each compression?,Allow the chest to fully recoil.,"After each compression during CPR, it is important to allow the chest to fully recoil. This means letting the chest come back up to its natural position before starting the next compression. Providing adequate time for chest recoil enhances blood flow and improves the effectiveness of chest",66,0,0.7698993,0.23255813713358575,0.1599999982,0.23255813713358575,0
+58,How should you care for full-thickness burns?,"Stop the burn from worsening by cooling the affected area with clean running or standing water for at least 10 minutes. Remove jewellery and clothing from the burn site. Cover the burn loosely with a dry, sterile dressing. Have the person lie down until EMS personnel arrive.","Caring for full-thickness burns is crucial to promote healing and prevent infection. Here are some steps to care for full-thickness burns:
+
+1. Seek medical attention immediately: Full-thickness burns are severe and require medical treatment. Call emergency services or",97,0,0.58163303,0.08571428077959212,0.0,0.08571428077959212,0
+59,How can fainting be prevented?,"To prevent fainting, it is important to stay hydrated, eat at regular intervals to maintain a consistent blood sugar level, and get up slowly from sitting or lying down.","Fainting, also known as syncope, can be caused by a variety of factors, such as dehydration, low blood sugar, standing up too quickly, or underlying medical conditions. Here are some tips that may help prevent fainting:
+
+1. Stay",130,0,0.555005,0.153846148942012,0.0,0.153846148942012,0
+60,What should you do if the AED fails to work properly or warning indicators appear?,"If the AED fails to work properly or warning indicators appear, you should take the AED out of service and contact the manufacturer or the appropriate person at your place of employment. You may need to return the AED to the manufacturer for service. If the AED stops working during an emergency, continue giving CPR until EMS personnel take over.","If the AED fails to work properly or shows warning indicators, you should immediately stop using it and follow these steps:
+
+1. Ensure the electrodes are properly connected to the AED and placed on the person's bare chest as directed.
+
+2. Check",78,0,0.7310784,0.3076923027449047,0.1914893568130377,0.3076923027449047,0
+61,What are some mental health conditions that people may be suffering from?,"People in distress may be suffering from a number of mental health disorders including substance-related disorders, mood disorders, anxiety disorders, or psychotic disorders.","There are numerous mental health conditions that people may be suffering from, some common examples include:
+
+1. Depression
+2. Anxiety disorders (including generalized anxiety disorder, panic disorder, social anxiety disorder, etc.)
+3. Bipolar disorder
+4. Sch",136,0,0.77081794,0.2592592545953361,0.10526315315481707,0.18518518052126212,0
+62,How can wearing helmets reduce the risk of head injuries?,Wearing helmets can reduce the risk of a serious or fatal head injury by up to 80%.,"Wearing helmets can reduce the risk of head injuries by providing a protective layer around the skull to absorb and distribute the impact of a blow or collision. Helmets are designed to cushion the head and protect the brain from serious injuries such as fractures, conc",200,0,0.7894332,0.49056603337842647,0.2295081928513841,0.3773584862086152,0
+63,What can TIA do?,A TIA may be caused by a tumor or a clot in an artery in the brain.,"TIA, which stands for Thanks in Advance, is a common acronym used in written communication to express gratitude for future assistance or a favor. If you are asking about a specific product, service, or organization named TIA, please provide more context so",59,0,0.4301194,0.11764705467128042,0.0350877152600805,0.07843136839677069,0
+64,What is hypothermia?,Hypothermia occurs when the body’s core temperature drops to 35°C (95°F) or lower. It becomes life-threatening when the core temperature drops below 28°C (82.4°F).,"Hypothermia is a medical emergency that occurs when a person's body loses heat faster than it can produce heat, resulting in a dangerously low body temperature. This can happen when a person is exposed to cold weather or cold water for an extended period",151,0,0.764174,0.21428570969387764,0.031746027301587924,0.21428570969387764,0
+65,What should I do to reduce my child's fever?,"Sponge the child with room temperature water and give the child plenty of fluids to ensure that he or she stays hydrated. If the fever rises above 39°C (102°F) or persists for more than 3 days, seek medical attention. Give fever-reducing medications as discussed with the healthcare practitioner.","To help reduce your child's fever, you can try the following:
+
+1. Give them a fever-reducing medication such as acetaminophen (Tylenol) or ibuprofen (Advil), following the recommended dosage based on your",193,0,0.5228847,0.14084506559016083,0.0,0.14084506559016083,0
+66,What are the common causes of anaphylaxis?,"Common causes of anaphylaxis include insect stings, food, and medications.","Anaphylaxis is a severe allergic reaction that can be life-threatening. Common causes of anaphylaxis include:
+
+1. Food allergies, most commonly triggered by peanuts, tree nuts, shellfish, fish, milk, eggs, and soy.
+",86,0,0.7845238,0.23809523446712022,0.1499999965125001,0.23809523446712022,0
+67,What should you do if someone else has to leave to make the call for you?,"If someone else has to leave to make the call for you, ask that person to come back and tell you what the EMS/9-1-1 dispatcher said. If using a mobile phone, the person can stay with you while placing the call and speaking to the dispatcher.","If someone else needs to leave to make a phone call for you, you can wait for them to return so they can help you. Alternatively, you can ask them to make the call on your behalf or assist you in making the call once they return",32,0,0.7291831,0.43749999500488285,0.20930232058409964,0.3749999950048829,0
+68,How can you try to remove a foreign object from the eye?,"To try to remove a foreign object from the eye, have the person blink several times. The eye will produce tears that may wash out the object. An object that is not touching the eye itself (e.g., in the corner of the eye) may be removed with a moist cotton-tipped applicator. If these steps do not remove the object, the person should seek medical attention.","Here are some steps you can follow to try to remove a foreign object from the eye:
+
+1. Wash your hands thoroughly with soap and water before touching your eye.
+2. Rinse your eye with clean water or saline solution to help flush out the",103,0,0.84556293,0.2954545405810951,0.1481481433556243,0.2954545405810951,0
+69,What can cause a TIA?,A TIA may be caused by a tumor or a clot in an artery in the brain.,"A transient ischemic attack (TIA) occurs when there is a temporary disruption in blood flow to the brain, resulting in stroke-like symptoms that typically last for a few minutes to a few hours. The underlying causes of a TIA are similar to",59,0,0.6352576,0.19999999580000008,0.0,0.15999999580000013,0
+70,What are the symptoms of Prickly Heat?,"A rash of tiny, pinpoint blisters surrounded by blotches of pink skin. It occurs in hot weather or whenever a child or baby is overdressed.","Prickly heat, also known as heat rash, typically presents with the following symptoms:
+
+1. Red bumps or small blisters
+2. Itchy or prickly sensation on the skin
+3. Mild swelling
+4. In some cases,",185,0,0.58800393,0.1090909042247936,0.0,0.1090909042247936,0
+71,What are the signs and symptoms of a blunt chest injury?,"The signs and symptoms of a blunt chest injury include pain, deformity or swelling, guarded shallow breathing, and bruising at the site.","Signs and symptoms of a blunt chest injury may include:
+
+1. Chest pain
+2. Difficulty breathing
+3. Rapid or shallow breathing
+4. Coughing up blood
+5. Bruising or swelling on the chest
+6. T",109,0,0.88929474,0.38461537980029586,0.2222222174691359,0.38461537980029586,0
+72,How are wooden toys assembled?,Wooden toys should be glued or screwed together instead of nailed.,"Wooden toys are typically assembled using a combination of techniques, depending on the specific design and complexity of the toy. Here are some common methods for assembling wooden toys:
+
+1. Step-by-step assembly: Wooden toy kits often come with detailed instructions that outline",198,0,0.62280273,0.12499999646701399,0.03921568312187646,0.12499999646701399,0
+73,Where should medicine be kept?,Emergency medicine should be accessible at all times but out of the reach of children.,"Medicine should be kept in a cool, dry place away from direct sunlight and moisture. It is advisable to store medicine in a secure location, out of reach of children and pets. Some medicines may need to be stored in the refrigerator, so always",194,0,0.4129899,0.31372548621299506,0.14285713910714296,0.31372548621299506,0
+74,What Causes Ischemic Stroke?,"An ischemic stroke is caused by a clot becoming lodged in an artery of the brain, usually due to narrowing of the artery from cardiovascular disease.",Ischemic stroke is typically caused by a blockage in an artery that supplies blood to the brain. The blockage is usually due to a blood clot that forms within an artery or travels from elsewhere in the body and becomes lodged in a brain artery,58,0,0.8541359,0.555555550665295,0.23880596555134778,0.40740740251714685,0
+75,What are some common causes of eye injuries?,"Foreign objects or particles in the eye, an impact to the eye, radiation or burns, chemicals or other caustic materials.","Some common causes of eye injuries include:
+
+1. Foreign objects entering the eye, such as dust, debris, or particles
+2. Chemical exposure or splashes
+3. Blows to the eye from accidents, sports activities, or fights
+4",102,0,0.6380558,0.29166666222222226,0.15094339174083315,0.2499999955555556,0
+76,"When should you move a person with a head, neck, or spinal injury?","You may need to move a person with a head, neck, and/or spinal injury in the following situations: 1) The person’s airway is blocked (for example, if the person vomits) 2) The scene of the emergency becomes dangerous 3) There is no organized EMS response in the region (for example, if the injury occurs in a very remote area)","If a person has a head, neck, or spinal injury, it is important to avoid moving them unless absolutely necessary. Moving them incorrectly can worsen their injury and potentially cause paralysis or other serious complications. If the person is in immediate danger or if",116,0,0.7333583,0.27160493330894686,0.08247422186842414,0.24691357528425553,0
+77,"At what level should a complaint of abuse, neglect, harassment, or harassment be taken?",The complaint cannot be diminished or ignored. There must always be a response. Both verbal and non-verbal disclosures need to be handled sensitively while following specific procedures.,"Any complaint of abuse, neglect, harassment, or discrimination should be taken seriously and reported to the appropriate authorities or organizational policies at the earliest opportunity. In general, these types of complaints should be reported to a supervisor, manager, human resources department, or",18,0,0.52452296,0.20338982562482055,0.0,0.20338982562482055,0
+78,What are the symptoms of osteoporosis?,"The loss of density and strength leaves bones more susceptible to fractures (especially of the hips, vertebrae, and wrists). Instead of being caused by tremendous force, fractures may now occur spontaneously, with little or no aggravation, trauma, or force.","Common symptoms of osteoporosis may include:
+
+1. Back pain, caused by fractured or collapsed vertebrae
+2. Loss of height over time
+3. Stooped posture
+4. Easy fracturing of bones, particularly in the hip,",128,0,0.50494015,0.18461537962603566,0.028571423608164125,0.18461537962603566,0
+79,What should you do if you're afraid of being sued for making a mistake in first aid?,"As long as you act reasonably, you don't need to worry about being sued. All provinces and territories have laws to protect bystanders who give emergency help.","If you are providing first aid in good faith and to the best of your ability, you are generally protected from liability under Good Samaritan laws in many jurisdictions. However, it is important to always act within your scope of training and knowledge, seek consent",15,0,0.44685456,0.15873015394305884,0.0,0.09523809045099545,0
+80,What are the signs and symptoms of an allergic reaction?,"The signs and symptoms of an allergic reaction can vary depending on the trigger, but they typically involve the airways, skin, sinuses, nasal passages, cardiovascular system, and digestive systems. Common symptoms include runny or stuffy nose, sneezing, itchy or swollen eyes, nausea, vomiting, diarrhea, rash or hives, tingling of the mouth, swelling of the lips, tongue, face, or throat, coughing, chest tightness, wheezing, shortness of breath, weakness, dizziness, or confusion.","Signs and symptoms of an allergic reaction can vary depending on the individual and the severity of the reaction. Some common signs and symptoms include:
+
+1. Skin reactions such as hives, itching, or rash
+2. Swelling of the face,",85,0,0.7363857,0.36363635914256204,0.23076922624260363,0.34090908641528933,0
+81,How do you use the scale?,Use ladders carefully and correctly.,"To use a scale, you typically place the item you want to weigh on the scale platform or tray. Make sure the scale is properly calibrated and adjusted to zero. Read the display to see the weight measurement. If the scale has different units, make",114,0,0.2280157,0.04999999781250009,0.0,0.04999999781250009,0
+82,What to do with unexpected funds?,"Common items such as rolled newspapers, scarves, belts, and pillows can be used to improvise slings and splints if commercial versions are not available. Medical tape and medical braces can also be used to support strains and sprains.","When you receive unexpected funds, such as a windfall or bonus, it's important to make smart decisions about how to manage and use the money. Here are some suggestions on what you can do with unexpected funds:
+
+1. **Emergency Fund**: Consider",124,0,0.082988404,0.1739130385297208,0.026666661688889814,0.1739130385297208,0
+83,Does wearing gloves eliminate the need for personal hygiene?,"No, wearing gloves helps to protect you from infection, but it does not eliminate the need for proper hygiene. First Aiders should always wash their hands thoroughly when they have finished giving care, even if they wore gloves the entire time.","Wearing gloves can help prevent the direct contact of your hands with potentially harmful substances, but it does not eliminate the need for personal hygiene. Proper hand hygiene, such as washing hands with soap and water or using hand sanitizer, is important to prevent the",23,0,0.72341347,0.31168830668915504,0.17073170232004772,0.31168830668915504,0
+84,Who should give the first dose of a new medication?,"Parents or guardians should give the first dose of a new medication so that they can watch for any unusual signs, symptoms, reactions, or behaviors in their children or babies.","The first dose of a new medication should ideally be given by a healthcare professional, such as a doctor, nurse, or pharmacist. They can provide important information about the medication, including dosage instructions, potential side effects, and how to take it properly.",193,0,0.6836599,0.2941176422145329,0.14285713800408179,0.23529411280276827,0
+85,How do you respond when violence is exposed?,A person revealing experiences of abuse—past or present—can be challenging and upsetting. Your response to the disclosure is critical. Studies show that the manner in which a disclosure of interpersonal violence is handled is a significant factor in determining the psychological impact on the victim. Indifference and blame are damaging responses that can have long-lasting consequences.,"When violence is exposed, it is important to respond with empathy, support, and a commitment to justice. Here are some steps you can take:
+
+1. Prioritize safety: Ensure that anyone involved in or affected by the violence is safe and has the",17,0,0.55833346,0.27160493333333335,0.021052626703602237,0.24691357530864202,0
+86,What would you do if you were choking and needed to cry for help?,"Calling EMS/9-1-1 does not always tell the dispatcher your location. It is important to move to a public area or a place where you are likely to be seen. If using a mobile phone, enhanced 9-1-1 services may be able to triangulate your position, but it is accurate only to within several hundred meters. If using a VOIP system, the location of the call depends on how the system is set up. If calling from a landline phone, your exact position within the building will not be pinpointed.","If I were choking and needed to cry for help, I would try to attract someone's attention by making noise, such as coughing loudly or banging on something nearby. If there is no one around, I would attempt to perform the Heimlich",50,0,0.18681055,0.12121211658402223,0.0,0.12121211658402223,0
+87,How does angina differ from a heart attack?,"The signs and symptoms of angina are similar to a heart attack, but the pain in angina is usually triggered by physical activity or stress, goes away if the person rests, and is often relieved by medication like nitroglycerin.","Angina and a heart attack are both conditions that affect the heart, but they have some key differences:
+
+1. Angina:
+- Angina is chest pain or discomfort that occurs when the heart muscle does not receive enough oxygen-rich blood.
+- It",57,0,0.5986489,0.2571428521469389,0.025641020644313926,0.1714285664326532,0
+88,When should I call EMS/9-1-1?,"EMS/9-1-1 should be called if the person is having trouble breathing, or if the sap is on the person's eyes, face, or groin.","You should call EMS/9-1-1 immediately in the following emergencies:
+
+1. Difficulty breathing 
+2. Severe chest pain
+3. Signs of stroke (facial drooping, arm weakness, slurred speech)
+4. Uncontrolled",166,0,0.6076075,0.13043477784499072,0.0,0.0869565169754256,0
+89,What is the proper technique for removing gloves without skin contamination?,"The proper technique for removing gloves without contaminating your skin is as follows:
+1. With one hand, pinch the glove at the wrist of your second hand, being careful to touch only the glove's outer surface.
+2. Pull the glove down and off your hand.
+3. Form the glove into a ball and hold it in the palm of your gloved hand.
+4. Insert your gloveless thumb under the glove of your other hand at the inner wrist.
+5. Pull the glove downward off the hand, turning it inside out and trapping the other balled glove inside.
+6. Discard gloves appropriately.
+7. Wash your hands thoroughly with soap and water for at least 30 seconds, using the proper handwashing technique.","To properly remove gloves without contaminating your skin, follow these steps:
+
+1. Grab one glove near the wrist and peel it off, turning it inside out as you pull it away from your hand.
+2. Hold the removed glove in the gloved",25,0,0.9013405,0.33628318149894276,0.11842104869200153,0.33628318149894276,0
+90,How does smoking affect the risk of cardiovascular disease?,Smoking is a major risk factor for developing cardiovascular disease. Smokers have a risk of sudden death that is 2 to 4 times greater than that of non-smokers.,"Smoking significantly increases the risk of developing cardiovascular disease. The chemicals in tobacco smoke can damage the lining of blood vessels, leading to the build-up of fatty deposits (atherosclerosis) that can restrict blood flow and increase the risk of heart attacks,",54,0,0.79122597,0.2909090860429753,0.09230768745088783,0.2909090860429753,0
+91,What should you use to secure dressings?,Adhesive tape,"You can use medical tape or adhesive bandages to secure dressings in place. Additionally, you can also use elastic bandages or gauze to hold dressings in place on larger wounds.",12,0,0.561536,0.08333333180555559,0.0,0.08333333180555559,0
+92,What are the symptoms of scabies?,"Many tiny blisters, scratch marks, and scaly crusts found mainly in skin folds (e.g., between fingers, on wrists, on the torso, and on genitals). Extreme itchiness.","Scabies symptoms can include:
+
+1. Intense itching, especially at night
+2. Small, red bumps or hives
+3. Thin, irregular burrow tracks made of tiny blisters or bumps on the skin
+4. Sores caused",184,0,0.36375776,0.14285713791454097,0.033898300120655714,0.14285713791454097,0
+93,What are the important things to remember when rolling a person into the recovery position?,"The important things to remember when rolling a person into the recovery position are:
+- Support and protect the head while rolling the person.
+- Try to roll the person as one unit (head, back, and legs at the same time).
+- Roll the person into a position where the body will stay safely on its side.
+- Position the head so that it keeps the airway open.
+- Check the ABCs (Airway, Breathing, Circulation) after completing the roll.","When rolling a person into the recovery position, there are several important things to remember to ensure their safety and well-being:
+
+1. Check for danger: Before moving the person, make sure the area is safe and there are no hazards that could harm them",35,0,0.79328185,0.2826086908034027,0.13793102986325817,0.17391303862948973,0
+94,What happens when a vertebra in the spine compresses or cuts the spinal cord?,"Severe injuries can move or break the vertebrae so that they squeeze or cut the spinal cord, causing temporary or permanent paralysis, or even death.","When a vertebra in the spine compresses or cuts the spinal cord, it can result in serious medical conditions and potentially lead to significant complications. This condition is known as spinal cord compression and can be caused by various factors such as trauma, herniated",112,0,0.7051233,0.16949152083883953,0.05970148793940779,0.1355932157540938,0
+95,How many compressions and breaths are recommended for infant CPR?,30 compressions and 2 breaths,"For infant CPR, it is recommended to perform 30 compressions followed by 2 breaths. The cycle of 30 compressions and 2 breaths should be repeated continuously until help arrives or the infant shows signs of responsiveness.",72,0,0.67469263,0.2857142832653061,0.21621621428780138,0.2857142832653061,0
+96,What is croup?,Croup is inflammation of the throat and vocal cords.,"Croup is a common respiratory illness in children, typically caused by a viral infection. It is characterized by a distinctive barking cough, hoarseness, and difficulty breathing due to swelling and narrowing of the upper airways. Croup is usually mild",191,0,0.77275944,0.24390243559785843,0.09090908793388439,0.19512194779298042,0
+97,When should you roll a person from a face-down to a face-up position?,"You should roll a person from a face-down to a face-up position if they are unresponsive, not breathing, or if the face-down position makes it impossible to check the person's ABCs.","You should roll a person from a face-down to a face-up position if they are unresponsive and not breathing. This can help open their airway and make it easier to administer CPR if needed. However, it's important to make sure you are",32,0,0.792072,0.5172413744589776,0.39436619230311454,0.5172413744589776,0
+98,Is it safe for a pregnant woman to use?,"Yes, it is safe to use an AED on a woman who is pregnant.","I'm sorry, could you please provide more context or specify the product or situation you are referring to in order for me to give you accurate information?",77,0,0.2538854,0.05555555094135841,0.0,0.05555555094135841,0
+99,What can you do to help ensure that care begins as soon as possible in a life-threatening emergency?,By preparing for emergencies.,"In a life-threatening emergency situation, the following steps can help ensure that care begins as soon as possible:
+
+1. Call emergency services: The first step is to call 911 or the appropriate emergency number in your area to request immediate assistance from trained medical",13,0,0.53138185,0.0,0.0,0.0,0
+100,How can you prevent tick bites?,"Avoid wooded areas and areas with high grass and leaf litter. Walk in the center of hiking trails. Wear long-sleeved shirts and pants, tuck your shirt into your pants and your pant legs into your socks or boots. Use insect repellents with DEET. Check gear and pets for ticks. Do a head-to-toe check for ticks after being outdoors. Put outdoor clothing in a tumble dryer on high heat. Seal the area where children's pants and socks meet to prevent ticks from entering.","To prevent tick bites, you can take the following precautions:
+
+1. Avoid areas with high grass and leaf litter.
+2. Walk in the center of trails.
+3. Use insect repellent that contains DEET or picaridin.
+4.",172,0,0.67223346,0.39175257270698266,0.19469026121074484,0.39175257270698266,0
+101,What should a man do if he suspects a concussion?,"If a person suspects they have a concussion, they should stop the activity they were engaged in when the incident occurred and seek medical attention as soon as possible. It is important to follow up with a qualified healthcare provider for a full evaluation and to receive appropriate care.","If a man suspects he has a concussion, here are the steps he should take:
+
+1. Seek medical attention immediately - Concussions can have serious consequences if not properly evaluated and treated. It's important to see a healthcare professional as soon as possible.
+
+",118,0,0.74373174,0.3999999950000001,0.15384614886124884,0.349999995,0
+102,What number do most people in Canada call for help in emergencies?,9-1-2001,"In Canada, the number most people call for help in emergencies is 911. This number connects you to police, fire, and medical services.",20,0,0.14568353,0.0,0.0,0.0,0
+103,What would you do if an elderly or pregnant adult chokes?,"If you cannot reach far enough around a person to perform abdominal thrusts, or if you are aiding a woman who is obviously pregnant, alternate between 5 firm back blows and 5 chest thrusts. Continue until the object comes out, the person begins to breathe or cough, or the person becomes unresponsive.","If an elderly or pregnant adult chokes, it is important to act quickly and effectively. Here are the steps you can follow:
+
+1. Stay calm and encourage the person to cough to try to dislodge the object themselves.
+2. If they",50,0,0.4806097,0.26315788979224386,0.06666666172839542,0.21052631084487544,0
+104,What should you do if your chest does not rise after the first breath?,"After the 30 chest compressions, look in the person’s mouth. If you see an object, carefully remove it by grasping the lower jaw and tongue (if possible) while opening the mouth, and using one finger to sweep behind the object to lift it out.","If the chest does not rise after the first breath, it may indicate that the breath was not effective in getting air into the lungs. In this situation, it is important to reassess the positioning of the person's head and neck to ensure that the",69,0,0.44901016,0.19444443944830261,0.0,0.19444443944830261,0
+105,What are the steps to prepare for pad application?,"The steps to prepare for applying the AED pads are:
+1. Remove or cut away clothing and undergarments to expose the person's chest.
+2. Move or remove any objects that could come into contact with the pads.
+3. If the person's chest is wet, dry it using a towel or gauze pad.
+4. Small amounts of chest hair will not interfere with pad adhesion. If the person has thick chest hair, shave the areas where the pads will be placed using the razor included with the AED prep kit.","Preparing for pad application involves several steps. Here are the general steps to follow:
+
+1. Clean the area: Before applying the pad, make sure the skin is clean and dry. Wash the area with mild soap and water, and pat it dry.
+
+",74,0,0.5314575,0.23999999545000006,0.032258060036421024,0.2199999954500001,0
+106,What labels cover electric toys?,Electrical toys must bear the Canadian Standards Association (CSA) label.,"When it comes to electric toys, there are several important labels that may be present on the packaging or the toy itself:
+
+1. **Age recommendation**: This label provides guidance on the appropriate age range for children who can safely play with the toy.
+
+2",198,0,0.6421851,0.08163264981257823,0.0,0.08163264981257823,0
+107,How can a breathing problem be identified?,A breathing problem can be identified by watching and listening to the person's breathing and by asking the person how they feel.,"Breathing problems can be identified through various symptoms and diagnostic tests. Some common signs of a breathing problem include shortness of breath, wheezing, chest tightness, persistent coughing, rapid breathing, and difficulty breathing during physical exertion.
+
+To",80,0,0.5807526,0.23529411307958487,0.10714285245535735,0.23529411307958487,0
+108,Where should the kids go skating and rollerblading?,Playgrounds and paths built for skateboarding and in-line skating.,"There are many places where kids can go skating and rollerblading. Some options include outdoor roller rinks, indoor skating facilities, skate parks, and designated paths or trails. Check for nearby parks with designated areas for skating or rollerblading, as",201,0,0.6660557,0.19512194807852473,0.0,0.19512194807852473,0
+109,What causes an ischemic stroke?,"An ischemic stroke is caused by a clot becoming lodged in an artery of the brain, usually due to narrowing of the artery from cardiovascular disease.","An ischemic stroke is caused by a blockage in an artery that supplies blood to the brain, leading to a decrease or lack of blood flow and oxygen to a specific part of the brain. This blockage can occur due to a blood clot that",58,0,0.85311085,0.5714285665880103,0.3333333287052342,0.5357142808737245,0
+110,What are the effects of numbness?,"Febrile seizures are seizures that occur in babies and young children when their body temperatures suddenly rise, usually due to a high fever.","Numbness is the lack of sensation, often described as a tingling or loss of feeling in a particular area of the body. The effects of numbness can vary depending on the underlying cause and the specific body part affected. Some common effects of",136,0,0.25979868,0.1454545406545456,0.0,0.1454545406545456,0
+111,How many breaths should you give?,2 breaths.,"On average, an adult at rest takes about 12 to 20 breaths per minute. It's important to breathe in a slow, controlled manner to maintain proper oxygenation and carbon dioxide elimination in the body. If you're feeling short of breath",68,0,0.612381,0.05128205030900725,0.0,0.05128205030900725,0
+112,"When do you suspect a head, neck, or spinal cord injury?","You should suspect a head, neck, and/or spinal injury in situations such as a fall from any height greater than the height of the person, any diving injury, a person found unresponsive for unknown reasons, or any injury that involves a strong blow to the lower jaw, head, or torso.","A head, neck, or spinal cord injury should be suspected if the person has been involved in any of the following situations:
+
+1. A significant impact to the head or neck, such as a fall from a height, a car accident, or a",113,0,0.77189827,0.4657534196809908,0.1538461488757398,0.35616437858510047,0
+113,What are the signs and symptoms of opioid addiction?,"Signs and symptoms of an opioid overdose include slowed breathing (or no breathing), chest tightness, extreme drowsiness or unresponsiveness, and small pupils.","The signs and symptoms of opioid addiction can vary depending on the individual, but they may include:
+
+1. Strong and persistent urge to use opioids, even when not in pain
+2. Needing higher doses of opioids to achieve the same effects (tol",169,0,0.6716062,0.1355932157540938,0.06451612455254975,0.1355932157540938,0
+114,How should a tourniquet be applied?,"To apply a tourniquet, follow these steps:
+1. Apply the tourniquet 5 to 10 cm (2 to 4 in.) above the injury, avoiding joints.
+2. Tighten the tourniquet until the bleeding stops.
+3. Secure the tourniquet in place.
+4. Document the time the tourniquet was tightened.","A tourniquet should be applied following these steps:
+
+1. Identify the location of the bleeding.
+2. Select a wide and flat band such as a belt, bandage, or purpose-built tourniquet.
+3. Place the t",61,0,0.7879023,0.27692307195266275,0.07894736350761804,0.27692307195266275,0
+115,Why should you avoid pushing on an injured person's pelvis with retarded hands?,"Pushing on a person's injured pelvis can cause serious injury or worsen an existing condition, so it should not be touched during the hands-on check.",It is important to avoid pushing on an injured person's pelvis with rapid hands because doing so can worsen their injury or cause further damage. Handling an injury with care and gentle movements is crucial to prevent any additional harm to the person's body.,39,0,0.78359663,0.3870967693808533,0.029850741670751434,0.2580645113163372,0
+116,How do you prevent them from falling around your home or workplace?,"Prevent falls around the home and workplace with non-slip floors, non-slip treads on stairs, handrails on staircases, rugs secured with double-sided adhesive tape, and handrails by the bathtub and toilet if necessary.","To prevent items from falling around your home or workplace, you can follow these tips:
+
+1. Secure loose items: Make sure that any objects that can easily tip over or fall are secured properly. This includes using adhesive putty, double-sided tape,",114,0,0.601036,0.19047618568909055,0.0,0.15873015394305884,0
+117,How can snow blindness be prevented?,"To help prevent snow blindness, wear sunglasses that block 100% of UV rays and prevent light from shining in from below, above, or the sides.","Snow blindness, also known as photokeratitis, is a painful eye condition caused by exposure to UV rays reflected off snow or ice. To prevent snow blindness, you can take the following precautions:
+
+1. Wear sunglasses or snow goggles that block 100",154,0,0.77092505,0.36666666193888897,0.12499999531250018,0.36666666193888897,0
+118,What rules does it specify for a child care tool in the middle of the story?,Provincial/territorial legislation specifies regulations for child care centre play equipment.,"I'm sorry, can you please clarify your question? Are you asking about rules in a specific story involving a child care tool?",198,0,0.43837684,0.13333332888888905,0.06666666246666693,0.13333332888888905,0
+119,What are some ways to reduce the risk of infection when performing first aid?,You can reduce the risk of infection by wearing gloves and using a CPR breathing barrier.,"Here are some tips to reduce the risk of infection when performing first aid:
+
+1. Wash your hands thoroughly with soap and water before and after providing first aid.
+2. Wear disposable gloves when treating open wounds or bodily fluids.
+3. Use sterile dress",15,0,0.43751067,0.24561403104955376,0.13793103064803816,0.24561403104955376,0
+120,What are dull chest injuries?,A blunt chest injury is caused by a crushing force that does not create a wound in the chest wall. The most common blunt chest injury is a broken rib.,"Dull chest injuries refer to blunt force trauma to the chest region that does not break the skin. These injuries can result from various mechanisms such as falls, motor vehicle accidents, or blunt force trauma during physical altercations. Symptoms of dull chest injuries",109,0,0.6823884,0.24561403027393053,0.09230768750769255,0.24561403027393053,0
+121,When should first aid wear gloves?,"Gloves should be worn during first aid when providing care, especially if there is a possibility of coming into contact with another person's blood or other potentially infectious material. Gloves should also be worn when handling items or surfaces soiled with blood or other potentially infectious materials.","It is important to wear gloves when providing first aid in the following situations:
+
+1. Treating open wounds or sores to prevent the risk of infection for both the first aider and the person receiving treatment.
+2. Handling bodily fluids like blood, vom",25,0,0.8544783,0.1917808169262527,0.048780482807852986,0.08219177583036248,0
+122,What should be done if the weight becomes tough?,"If a choking person becomes unresponsive, they should be lowered to the ground safely and CPR should be immediately started, beginning with chest compressions.","If the weight becomes tough during a workout, it's important to listen to your body and make adjustments as needed to avoid injury. Here are some tips for dealing with tough weights:
+
+1. Check your form: Ensure you are using the correct form for",52,0,0.16420025,0.2372881309164034,0.0,0.20338982583165768,0
+123,What does hypothermia involve?,A hypothermia wrap is a method to minimize heat loss in a person with hypothermia. It consists of layers of insulation and heat-reflecting material.,"Hypothermia is a medical emergency that occurs when your body loses heat faster than it can produce heat, causing your body temperature to drop below normal levels. This can happen when you are exposed to cold temperatures for an extended period of time, or",153,0,0.7124856,0.16666666211666678,0.030769226196450384,0.16666666211666678,0
+124,Is venous blood easier to manage than arterial blood?,"Yes, bleeding from veins (venous bleeding) is easier to control than arterial bleeding.","Both venous and arterial blood have their own characteristics and considerations when it comes to management. Venous blood is typically easier to obtain as it can be collected through a simple venipuncture procedure, whereas arterial blood requires more expertise and a more invasive procedure",60,0,0.7250012,0.17021276215482128,0.037037033580247236,0.17021276215482128,0
+125,What causes heat stroke?,Heat exhaustion can progress to heat stroke if not treated promptly. Heat stroke is a life-threatening condition that requires immediate medical attention.,Heat stroke occurs when the body overheats and is unable to cool itself down. This can happen when someone is exposed to high temperatures for an extended period of time or engaged in strenuous physical activity in hot weather. Some common causes of heat stroke include,144,0,0.62606925,0.19999999555555567,0.06060605626721795,0.19999999555555567,0
+126,Do children use safety equipment when playing sports?,"Children should wear all safety equipment that is recommended for the activity. “Toy” protective gear (e.g., plastic helmets) is for imaginative play only.","Yes, it is recommended for children to use safety equipment when playing sports to help prevent injuries. The type of safety equipment needed may vary depending on the sport being played, but common examples include helmets, mouthguards, shin guards, knee pads, and",198,0,0.81452,0.19354838242976077,0.09374999531250022,0.19354838242976077,0
+127,How should you get the attention of a person with hearing loss?,Get the person's attention before speaking by lightly touching the person's shoulder or gently waving your hand.,"If you need to get the attention of a person with hearing loss, there are a few strategies you can use:
+
+1. Make sure you are in their line of sight: Wave your hand or gently touch their shoulder to signal that you are trying to",42,0,0.44312176,0.27450979976931955,0.06779660637747796,0.1568627409457902,0
+128,What is paraplegia?,Paraplegia is paralysis that affects both legs and the lower trunk.,"Paraplegia is a condition characterized by the impairment or loss of motor and sensory function in the lower half of the body, typically due to damage to the spinal cord. This can result in paralysis of the legs and lower body, affecting mobility and",112,0,0.84978247,0.3255813915413737,0.11538461227810658,0.3255813915413737,0
+129,"When should you call EMS/9-1-1 for a bone, muscle, or joint injury?","If the injury seems severe or the person is in a significant amount of pain, you should call EMS/9-1-1.","You should call EMS/9-1-1 for a bone, muscle, or joint injury if:
+
+1. The injury is causing severe pain and you are unable to move the affected area.
+2. There is a visible deformity or excessive swelling",123,0,0.7920612,0.3921568581776241,0.0740740696296299,0.27450979935409464,0
+130,What obstacles should the explosion present?,"Barrier devices, such as a pocket mask or face shield","There are several obstacles that could be presented by an explosion, depending on the context of your story or scenario. Here are some common obstacles associated with explosions:
+
+1. Physical damage: The explosion could cause destruction to buildings, vehicles, or other structures,",12,0,0.12831175,0.041666663368055815,0.0,0.041666663368055815,0
+131,What should you do if the person's condition deteriorates or does not improve within 10 minutes?,Call EMS/9-1-1 and administer more sugar if it is still safe to do so.,"If a person's condition deteriorates or does not improve within 10 minutes, it is important to seek immediate medical assistance. Contact emergency services or bring the person to the nearest hospital for further evaluation and treatment. Do not delay in seeking professional help if",133,0,0.2927435,0.18518518134430736,0.03571428214923505,0.14814814430727036,0
+132,What if someone happens to see the caregiver due to the plant?,"If the rash is severe or on a sensitive part of the body, such as the face or groin.","If someone sees the caregiver due to the plant, it is important to stay calm and assess the situation. Depending on the circumstances, you could try to explain the situation and why the caregiver is there. It might also be a good idea to inform the",165,0,0.01266657,0.2040816282548939,0.0,0.16326530172428166,0
+133,"What are the four main types of bone, muscle, and joint injuries?","The four basic types of bone, muscle, and joint injuries are dislocation, sprain, strain, and fracture.","The four main types of bone injuries are fractures, stress fractures, dislocations, and sprains. 
+
+The four main types of muscle injuries are strains, contusions (bruises), cramps, and tears. 
+
+The four main types of joint",122,0,0.8284054,0.45714285224489803,0.1538461491124262,0.45714285224489803,0
+134,What are some common types of wounds?,"Common types of wounds include bruises, scrapes, and small cuts.","Some common types of wounds include:
+
+1. Abrasions: Superficial wounds caused by rubbing or scraping the skin against a rough surface.
+2. Lacerations: Jagged cuts or tears in the skin often caused by sharp objects.
+3.",90,0,0.84494245,0.19999999625000006,0.09523809187074841,0.19999999625000006,0
+135,When should I call EMS/9-1-1 due to accidental plant damage?,Only if the person experiences a severe allergic reaction or is having trouble breathing.,"If someone is injured as a result of accidental plant damage, particularly if it is a serious injury such as a deep cut, allergic reaction, difficulty breathing, or any other severe symptoms, you should call EMS/9-1-1 immediately. It",165,0,0.48010805,0.2499999958680556,0.0,0.16666666253472232,0
+136,What should be done next to the sling applied?,"After applying the sling, a binder should be applied.","After applying the sling, it is important to make sure that it is positioned correctly and securely to support the injured limb. Here are some steps to follow:
+
+1. Check to ensure that the sling is supporting the injured limb in a comfortable position.
+2",127,0,0.5047995,0.2380952347278912,0.12244897685964186,0.2380952347278912,0
+137,How should children dress for fever?,"Children with fevers should be dressed lightly because they may feel warm. If they get too cold or start to shiver, cover them until the skin feels warm when you touch it.","When a child has a fever, it's important to make sure they are dressed comfortably to help regulate their body temperature. Here are some tips for how children should dress for a fever:
+
+1. Keep clothing lightweight: Dress your child in lightweight, breathable",193,0,0.7057025,0.11940298012920493,0.0,0.08955223386054828,0
+138,What are the signs and symptoms of infection from a tick bite?,"Signs of infection from a tick bite include redness, warmth, pain, and fever. If the area becomes infected or the person develops a fever, they should seek medical attention.","Common signs and symptoms of infection from a tick bite include:
+1. Redness and inflammation at the bite site
+2. Itching or a burning sensation
+3. Rash, often in a circular shape (bull's-eye rash)
+4. Fever",173,0,0.8304136,0.3050847407986212,0.1587301537918873,0.3050847407986212,0
+139,What are the signs and symptoms of miscarriage?,"The signs and symptoms of a miscarriage include anxiety and apprehensiveness, vaginal bleeding (which may be minor or profuse), and cramp-like pain that is similar to labor or menstruation.","The signs and symptoms of miscarriage can vary and may include:
+
+1. Vaginal bleeding, which can range from light spotting to heavy bleeding.
+2. Abdominal pain or cramping, which can be mild to severe.
+3. Passing",139,0,0.9014881,0.42105262661742077,0.12903225311134256,0.3508771880209296,0
+140,What are the signs and symptoms of life-threatening external bleeding?,"The signs and symptoms of life-threatening external bleeding include: blood spurting or flowing freely from a wound, blood that fails to clot after taking measures to control bleeding, and large amounts of blood loss.","Signs and symptoms of life-threatening external bleeding may include:
+
+1. Rapid or weak pulse
+2. Pale, cold, sweaty skin
+3. Excessive bleeding or spurting of blood
+4. Severe pain at the injury site
+5",60,0,0.90305907,0.33333332833888896,0.18181817681818196,0.29999999500555563,0
+141,What should you avoid doing if someone has an eye injury?,Avoid touching the eye or putting pressure on or around it.,"If someone has an eye injury, it's important to avoid the following:
+
+1. Rubbing or applying pressure to the injured eye, as this can cause further damage.
+2. Trying to remove any object that may be stuck in the eye, as",102,0,0.71174514,0.17777777432098768,0.0,0.17777777432098768,0
+142,Is the ear contagious?,"No, an earache is not contagious.","No, the ear itself is not contagious. However, some conditions that affect the ear, such as an ear infection, can be contagious if caused by a virus or bacteria. It's always a good idea to practice good hygiene to help prevent the spread",189,0,0.6693934,0.23809523564625854,0.08510638107741064,0.23809523564625854,0
+143,What is a snake strike?,A snake's striking range is about two-thirds of its length forward and one-third upward.,"A snake strike is a quick and sudden movement that snakes use to attack their prey or defend themselves. When a snake strikes, they lunge forward with their mouth open to bite their target. The strike is usually fast and precise, allowing the snake to",175,0,0.60920155,0.16326530204081643,0.0,0.16326530204081643,0
+144,When may Good Samaritan laws not protect a First Aider?,"Good Samaritan laws may not protect a First Aider if their actions are grossly negligent or reckless, or if they abandon the person after starting care.","Good Samaritan laws may not protect a First Aider in the following situations:
+
+1. **Gross negligence or willful misconduct**: If the First Aider provides aid in a reckless or intentionally harmful manner, they may not be protected by Good Samar",16,0,0.8923313,0.43636363144462814,0.2580645113163372,0.43636363144462814,0
+145,Where should you know the location of the first aid kit in your device?,Automated external defibrillator (AED),"It's important to familiarize yourself with the location of the first aid kit in your device so you can access it quickly in case of an emergency. Typically, you can find the first aid kit in the owner's manual or documentation that came with your",12,0,0.38218886,0.0,0.0,0.0,0
+146,What do you do when applying topical medication?,Protect yourself by using an applicator or wearing disposable gloves.,"When applying topical medication, it's important to follow these general steps:
+
+1. Wash your hands with soap and water before and after applying the medication to ensure that your hands are clean.
+2. Cleanse and dry the affected area before applying the medication",194,0,0.43583608,0.0,0.0,0.0,0
+147,When should you call EMS/9-1-1 for sunburns?,"If at least one of the following conditions is true and you are alone, call EMS/9-1-1 yourself, get an AED, and then return to care for the person: The burns make it difficult for the person to breathe. The person is in a great deal of pain or becomes unresponsive. The burns were caused by chemicals, explosions, or electricity. The burns involve a large amount of blistering or broken skin, or the burns cover the face, neck, hands, genitals, or a larger surface area. Always call EMS/9-1-1 for a full thickness burn, regardless of size.","You should call EMS/9-1-1 for sunburns if the person experiences severe symptoms such as blistering, intense pain, fever, chills, nausea, vomiting, or confusion. These can be signs of a severe sunburn or",95,0,0.5060462,0.1649484493357425,0.04958677304828935,0.1649484493357425,0
+148,What should you do if using a face mask?,Ensure it is fitted tightly over the mouth and nose.,"When using a face mask, it is important to follow these guidelines for proper use:
+
+1. Wash your hands before putting on the mask.
+
+2. Make sure the mask covers your nose and mouth completely and fits snugly against the sides of your face",68,0,0.41860288,0.25531914558623814,0.03921568336793563,0.2127659540968765,0
+149,What should a person do if they feel thirsty?,"If you feel thirsty, you are already dehydrated, so develop the habit of drinking fluids regularly rather than waiting for the warning signs of dehydration to appear.","If a person feels thirsty, they should drink water or another hydrating beverage to quench their thirst and stay properly hydrated. It's important to listen to your body's signals and drink water whenever you feel thirsty to maintain good health and prevent dehydration.",143,0,0.72748864,0.1999999952000001,0.02985074151927009,0.16666666186666684,0
+150,What is the second step in determining a person's condition?,B = Check Breathing,"The second step in determining a person's condition typically involves conducting a thorough assessment or evaluation. This may include gathering information about the person's medical history, symptoms, vital signs, and conducting any necessary tests or examinations to help diagnose their condition accurately. It",31,0,0.27052617,0.0,0.0,0.0,0
+151,What should be done if an exposure incident occurs in a workplace setting?,"If an exposure incident occurs in a workplace setting, it should be reported to the supervisor and the company's exposure control plan should be followed for reporting the incident and receiving post-exposure follow-up care.","If an exposure incident occurs in a workplace setting, it is important to take the following steps:
+
+1. Seek immediate medical attention: The individual who has been exposed should seek medical attention as soon as possible. Immediate treatment may be necessary to prevent further complications",27,0,0.650195,0.4057970966855703,0.23684210038781173,0.4057970966855703,0
+152,What should you connect a bike trailer with?,A flexible joint to prevent tipping over.,You should connect a bike trailer to the rear axle or frame of your bicycle. Make sure to follow the specific instructions provided by the manufacturer of the bike trailer for proper attachment.,197,0,0.39952645,0.060606057263544726,0.0,0.060606057263544726,0
+153,How can breathing problems be identified?,A breathing problem can be identified by watching and listening to the person's breathing and by asking the person how they feel.,"Breathing problems can be identified through various signs and symptoms. Some common signs of breathing problems include:
+
+1. Shortness of breath
+2. Wheezing
+3. Chest tightness
+4. Rapid breathing
+5. Difficulty taking deep breath",80,0,0.5168395,0.21276595272068824,0.07407406932098796,0.21276595272068824,0
+154,What should you do in cold water?,"If you are in open water, get into a boat, raft, or other mode of marine transportation if available. If you have fallen through the ice, place your arms on the surface of the ice, kick your legs until your body is horizontal to the water’s surface, and then kick and pull forward until you are on the ice. Roll away from the hole before standing up.","If you find yourself in cold water, the most important thing is to stay calm and try to conserve your energy. Here are some tips on what to do in cold water:
+
+1. Stay afloat: If you're not wearing a flotation device,",155,0,0.5193615,0.27586206407715685,0.019607838369858906,0.25287355833003045,0
+155,What should you do if you have fallen through the ice and are unable to exit by yourself?,"Stop struggling, place your arms on the ice and let them freeze in place to prevent drowning.","If you have fallen through the ice and are unable to exit by yourself, it's important to remain calm and follow these steps:
+
+1. Call for help: Yell for assistance to alert anyone nearby that you are in trouble.
+
+2. Stay a",156,0,0.63856107,0.19230768804733736,0.07017543455832588,0.15384614958579892,0
+156,What information should you try to find out if someone has overdosed on drugs?,"Try to find out from others at the scene what substance or substances the person may have taken, and then communicate that information to EMS personnel or the Poison Control Centre worker.","If you suspect someone has overdosed on drugs, it is important to gather information to provide to medical professionals or emergency responders. Here are some key details to find out:
+
+1. **Signs and Symptoms:** Ask about the person's symptoms and behaviors",168,0,0.57140744,0.18461537971124273,0.05633802324935572,0.18461537971124273,0
+157,What are some ways to prevent electrical burns?,"Keep electrical appliances away from water. If an electrical cord is frayed, fix it or dispose of it. If there are young children in the building, cover electrical outlets. Before approaching a person with a suspected electrical burn, make sure that trained personnel turn off the electrical current.","Preventing electrical burns is crucial to maintaining safety. Here are some ways to help prevent electrical burns:
+
+1. Avoid overloading electrical outlets with too many devices.
+2. Use electrical appliances and power tools that have been inspected and approved by a recognized safety",94,0,0.5469818,0.20779220279979774,0.044943815240500486,0.1558441508517458,0
+158,How can motorists co-operate with cyclists?,"When motorists can see a cyclist, it is easier for them to co-operate with the cyclist.","Motorists can cooperate with cyclists by following these practices:
+
+1. Give cyclists enough space when passing them on the road.
+2. Check for cyclists when turning or changing lanes.
+3. Respect designated bike lanes and do not park or drive in them.
+",200,0,0.6754665,0.18867924106799583,0.0,0.18867924106799583,0
+159,What can be done to relieve itching and blistering from a rash caused by a plant?,"Apply a cream or ointment designed to reduce itching and blistering, such as calamine. Take an oral antihistamine to help relieve itching.","If you have a rash caused by a plant like poison ivy or poison oak, there are several things you can do to relieve itching and blistering:
+
+1. Wash the affected area with mild soap and water to remove any remaining plant oils.
+2",165,0,0.67512,0.20689654720570758,0.062499995590820624,0.20689654720570758,0
+160,How should wooden toys be assembled?,Wooden toys should be glued or screwed together instead of nailed.,"Assembling wooden toys can vary depending on the specific toy and its design. However, here are some general steps you can follow when assembling wooden toys:
+
+1. Lay out all the parts: Before assembling the toy, make sure you have all the necessary",198,0,0.58797103,0.04347825723062412,0.0,0.04347825723062412,0
+161,Can children with head lice go to school or daycare?,Children may return to school or child care after the first treatment.,"Typically, children with head lice should stay home from school or daycare until they have been treated and are no longer contagious. It is important to follow the guidelines provided by healthcare professionals or school policies to prevent the spread of head lice to others",186,0,0.42251948,0.15999999635200007,0.03703703379286723,0.15999999635200007,0
+162,What is naloxone used for?,Naloxone is used to quickly reverse the effects of an opioid drug overdose.,"Naloxone is a medication that is used to reverse the effects of opioids, particularly in cases of opioid overdose. It works by blocking the opioid receptors in the brain, which can help to quickly restore normal breathing and prevent death in overdose situations.",169,0,0.85813546,0.468085102381168,0.25925925580246917,0.42553191089180636,0
+163,What would you do if you were alone and someone was experiencing total suffocation?,"If you are alone, immediately begin providing care for complete choking. Shout for help to try to attract the attention of a bystander, but do not delay care by calling EMS/9-1-1 yourself.","If someone is experiencing total suffocation when you are alone, it is important to act quickly to help them. Here are some steps you can take:
+
+1. Call emergency services: Dial the emergency number in your area right away. Describe the situation and",48,0,0.5172454,0.21212120719467414,0.05479451566147538,0.18181817689164384,0
+164,What are the four mechanisms of injury resulting from blasts?,"1. Pressure or heat injuries from the blast itself.
+2. Injuries from flying debris (shrapnel).
+3. Trauma from being thrown by the blast.
+4. Injuries or illnesses caused by hazardous material being dispersed by the blast.","The four mechanisms of injury resulting from blasts are:
+
+1. Primary injury: Caused by the initial blast wave itself, which creates rapid changes in pressure that can damage tissues and organs directly.
+   
+2. Secondary injury: Caused by flying debris or",110,0,0.6530709,0.29032257583246623,0.05797100951900904,0.29032257583246623,0
+165,What would you do if you lost control and wanted to shake your child or baby?,"If you feel like you might lose control, stop! Take a break, never shake. Place the child in a safe place and take a few deep breaths. Then try again to soothe the baby.","It's completely normal to feel frustrated or overwhelmed at times, especially when caring for a child or a baby. However, it's important to never shake a child or baby as it can cause serious harm or even death. 
+
+If you find yourself feeling",119,0,0.5544406,0.27692307195266275,0.05479451559392052,0.24615384118343206,0
+166,When should someone seek medical attention after experiencing partial suffocation?,"A person who has experienced partial choking should seek medical attention if they experience any kind of respiratory distress after the incident. They should also be monitored for several hours to ensure there is no damage. If there is no sign of injury in the first few hours, the person is probably fine.","If someone has experienced partial suffocation, it is important to seek medical attention immediately if they experience any of the following symptoms:
+
+1. Difficulty breathing or shortness of breath
+2. Persistent chest pain
+3. Severe coughing
+4.",52,0,0.6186727,0.37499999505,0.16279069280692282,0.34999999505000007,0
+167,"Should you apply heat to a muscle, bone, or joint injury to speed healing?","No, applying heat is not the best treatment for an acute muscle, bone, or joint injury. Heat causes blood vessels to dilate, increasing swelling. Cold, on the other hand, causes blood vessels to constrict, reducing blood flow and helping to reduce swelling. Applying cold also slows nerve impulses and helps reduce pain.","It is generally not recommended to apply heat to a muscle, bone, or joint injury immediately after it occurs. Heat can increase inflammation and swelling, which may delay healing. 
+
+For acute injuries, it is often more appropriate to apply ice (cold therapy",124,0,0.65668285,0.3037974633744593,0.09090908595041348,0.27848100767825673,0
+168,What are other signs and symptoms of Lyme disease?,"Fatigue, headache, fever or chills, swollen lymph nodes, numbness or tingling, muscle spasms or weakness, joint and muscle pain.","In addition to the characteristic bull's-eye rash, Lyme disease can present with a variety of signs and symptoms. These may include:
+
+1. Flu-like symptoms such as fever, chills, headache, fatigue, and muscle aches.
+2. Joint",174,0,0.4058296,0.16326530172428166,0.03846153393491177,0.12244897519366944,0
+169,What should you do if the object cannot be dislodged easily?,Leave it in place for a medical professional to remove.,"If an object cannot be dislodged easily, it's important to exercise caution to avoid causing harm or further complicating the situation. Here are some steps to follow:
+
+1. Stay calm and assess the situation carefully.
+2. Do not force the",101,0,0.34399572,0.044444440987654585,0.0,0.044444440987654585,0
+170,How to treat torn skin?,Treat any torn skin as an open wound and seek medical attention.,"Treating a torn skin depends on the severity and size of the tear. Here are some general steps you can take to treat torn skin:
+
+1. Clean the area: Wash the torn skin gently with mild soap and water to remove any dirt or debris",154,0,0.5869515,0.1632653024239901,0.03703703379286723,0.12244897589337787,0
+171,What should you keep handy in your home and car?,First aid kits.,"It's always a good idea to have some essential items handy in your home and car. Here are some suggestions for what you should keep in each:
+
+In your home:
+- First aid kit
+- Flashlight with extra batteries
+- Emergency contact list",13,0,0.27930918,0.09756097425342058,0.04545454458677687,0.09756097425342058,0
+172,Who is most at risk of hypothermia?,"People with smaller body types, lower overall body weights, and lower body-fat content are more likely to experience hypothermia. Young children and the elderly are also at higher risk.","Individuals who are most at risk of hypothermia include:
+
+1. Elderly people: Older adults may have reduced body heat production and circulation, making them more susceptible to hypothermia.
+2. Infants and young children: Children lose body",151,0,0.777022,0.2758620640606421,0.0,0.2758620640606421,0
+173,How can nosebleeds be prevented?,"Use a humidifier if the air indoors is dry, wear protective athletic equipment when participating in sports that could cause injuries to the nose, practice gentle nose blowing, teach children not to pick their noses","Nosebleeds can be prevented by following these tips:
+
+1. Keep the inside of your nostrils moist by using a humidifier, especially during dry weather or in heated indoor environments.
+2. Avoid picking or blowing your nose too forcefully.
+3",100,0,0.6120735,0.11594202399495926,0.0,0.08695651674858251,0
+174,What should you not do with your fingers in the woman's vagina?,Do not place your fingers in the woman’s vagina for any reason. This can introduce pathogens that can cause an infection.,"It is important to always ensure that any actions involving a woman's vagina are consensual and respectful. In general, it is recommended to avoid inserting fingers without proper lubrication, ensuring that nails are trimmed and filed to prevent scratching or injury, and being",139,0,0.61157954,0.14285713826530627,0.0,0.1071428525510206,0
+175,Do you have any questions about purchasing or using a used child car seat?,"When buying or using a pre-owned child car seat, you should check that it has instructions and all necessary hardware, has not been in a collision, has a CMVSS sticker and is less than 10 years old, has no discoloured (stress) marks or cracks, and has no signs of wear or tears on the harness.","Yes, I can provide some guidance on purchasing and using a used child car seat. Here are some questions you may want to consider:
+
+1. Is the car seat still within its expiration date? Car seats have an expiration date typically 6 to ",199,0,0.5167992,0.1951219462462821,0.042553186570847105,0.1463414584414041,0
+176,Why is it important to keep a record of the medications you take?,It will be useful to EMS personnel.,"Keeping a record of the medications you take is important for several reasons:
+
+1. Safety: Having a detailed record of your medications helps healthcare providers avoid prescribing medications that may interact negatively with those you are already taking. It also helps in avoiding accidental double dos",36,0,0.21123478,0.04347825828922511,0.0,0.04347825828922511,0
+177,What would you do if a child is given a non-prescription drug?,Ensure you have written permission from a parent or guardian for each medication that is to be given.,"If a child is given a non-prescription drug, it's important to assess the situation carefully and take appropriate action:
+
+1. **Stay Calm**: Keep calm and avoid placing blame on anyone involved.
+
+2. **Check the Drug**: Find out",193,0,0.49575835,0.15384614931952675,0.0,0.11538461085798835,0
+178,What would you do if someone felt snow blindness?,"Place the person in a darker environment, if possible, or cover their eyes. Apply a cool, damp cloth to reduce pain and burning. If the person's vision is affected, seek medical attention.","If someone is experiencing snow blindness, also known as photokeratitis, it is important to act quickly to alleviate their symptoms. Here are some steps to help someone with snow blindness:
+
+1. Move the person to a shaded or indoor area to prevent further",154,0,0.45352575,0.24242423746556482,0.027397255387503212,0.24242423746556482,0
+179,What are the four basic steps of a First Aider?,"The four basic steps of a First Aider's role are: 1. Recognize the emergency. 2. Protect yourself, the ill or injured person, and bystanders. 3. Access help (e.g., call EMS/9-1-1). 4. Act according to your skills, knowledge, and comfort level.","The four basic steps of a First Aider are:
+
+1. Assess the situation: Evaluate the scene for any potential dangers to yourself or the injured person.
+
+2. Seek medical help: Call emergency services or ask someone to do so if the situation requires",18,0,0.90706,0.3846153796186719,0.1686746937959067,0.3846153796186719,0
+180,When should I call EMS/9-1-1 if I have a skin injury?,"You should call EMS/9-1-1 and get an AED if you are not sure how serious the scalp injury is or if you feel a dip, a soft area, or pieces of bone.","You should call EMS/9-1-1 immediately if the skin injury is serious and requires urgent medical attention. Some situations where you should seek emergency help include:
+
+- Deep or large wounds that are bleeding heavily and won't stop
+- Severe",93,0,0.6102085,0.4062499950781251,0.11764705389273376,0.3124999950781251,0
+181,Does amputation always cause heavy bleeding?,"No, bleeding may or may not be severe.","Amputation usually leads to heavy bleeding due to the severing of major blood vessels. However, the amount of bleeding can vary depending on factors such as the method of amputation, the location of the amputation, and the individual's overall health.",106,0,0.4206913,0.05555555242283968,0.0,0.05555555242283968,0
+182,Where should medication be stored in a child care setting?,Medication should be stored out of the reach of children.,"Medication in a child care setting should be stored in a secure, locked cabinet or box that is out of reach of children. It should be stored away from food and other items in a cool, dry place. Additionally, medication should be stored according",194,0,0.7823,0.3809523775850341,0.2173913012003781,0.3809523775850341,0
+183,How high should the mattress be to support the top of the partition's enclosure?,The height from the mattress support to the top rail must be at least 66 cm (26 in.) when the support is in its lowest position.,"To determine the appropriate height for the mattress to support the top of the partition's enclosure, you will need to consider the overall design and dimensions of the enclosure. Make sure that the mattress height is such that it allows the top of the partition to be",196,0,0.52400506,0.2962962914060357,0.05970148778792643,0.2962962914060357,0
+184,What should you do after calling EMS/9-1-1 and getting the AED?,Continue to provide care.,"After calling EMS/9-1-1 and obtaining the AED (automated external defibrillator), you should follow these steps:
+
+1. Ensure the person is lying on a flat surface.
+2. Clear any obstacles or clothing from the chest",67,0,0.27882415,0.0,0.0,0.0,0
+185,What should I do if the AED pad gets wet?,"If the AED pads are wet, it is recommended to move the person into a different environment, if possible, before attempting defibrillation again.","If the adhesive pads on the AED get wet, it is generally recommended to replace them with a new set of pads before using the AED. Wet pads may not adhere properly to the person's skin, which can impact the delivery of the life",77,0,0.69100094,0.3928571380867348,0.15624999548828136,0.357142852372449,0
+186,What are the mistakes and what are the common causes?,"Shock is a life-threatening condition that occurs when the vital organs do not get enough oxygen-rich blood. It can be caused by significant fluid loss, such as diarrhea and vomiting. Children are especially prone to dehydration and can go into shock more easily.","Mistakes can vary greatly depending on the context, but some common types of mistakes include:
+
+1. Lack of attention to detail: This can happen when someone is rushed or fatigued, leading to oversights and errors.
+
+2. Miscommunication",40,0,0.17980005,0.15999999504355572,0.0,0.13333332837688905,0
+187,What should you do if you suspect pinworms?,"Wash the child's hands and nails, keep the child's fingernails short and discourage nail biting, make sure the child has a daily bath or shower and a daily change of towels, sheets, and underwear, doctors often prescribe oral medication, the whole family must be treated","If you suspect you or someone you know has pinworms, it is important to consult a healthcare professional for an accurate diagnosis and treatment plan. Common steps that may be recommended include providing a stool sample for analysis, taking medication prescribed by a healthcare provider",187,0,0.19302447,0.13333332834133352,0.0,0.07999999500800031,0
+188,How do you remove exposed peanuts?,Gently grab the exposed end of the splinter with tweezers and carefully pull it out.,"If you are looking to remove exposed peanuts from their shells, you can simply crack the shells open and remove the peanuts manually. Once the peanuts are removed from the shells, you can discard the shells and enjoy the peanuts. If you are referring to removing",99,0,0.3923909,0.1538461492439186,0.0,0.1538461492439186,0
+189,What should be done after everyone is together at the designated meeting place?,Go to a neighbor's home to call the fire department.,"After everyone is together at the designated meeting place, you can proceed with the following steps:
+
+1. Start the meeting by welcoming everyone and introducing the agenda.
+2. Encourage open communication and active participation from all attendees.
+3. Review the purpose of",202,0,0.153323,0.04545454220041345,0.0,0.04545454220041345,0
+190,Why should you know about prescription and generic drugs?,"Prescription drugs and common drugstore medications can make driving or operating machinery dangerous, so follow the directions on the package carefully.","It is important to understand the difference between prescription and generic drugs because they affect the cost, effectiveness, and availability of medications. Prescription drugs are medications that require a doctor's authorization for use, while generic drugs are the same as brand-name medications but typically",114,0,0.48796344,0.18181817719008275,0.032786880838484876,0.18181817719008275,0
+191,What should be done after applying the sling to recheck circulation?,"The circulation should be rechecked. Slings should fit tightly enough to restrict movement, but not be so tight that blood flow is affected. If fingers are bluish or cold or if the person feels numbness and tingling, the bandages should be loosened. If loosening the bandages does not improve circulation, EMS/9-1-1 should be called and an AED should be obtained immediately.","After applying a sling, it is important to recheck circulation to ensure that the injured arm or shoulder is not becoming too swollen or compromised. To recheck circulation, you can follow these steps:
+
+1. Look for signs of poor circulation such as pal",126,0,0.6643194,0.19047618552154208,0.0,0.19047618552154208,0
+192,When should intervention for chest compressions end?,"Interruptions should be limited to critical interventions, such as applying AED pads, allowing the AED to analyze or administer a shock, and clearing the airway.","In general, chest compressions during CPR should only be stopped in the following situations:
+
+1. The person starts showing signs of life, such as moving, coughing, breathing normally, or reaching normal heart rate.
+2. A trained healthcare provider takes",71,0,0.21896069,0.19672130686374642,0.0322580597710725,0.19672130686374642,0
+193,Why is respiratory distress especially dangerous in children?,Respiratory distress is especially dangerous in children because it can quickly lead to cardiac arrest.,"Respiratory distress is especially dangerous in children because their airways are smaller and more easily obstructed compared to adults. This obstruction can lead to decreased oxygen intake and difficulty breathing, which can quickly become life-threatening. Children also have higher metabolic rates and",80,0,0.8088981,0.4528301846208616,0.327272723477686,0.41509433556425784,0
+194,What are some steps to take care of sunburn?,"While the care for all burns is similar, specific care steps can vary depending on the cause of the burn. Care should be taken to monitor for hypothermia when cooling large burns. This is particularly important in children. Cover the person with a blanket if the person complains of feeling cold.","Here are some steps you can take to help care for a sunburn:
+
+1. Cool down the skin: Take a cool bath or shower, or apply a cool, damp cloth to the affected area to help reduce the heat and inflammation.
+
+2.",95,0,0.4905496,0.18666666171022236,0.022471905163490544,0.15999999504355572,0
+195,What should you do based on your findings?,"Decide whether you need to call EMS/9-1-1, and provide first aid care as needed.","Based on the findings and information provided, you should consider taking the following steps:
+
+1. Analyze the data: Review the findings thoroughly to understand the implications and identify any key insights or trends.
+
+2. Make recommendations: Based on the analysis, formulate",38,0,0.24995303,0.13043477837429124,0.0,0.0869565175047261,0
+196,Do adults also wear helmets when riding a bicycle?,"Yes, adults should always wear a helmet while riding a bicycle for safety reasons.","Although wearing a helmet when riding a bicycle is not required for adults in all places, it is highly recommended for safety reasons. Wearing a helmet can significantly reduce the risk of head injuries in the event of an accident. Many adults choose to wear helmets",200,0,0.8029461,0.35999999615200007,0.17543859297014472,0.35999999615200007,0
+197,What is the first step in performing CPR on a child?,Place both of your hands on the centre of the person’s chest.,"The first step in performing CPR on a child is to check the scene for safety and then check the child for responsiveness. Shake the child gently and ask loudly, ""Are you okay?"" If there is no response, shout for help and call emergency services",66,0,0.28698057,0.08888888543209889,0.0,0.08888888543209889,0
+198,What information should be prepared about the training of the ship?,Routine information about the ship should be prepared.,"When preparing for the training of the ship, it is important to have the following information ready:
+
+1. Training objectives: Clearly outline the goals and objectives of the ship training program, including what skills and knowledge participants are expected to acquire.
+
+2. Training",34,0,0.68486315,0.1428571397732427,0.041666664175347375,0.09523809215419511,0
+199,What should you know if the workplace has an AED on site?,"You should know the location of the AED, how to operate it, and the procedures around it, such as reporting its use or replacing its batteries.","If the workplace has an Automated External Defibrillator (AED) on site, there are several important things to know:
+
+1. Location: Make sure you know the exact location of the AED in the workplace. It should be easily accessible in",74,0,0.6424958,0.2142857095153062,0.09677418873569223,0.2142857095153062,0
+200,What do you do if your baby is rattling and no longer making noises or is too weak to cough?,Have someone call EMS/9-1-1 and get an AED while you care for the baby.,"If your baby is rattling and is too weak to cough, it could be a sign of a serious underlying condition that requires urgent medical attention. Here's what you should do:
+
+1. Call emergency services immediately: If your baby is in distress and",51,0,0.3837879,0.11999999596800014,0.0,0.07999999596800021,0
+201,What should you do before the customer?,"Wash your hands thoroughly and check the medication three times: when you take it out from the cupboard or refrigerator, when you take it out of the package, and just before you administer it.","Before the customer, you should always be prepared to provide assistance, listen to their needs, and offer solutions or information to help them. It is important to be courteous, attentive, and respectful in all interactions with customers. Additionally, it is helpful to",194,0,0.19722733,0.1694915205975296,0.0,0.13559321551278383,0
+202,What should you do if the person has nitroglycerin?,"If the person has nitroglycerin in a spray or pill form, ensure that the person sprays or places the nitroglycerin under their tongue.","If someone has nitroglycerin for a medical condition such as angina or heart problems, it is important to ensure they know how to properly use it. You should educate yourself on how to administer nitroglycerin in case of an emergency and",56,0,0.5254605,0.2592592548148149,0.06666666211666698,0.2592592548148149,0
+203,What would you do if you were alone?,Immediately begin care for complete choking and shout for help to try to attract the attention of a bystander.,"If I were alone, I would continue to help and assist you to the best of my ability. Just because I am a digital assistant does not mean I am not here to support and guide you. Feel free to ask me anything you need help with",51,0,0.17193267,0.23076922636834327,0.0,0.1538461494452664,0
+204,What are some precautions to prevent chemical burns?,"Store chemicals in their original containers. Wear protective gear when handling chemicals. Wash your hands after touching chemicals. Get trained in a hazardous materials training program, such as the Workplace Hazardous Materials Information System (WHMIS)/ Globally Harmonized System (GHS) of Classification and Labelling of Chemicals. Read the label before using a product. Be aware of caustic plants in your area.","To prevent chemical burns, follow these precautions:
+
+1. Always read and follow the manufacturer's instructions for handling chemicals.
+2. Wear appropriate personal protective equipment (PPE) such as gloves, goggles, and aprons.
+3. Keep chemicals in their",94,0,0.58080834,0.2409638506314415,0.085106378304663,0.2409638506314415,0
+205,What are the three poisonous snakes born in Canada?,"Northern Pacific Rattlesnake, Massasauga Rattlesnake, Prairie Rattlesnake.","In Canada, the three main species of venomous snakes are the Eastern Massasauga rattlesnake, Western rattlesnake, and Northern Pacific rattlesnake. These snakes are generally found in specific regions within the country and are known",174,0,0.6536576,0.18181817884297521,0.05263157628808878,0.12121211823691468,0
+206,How many AED pads should I use on my child?,"A child is considered to be between 1 and 8 years old. If child AED pads are unavailable, use adult pads.","For children under 8 years old or weighing less than 55 pounds (25 kilograms), it is recommended to use pediatric AED pads, which are typically smaller and have a lower energy level compared to adult pads. In this case, you should use",75,0,0.8354954,0.3728813515656421,0.09836065133028776,0.2711864363114048,0
+207,What is the recommended volume for child compression?,Just enough volume to make the chest start to rise (1 second per breath),"When performing chest compressions on a child during CPR, the recommended depth is about one-third the depth of the chest, which is typically around 2-2.4 inches (5-6 centimeters). It is important to compress the chest firmly",72,0,0.53237295,0.13953487950243387,0.040816322632236945,0.13953487950243387,0
+208,What is the compression depth for child compression?,At least 1/3 of the chest’s depth,"For child CPR (ages 1 to 8), it is recommended to compress the chest to one-third the depth of the chest, which is about 2 inches or 5 centimeters. It's important to ensure the compressions are done at",72,0,0.5914064,0.15789473383656513,0.046511625505678875,0.10526315488919677,0
+209,What is a common cause of a hemorrhagic stroke?,A common cause of a hemorrhagic stroke is a ruptured brain aneurysm.,"A common cause of a hemorrhagic stroke is a weakened blood vessel in the brain that ruptures and leaks blood into surrounding brain tissues. This can be caused by conditions such as uncontrolled high blood pressure, aneurysms, arteriovenous",58,0,0.86860347,0.3999999963061729,0.3333333298003473,0.3999999963061729,0
+210,What is mental first aid?,Mental health first aid is the initial care given by a First Aider to a person in a mental health crisis. It involves recognizing signs and symptoms and providing care until appropriate professional follow-up care is received or the crisis is resolved.,"Mental first aid is a concept similar to providing first aid for physical injuries, but it focuses on providing immediate support and assistance to someone who is experiencing a mental health crisis or emotional distress. The goal is to help the person in crisis feel supported,",136,0,0.90214384,0.4347826037219072,0.1411764655944638,0.3768115892291536,0
+211,What should you take care of before making adjustments to the chair or tray?,"Ensure that the child’s hands, arms, and legs are clear of any moving parts.","Before making any adjustments to the chair or tray, it is important to ensure the following:
+
+1. Check the manufacturer's guidelines and instructions for making adjustments.
+2. Make sure the chair or tray is clean and free of any obstructions.
+3.",197,0,0.33763018,0.18181817747933895,0.03921568247597115,0.18181817747933895,0
+212,What is the Cold-Shock Response?,Rapid cooling of the skin causes a gasp followed by hyperventilation (lasting 1 to 2 minutes).,"The Cold-Shock Response is a physiological response that occurs when the body is exposed to cold temperatures. It is an involuntary reaction that helps the body maintain its core temperature and survive in cold environments. When the body is suddenly exposed to cold conditions, the",155,0,0.3813482,0.12499999555555572,0.0,0.12499999555555572,0
+213,How do you manage respiratory impairment in someone else?,"1. Keep the person still.
+2. Treat any obvious external injuries.
+3. Constantly monitor the person's condition as it may change rapidly.
+4. Call EMS/9-1-1 and get an AED if necessary.","If someone is experiencing respiratory impairment, it is important to act quickly and seek medical assistance if needed. Here are some general steps to manage respiratory impairment in someone else:
+
+1. Stay calm and assess the situation: Check the person's breathing and overall condition",110,0,0.5029993,0.208955218935175,0.02739725543253979,0.208955218935175,0
+214,What do you need a first aid manual for?,Canadian Red Cross first aid manual,"A first aid manual provides valuable information on how to respond effectively to a wide range of injuries or medical emergencies. It serves as a guide on administering immediate care before professional medical help arrives, helping to alleviate pain, prevent further injury, and potentially save lives",12,0,0.60267836,0.127659572240833,0.07999999820000003,0.127659572240833,0
+215,How should I cool the injured area?,"Using ice or another cold source, cool the injured area to help reduce pain and swelling. Place some sort of cloth, towel, or pad between the cold source and the skin to reduce the risk of freezing.","To cool an injured area, you can use ice packs or cold compresses wrapped in a thin cloth to prevent direct contact with the skin. Apply the ice pack to the injured area for about 15-20 minutes at a time, allowing the skin",99,0,0.72542584,0.2857142807760142,0.07792207294316106,0.22222221728395072,0
+216,What do you do if your body cannot accept the drugs you ingest?,Assist by placing the correct number of pills into their mouth or holding a liquid dispenser up to their mouth if they explicitly ask for help.,"If your body cannot accept the drugs you ingest, it's important to seek medical help immediately. Do not continue taking the medication without consulting a healthcare professional. It's possible that you may be experiencing an allergic reaction or that the medication is not suitable for",36,0,0.41689196,0.19047618575963732,0.0,0.19047618575963732,0
+217,Can children with lice go to school or child care?,Children may return to school or child care after the first treatment.,It is not recommended for children with lice to go to school or child care until they have been treated and no live lice are present. Lice are highly contagious and can easily spread to other children in close contact. It is important to inform,186,0,0.4274037,0.2083333295833334,0.14814814490397812,0.2083333295833334,0
+218,How can you help a person calm down and control their breathing?,"1. Encourage the person to maintain eye contact with you.
+2. Have the person breathe in through their nose while you raise your arm and count to five. Breathe with the person.
+3. Have the person breathe out through their mouth, making an audible sound, while you slowly lower your arm and count to ten.
+4. Repeat 3 to 5 times, providing encouragement in a calm voice.","To help a person calm down and control their breathing, you can suggest the following techniques:
+
+1. Mindful breathing: Encourage them to focus on their breath by taking slow, deep breaths in through the nose and out through the mouth. This",40,0,0.53122526,0.34999999505000007,0.04255318663422419,0.34999999505000007,0
+219,What would you do if someone with visual or hearing impairment intervened?,"Tell the intervenor who you are, but then speak directly to the ill or injured person.","If someone with visual or hearing impairment intervenes, it's important to make sure they can fully participate and understand what's going on. Here are some steps you can take:
+
+1. For someone with visual impairment:
+   - Describe the situation verbally in",42,0,0.29004812,0.15384614974112437,0.0,0.11538461127958595,0
+220,What should I do if an injury or illness makes me feel weak or upset?,"If you feel faint or upset, you can close your eyes or turn away for a moment and take a few deep breaths to calm yourself. If you're still unable to give care, you can volunteer to help in other ways, such as calling EMS/9-1-1 and bringing necessary equipment and supplies.","If you are feeling weak or upset due to an injury or illness, it is important to prioritize your well-being and take care of yourself. Here are some steps you can take:
+
+1. Seek medical attention: If your injury or illness is serious or",15,0,0.5518794,0.23999999504355565,0.0659340609636521,0.23999999504355565,0
+221,What causes a diabetic emergency?,"If food intake, exercise, and medication are not in balance, the person may experience a diabetic emergency. This can happen when blood glucose levels fluctuate outside the normal range.","A diabetic emergency can be caused by fluctuations in blood sugar levels that are not properly managed. This can occur due to a variety of reasons, including:
+
+1. Hypoglycemia (low blood sugar): This can happen if a person with diabetes",131,0,0.70102704,0.38095237601410936,0.12121211632690562,0.25396824902998244,0
+222,What is the guideline for determining if an object is a choking hazard for children younger than 4 years old?,"Toys smaller than 4 cm (1.5 in.) in diameter are choking hazards for babies and toddlers. If an object can fit through a toilet paper tube, it is not safe for children younger than 4 years old.","The guideline for determining if an object is a choking hazard for children younger than 4 years old is the small parts test. If the object is small enough to pass through a small parts tester cylinder without getting caught, then it is considered a choking hazard",47,0,0.70412636,0.4347826036967024,0.22784809628585176,0.4347826036967024,0
+223,What would you do if you added teeth?,"Put the tooth in propolis, egg white, coconut water, whole milk, or saline, if available, and keep it with the person. If none of these are available, wrap the tooth in gauze (or a clean cloth) with some of the person’s own saliva. Get the person to a dentist as soon as possible.","If you added teeth to a specific object, it would depend on the context and purpose of why you added them. Teeth are typically associated with biting, chewing, or cutting, so adding teeth could potentially enhance the functionality or aesthetic appearance of the object,",102,0,0.38597953,0.25974025476134266,0.043956038985630316,0.2337662287873167,0
+224,What would you do if possible?,"If possible, remove jewellery or other extraneous material that may restrict blood flow to the affected area. If possible, elevate any thawed extremities above the level of the heart.","If you let me know what you need help with or what you're looking to accomplish, I can provide you with guidance, information, suggestions, or steps to get you closer to achieving your goal. Just let me know how I can assist you today",150,0,0.017168073,0.10909090413223163,0.0,0.10909090413223163,0
+225,What do you do if you can't see the name on your medication label?,"Try to confirm their identity by asking bystanders, looking for a piece of photo ID, or checking for a medical identification product.","If you can't see the name on your medication label, it's important to take extra precautions to ensure you are taking the correct medication. Here are some steps you can take:
+
+1. Contact your pharmacist: Reach out to your pharmacist for assistance.",36,0,0.4033132,0.07547169341402665,0.0,0.07547169341402665,0
+226,What would you do if you were bitten by a snake?,"If you are bitten by a snake, you should call EMS/9-1-1 and get an AED. Before providing care, ensure that the snake is no longer present. Keep the injured site still and level with the heart, if possible. If the bite is on a limb, remove any jewellery or tight clothing from the limb and watch for swelling. Wash the wound with water and cover it with a clean, dry dressing.","If you are bitten by a snake, it is important to seek medical attention immediately as snake bites can be very serious. While waiting for help to arrive, you can take the following steps:
+
+1. Stay calm and try to keep the bitten area as",175,0,0.6493963,0.276595739864192,0.10526315315481707,0.23404254837483035,0
+227,What are the symptoms of osteoporosis?,"The loss of density and strength leaves bones more susceptible to fractures (especially of the hips, vertebrae, and wrists). Instead of being caused by tremendous force, fractures may now occur spontaneously, with little or no aggravation, trauma, or force.","Symptoms of osteoporosis can include:
+
+1. Back pain, caused by a fractured or collapsed vertebra
+2. Loss of height over time
+3. Stooped posture
+4. Bone fractures that occur more easily than expected, such as",128,0,0.49377462,0.2058823479411766,0.02777777279321077,0.17647058323529427,0
+228,What would you do if you were to give birth while pregnant?,"Provide comfort and reassurance, facilitate the process, wait for EMS personnel to arrive.","I'm not a medical professional, but I recommend seeking immediate medical help if you suspect you are experiencing this rare situation. It's important to consult with a healthcare provider for proper evaluation and guidance.",137,0,0.4159163,0.13636363220041336,0.0,0.045454541291322696,0
+229,What are the signs and symptoms of urushiol contact?,"Itchy skin, reddening of the skin, bumps, and blisters.","Urushiol contact, also known as poison ivy, poison oak, or poison sumac contact, can cause a rash that is red, itchy, and sometimes blistering. The signs and symptoms may include:
+
+1. Redness and swelling",165,0,0.56800604,0.05405405066471898,0.0,0.05405405066471898,0
+230,Does amputation always cause severe bleeding?,"No, bleeding may or may not be severe.","Yes, amputation typically causes severe bleeding due to the severing of blood vessels. It is important to seek immediate medical attention if amputation occurs in order to control the bleeding and prevent further complications.",106,0,0.4160539,0.11111110797839514,0.0,0.11111110797839514,0
+231,What should be done if a pregnant woman needs to be placed under the hip during CPR?,"If a bystander is available, ask them to find a soft object. Do not interrupt or delay starting CPR to find an object yourself.","If a pregnant woman needs to be placed under the hip during CPR, it is important to take additional precautions to ensure the safety of both the mother and the baby. Here are some steps to take:
+
+1. Ensure that the pregnant woman is lying flat",71,0,0.40657145,0.14285713826530627,0.030303025858586515,0.14285713826530627,0
+232,What should you have to provide a barrier when giving rescue breaths?,"Barrier devices, such as a pocket mask or face shield","In order to provide a barrier when giving rescue breaths, it is recommended to use a face mask or a CPR face shield. This helps prevent direct contact or transfer of bodily fluids between the rescuer and the person receiving assistance, reducing the risk of",12,0,0.57636595,0.2127659540968765,0.07547169529369893,0.2127659540968765,0
+233,What should EMS personnel do when they arrive and make the scene safe?,Offer your assistance as appropriate,"When EMS personnel arrive on the scene and make it safe, they should follow these steps:
+
+1. Ensure personal safety: First, prioritize the safety of yourself and your team. Assess the scene for any potential hazards and take necessary precautions to prevent harm to",29,0,0.33705002,0.04651162585181188,0.0,0.04651162585181188,0
+234,What are the symptoms of heat stroke?,"The symptoms of heat stroke include high core temperature, hot and dry skin, flushed or pale skin, headache, altered mental status (confusion), irritable or aggressive behavior, progressive loss of responsiveness, rapid and irregular pulse, rapid and shallow breathing, vision problems, seizures or coma.","Heat stroke is a serious form of heat-related illness that occurs when the body's temperature regulation fails. Symptoms of heat stroke can include:
+
+1. High body temperature (above 103°F)
+2. Altered mental state or behavior changes
+3.",146,0,0.8412058,0.14285713786122467,0.05194804696913524,0.14285713786122467,0
+235,What would you do if a person's condition improved?,Recommend that he or she eat a complete meal.,"If a person's condition improved, I would support them by providing encouragement and positive reinforcement. I would also work with them to adjust their treatment plan as needed to ensure continued progress and address any new goals they may have. Celebrating their progress and achievement",133,0,0.1050923,0.043478257722117435,0.0,0.043478257722117435,0
+236,What should you do after providing care and removing your gloves?,"After providing care and removing your gloves, you should dispose of the gloves properly, wash your hands thoroughly, and put on a clean pair of gloves before assisting the next person if multiple people require care.","After providing care and removing your gloves, you should wash your hands thoroughly with soap and water to prevent the spread of germs. This is an important step in maintaining good hygiene and preventing the transmission of infections.",25,0,0.7419261,0.4126984077097506,0.27777777278163585,0.4126984077097506,0
+237,What do employees do before closing the vehicle door?,"Caregivers should ensure that everyone's fingers, hands, and feet are clear of doors before the doors are closed.","Before closing the vehicle door, employees typically ensure that all passengers have entered or exited the vehicle safely, check for any personal belongings left behind, and make sure the area around the vehicle is clear to avoid any obstructions. They may also double-check that",199,0,0.4921856,0.18867924106799583,0.034482754476813815,0.1509433920113921,0
+238,What should be done if blood or other potentially infectious materials spill onto the floor or another surface?,"If blood or other potentially infectious materials spill onto the floor or another surface, steps should be taken to prevent unnecessary people from accessing the area. Sharp objects should not be picked up with bare hands and should be removed and disposed of using tongs, a disposable scoop and scraper, or two pieces of cardboard. The spill should be carefully wiped up using absorbent towels and a disinfectant solution should be applied. After letting the solution stand for at least 10 minutes, the surface should be wiped clean and all materials used to clean up the spill should be disposed of in a labeled biohazard container.","If blood or other potentially infectious materials spill onto the floor or another surface, it is important to follow these steps to properly clean up and dispose of the spill:
+
+1. Put on appropriate personal protective equipment (PPE) such as gloves and a protective",26,0,0.8425136,0.3703703657561729,0.2127659532075852,0.3703703657561729,0
+239,What should you do after helping the person move away from asthma triggers?,"After helping the person move away from asthma triggers, you should help the person get into a comfortable position and provide reassurance. Assist the person in taking any prescribed quick-relief asthma medication that they have available.","After helping the person move away from asthma triggers, it is important to monitor their condition and ensure they are feeling better. You can also remind them to take any prescribed asthma medication as directed. It may also be helpful to provide further guidance on how to",83,0,0.80195636,0.4109588992231188,0.25316455209742034,0.4109588992231188,0
+240,What should you look for when reviewing?,"Hazards such as spilled chemicals, hostile bystanders, or oncoming traffic","When you are reviewing something, whether it is a document, a piece of work, or a situation, it is important to look for several key things:
+
+1. Accuracy: Make sure that all information presented is correct and free of errors.
+2.",29,0,0.14408994,0.044444440987654585,0.0,0.044444440987654585,0
+241,What precautions should you take around water?,"Always be very careful around water: Before diving, make sure that the water is deep enough, and check for objects below the surface, such as logs or pilings. Pools at homes, motels, or hotels may not be safe for diving. Enter unknown water feet first. Enter above-ground pools feet first. When bodysurfing, keep your arms out in front of you to protect your head and neck.","It's important to take certain precautions when around water to ensure safety. Here are some tips to consider:
+
+1. Always swim in designated swimming areas and follow any posted rules and regulations.
+2. Never swim alone – always have a buddy with you.
+",114,0,0.5515475,0.14583332847222238,0.0,0.14583332847222238,0
+242,What dangers come with great pain?,Obesity also increases the risk of high blood pressure and blood cholesterol levels.,"Great pain can pose various dangers both physically and mentally. Some potential dangers include:
+
+- Physical harm: Extreme pain may be a sign of a serious medical condition that requires immediate attention. Ignoring or delaying treatment for the underlying cause of the pain can lead",55,0,0.13491356,0.1199999963520001,0.0,0.1199999963520001,0
+243,How do you prepare an oral medication for a person?,Hand them the correct number of tablets.,"Here are the general steps to prepare an oral medication for a person:
+
+1. Wash your hands to ensure cleanliness.
+2. Check the prescription label to confirm the correct medication, dosage, and frequency.
+3. Gather the necessary supplies, including the medication",36,0,0.41487885,0.09756097277810835,0.043478258601134336,0.09756097277810835,0
+244,What are the signs and symptoms of a stroke?,"The signs and symptoms of a stroke can vary, but may include sudden severe headache, dizziness or confusion, unresponsiveness or temporary loss of responsiveness, and sudden loss of bladder or bowel control.","The signs and symptoms of a stroke can vary depending on the type of stroke and the area of the brain affected, but common signs and symptoms may include:
+
+1. Sudden numbness or weakness in the face, arm, or leg - especially on",58,0,0.8381585,0.3928571379145408,0.19999999510204094,0.3214285664859694,0
+245,What should you do if you find giant or wild parsnips?,The location should be reported to the local environmental or municipal authorities.,"If you find giant or wild parsnips, it's important to exercise caution because their sap can cause skin irritation or burns when exposed to sunlight. Here are some steps you can take:
+
+1. Avoid direct skin contact with the plant, especially with",166,0,0.24784166,0.12499999625000012,0.0,0.12499999625000012,0
+246,What are some typical symptoms of partial suffocation?,"A look of panic with wide eyes, forceful or weak coughing, one or both hands clutching the throat.","Some typical symptoms of partial suffocation may include shortness of breath, wheezing, coughing, chest tightness, anxiety, confusion, dizziness, and potentially loss of consciousness. It is important to seek immediate medical attention if you suspect someone",47,0,0.353872,0.07999999551200027,0.0,0.07999999551200027,0
+247,What should you encourage the person to do?,Encourage the person to seek medical attention.,"I would encourage the person to set specific and achievable goals, create a plan of action, and stay organized and focused on their priorities. It's also important for them to stay positive, stay motivated, and seek support when needed. Remember that progress takes",150,0,0.37543687,0.18181817914256201,0.0833333311458334,0.18181817914256201,0

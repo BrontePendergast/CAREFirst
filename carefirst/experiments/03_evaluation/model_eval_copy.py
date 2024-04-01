@@ -43,14 +43,17 @@ print(result['answer'])
 
 model = 'gpt-3.5-turbo-0125'
 @retry(stop=(stop_after_delay(20)|stop_after_attempt(5)))
-def gpt3_response(prompt, model):
+def gpt3_response(prompt, model = 'gpt-3.5-turbo-0125'):
     response = client.chat.completions.create(
         model=model,
         messages=[{"role": "system", "content": "You are a helpful assistant."},
                   {"role": "user", "content": prompt}],
         max_tokens=50
     )
-    return response.choices[0].message.content
+
+    chatbot_response ={"answer": response.choices[0].message.content,
+                       "source": "0"}
+    return chatbot_response
 
 # gpt3_answer = gpt3_response(prompt, model)
 
@@ -116,15 +119,46 @@ def evaluate_one_model(chatbot,
 
 
 ##############################
-# run evaluation for Mistal 7b
+# run evaluation for each model
 ##############################
 
 # validation on smaller sample
-scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
-                       chatbot_name = 'carefirst', 
+scores_df = evaluate_one_model(chatbot = gpt3_response, 
+                       chatbot_name = 'baseline', 
                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-                       output_data_path = './data/intent/model_evaluation_carefirst.csv')
+                       output_data_path = './data/evaluation/model_evaluation_baseline.csv')
 
+
+def summary_results(model_name, res_df):
+    # drop unneccessary columns
+    df = res_df.drop(['Unnamed: 0', 
+                      'question',
+                      'expected_answer',
+                      'chatbot_answer',
+                      'page',
+                      'chatbot_page'], axis = 1)
+    # print average results
+    print(model_name)
+    print(df.mean())
+    # print results on matched subset
+    df_match = df[df['page_match'] == 1]
+    print("If the page matches:")
+    print(df_match.mean())
+    return print("======================")
 
 # summarised results
-print(scores_df.drop(['question','expected_answer','chatbot_answer','page','chatbot_page'], axis = 1).mean())
+carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
+summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
+
+
+carefirst_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_gpt35.csv')
+summary_results(model_name="carefirst gpt3.5", res_df=carefirst_gpt35)
+
+
+carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
+summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
+
+baseline_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_baseline.csv')
+summary_results(model_name="baseline gpt3.5", res_df=baseline_gpt35)
+
+
