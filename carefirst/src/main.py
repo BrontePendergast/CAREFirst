@@ -216,5 +216,5 @@ async def health_check():
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://localhost:6379")
+    redis = aioredis.from_url("redis://redis:6379")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
