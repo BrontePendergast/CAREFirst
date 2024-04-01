@@ -212,18 +212,18 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
     )
 
-    # # Add Mongo History to chain
-    # ## Create history object from langchain_community.chat_message_histories
-    # mongo_history = MongoDBChatMessageHistory(
-    #   connection_string=CONNECTION_STRING, 
-    #   database_name=DATABASE_NAME,
-    #   collection_name=COLLECTION_NAME,
-    #   session_id=conversation_id
-    # )
-    # ## Create chat_history [{"Human": " "}, {"AI": " "}]
-    # ## https://python.langchain.com/docs/integrations/memory/mongodb_chat_message_history
-    # chat_history = mongo_history.messages
-    # print(chat_history)
+    # Add Mongo History to chain
+    ## Create history object from langchain_community.chat_message_histories
+    mongo_history = MongoDBChatMessageHistory(
+      connection_string=CONNECTION_STRING, 
+      database_name=DATABASE_NAME,
+      collection_name=COLLECTION_NAME,
+      session_id=conversation_id
+    )
+    ## Create chat_history [{"Human": " "}, {"AI": " "}]
+    ## https://python.langchain.com/docs/integrations/memory/mongodb_chat_message_history
+    chat_history = mongo_history.messages
+    print(chat_history)
 
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
@@ -246,7 +246,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
             "original_question": lambda x: question
           }
         | { # run in parallel
-            "guardrail_answer": RunnableLambda(guardrails_run),#guardrails_chain, 
+            "guardrail_answer": RunnableLambda(guardrails_run),
             "actual_answer": graph,
             "follow_up": lambda x: followup
           }
