@@ -16,7 +16,7 @@ from langchain_mongodb import MongoDBChatMessageHistory
 from src. retrieval import Retriever, CombineDocuments
 from src. refinement import ExtractScenarios, ExtractNode, node_parser, NODE_PROMPT, FOLLOW_UP_PROMPT
 from src.summarization import ANSWER_PROMPT, CONDENSE_QUESTION_PROMPT, message_parser, keyword_parser, KEYWORD_PROMPT
-from src.guardrails import guardrail_prompt, guardrails_run
+from src.guardrails import guardrails_func
 
 # Env Variables
 from dotenv import load_dotenv, dotenv_values 
@@ -227,7 +227,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
 
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
-        guardrails_run = guardrails_run
+        guardrails_run = guardrails_func
     else:
         def guardrails_run(info):
             return "Guardrails are not implemented"
