@@ -167,7 +167,7 @@ def RequireQuestion(info):
                 )
             except: print(f"follow up failed with node: {info['node']}")
 
-        return answer_chain
+    return answer_chain
 
 
 # function to check guardrail response before proceeding with answer
