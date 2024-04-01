@@ -149,17 +149,3 @@ define bot express thanks
 define flow thanks
     user express thanks
     bot express thanks
-
-define user express conversation
-    "ok"
-    "cool"
-    "sure"
-    "will do"
-    "no worries"
-
-define bot express conversation
-    "If you have any more questions or need further information, feel free to ask."
-
-define flow conversation
-    user express conversation
-    bot express conversation
