@@ -204,7 +204,7 @@ def AnswerDecision(info):
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=[{"Human": " "}, {"AI": " "}]):
     
     # First we add a step to load memory
     # This adds a "memory" key to the input object

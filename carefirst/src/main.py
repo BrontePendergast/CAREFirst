@@ -66,6 +66,7 @@ class MessageRecord(BaseModel):
     answer: str
     query: str
     feedback: Optional[bool] = None
+    model: Optional[str]
     timestamp_sent_query: datetime
     timestamp_sent_response: datetime
     response_duration: float
@@ -117,20 +118,27 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     # Set Message Repository
     messages_repository = MessagesRepository(database=database)
 
+    # Fetch the last 3 conversations for the given conversation_id
+    last_3_conversations = list(database["messages"].find({"conversation_id": conversation_id}).sort("timestamp_sent_query", pymongo.DESCENDING).limit(3))
+
+    # Format conversations as [{"Human": " "}, {"AI": " "}]
+    formatted_conversations = [{"Human": conversation["query"], "AI": conversation["answer"]} for conversation in last_3_conversations]
+
     # Generate Response
     timestamp_queryin = datetime.now()
-    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True )
+    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True, previous_conversations=formatted_conversations )
     validated_response = Response(**ai_response)
     # #TEST
-    # validated_response = {
+    # validated_response_json = {
     #     "message_id":"TEST-whatever",
     #     "conversation_id":conversation_id,
-    #     "answer":"comoestas",
+    #     "answer":"comoestas " + str(datetime.now()),
     #     "query":"holi",
     #     "source":"TEST",
-    #     "model":"",
+    #     "model":str(formatted_conversations),
     #     "timestamp":"2024-03-12T15:52:16.954444"
     # }
+    # validated_response = Response(**validated_response_json)
     # #TEST
 
     # Create message_id
@@ -150,7 +158,8 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
                             , query=validated_response.query
                             , timestamp_sent_query = timestamp_queryin
                             , timestamp_sent_response=validated_response.timestamp
-                            , response_duration=duration_in_s)
+                            , response_duration=duration_in_s
+                            , model=validated_response.model)
     messages_repository.save(message)
 
 
@@ -207,5 +216,5 @@ async def health_check():
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://redis:6379")
+    redis = aioredis.from_url("redis://localhost:6379")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
