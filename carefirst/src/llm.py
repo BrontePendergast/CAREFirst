@@ -175,8 +175,11 @@ def AnswerDecision(info):
 
     print(f"quardrail answer: {info['guardrail_answer']}")
 
-    if info["guardrail_answer"] in ["Your medical situation is critical. Please call EMS/9-1-1", 
-                                    "I'm sorry, I can't respond to that."]:
+    if info["guardrail_answer"] in ["Your medical situation may be critical. Please call EMS/9-1-1", 
+                                    "I'm sorry, I can't respond to that.",
+                                    "Hello! Thanks for using Carefirst AI, how can I assist you?",
+                                    "You're welcome! Thanks for using Carefirst AI.",
+                                    "If you have any more questions or need further information, feel free to ask."]:
         return info["guardrail_answer"]
     else:
             
@@ -224,9 +227,10 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
 
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
-        guardrails_chain = guardrail_prompt | (guardrails_run | llm) | StrOutputParser()
+        guardrails_run = guardrails_run
     else:
-        guardrails_chain = lambda y: "Guardrails are not implemented"
+        def guardrails_run(info):
+            return "Guardrails are not implemented"
 
     # And now we put it all together!
     chain = (
@@ -238,10 +242,11 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         | { # document retrieval
             "question": lambda x: x["question"]["standalone_question"],
             "docs": RunnableLambda(Retriever),
-            "keywords": lambda x: x["keywords"]["keywords"]
+            "keywords": lambda x: x["keywords"]["keywords"],
+            "original_question": lambda x: question
           }
         | { # run in parallel
-            "guardrail_answer": guardrails_chain, 
+            "guardrail_answer": RunnableLambda(guardrails_run),
             "actual_answer": graph,
             "follow_up": lambda x: followup
           }
