@@ -44,6 +44,12 @@ matplotlib-venn = "^0.11.10"
 matplotlib-venn-wordcloud = "^0.2.6"
 huggingface-hub = "^0.20.3"
 pytest = "^8.0.0"
+transformers = "^4.39.2"
+torchaudio = "^2.2.2"
+sentencepiece = "^0.2.0"
+torch = "^2.2.2"
+soundfile = "^0.12.1"
+num2words = "^0.5.13"
 
 [build-system]
 requires = ["poetry-core"]
