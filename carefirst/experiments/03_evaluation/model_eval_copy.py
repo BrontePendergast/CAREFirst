@@ -126,4 +126,5 @@ scores_df = evaluate_one_model(chatbot = chatbot_response_fun,
                        output_data_path = './data/intent/model_evaluation_carefirst.csv')
 
 
-
+# summarised results
+print(scores_df.drop(['question','expected_answer','chatbot_answer','page','chatbot_page'], axis = 1).mean())
