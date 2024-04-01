@@ -121,9 +121,9 @@ def evaluate_one_model(chatbot,
 
 # validation on smaller sample
 scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
-                       chatbot_name = 'gemma', 
+                       chatbot_name = 'carefirst', 
                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-                       output_data_path = './data/intent/model_evaluation_gemma_7b_it.csv')
+                       output_data_path = './data/intent/model_evaluation_carefirst.csv')
 
 
 
