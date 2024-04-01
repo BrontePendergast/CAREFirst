@@ -14,7 +14,8 @@ from enum import Enum
 class ScenarioEnum(str, Enum):
     one = "One", 
     other = "Other",
-    many = "Many"
+    many = "Many",
+    none = "None"
 
 # knowledge graph node identification prompt
 class Node(BaseModel):
