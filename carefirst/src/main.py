@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
+import json
 
 import os
 from datetime import datetime
@@ -113,20 +114,24 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     # Set ID to conversation
     query.id = conversation_id
 
+    # Set Message Repository
+    messages_repository = MessagesRepository(database=database)
 
-    # # Generate Response
+    # Generate Response
     timestamp_queryin = datetime.now()
-    ai_response = ChatChain(question=query.query, conversation_id=query.id)
+    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True )
     validated_response = Response(**ai_response)
+    # #TEST
     # validated_response = {
     #     "message_id":"TEST-whatever",
     #     "conversation_id":conversation_id,
     #     "answer":"comoestas",
     #     "query":"holi",
     #     "source":"TEST",
-    #     "model":"TEST-None",
+    #     "model":"",
     #     "timestamp":"2024-03-12T15:52:16.954444"
     # }
+    # #TEST
 
     # Create message_id
     message_id = getMessageID()
@@ -134,12 +139,11 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 
 
     # Calculate response duration
-    response_duration = validated_response.timestamp - timestamp_queryin                         
+    response_duration = validated_response.timestamp - timestamp_queryin                       
     duration_in_s = response_duration.total_seconds()
 
 
     # Store record in "messages" collection
-    messages_repository = MessagesRepository(database=database)
     message = MessageRecord(conversation_id = query.id
                             , message_id=message_id
                             , answer=validated_response.answer
@@ -162,25 +166,31 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
 async def messages(feedback: Feedback, message_id: str) -> ResponseFeedback:
     feedback.id = message_id
     
-    
     # Update message collection with feedback
     try:    
         update_result = database["messages"].update_one(
             {"message_id": feedback.id}, 
-            {'$set': {"feedback": feedback.feedback}})   
+            {'$set': {"feedback": feedback.feedback}}
+        )   
         
-        if update_result.matched_count < 1:
-            # raise HTTPException(status_code=404, detail="Matched count: " + str(update_result.matched_count))
-            return {"id":feedback.id,
-                "status": "Error",
-                "modified_count":update_result.matched_count}
-        else:    
-            return {"id":feedback.id,
-                "status": "Success",
-                "modified_count":update_result.modified_count}
-    
+        if update_result.matched_count == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail="Document with message_id '{}' not found.".format(feedback.id)
+            )
+        return ResponseFeedback(
+            id=feedback.id,
+            status="Success",
+            modified_count=update_result.modified_count
+        )
+    except HTTPException:
+        # Reraise the HTTPException if it's a 404 from the above check
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error | " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+            detail="An error occurred: {}".format(str(e))
+        )
 
     # return {"id":feedback.id,
     #             "status": "TEST-whatever",

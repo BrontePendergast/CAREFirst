@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 # guardrails
-from nemoguardrails import RailsConfig
+from nemoguardrails import RailsConfig, LLMRails
 from nemoguardrails.integrations.langchain.runnable_rails import RunnableRails
 
 #######################################
@@ -16,6 +16,11 @@ guardrail_prompt = ChatPromptTemplate.from_template("Should I answer this questi
 output_parser = StrOutputParser()
 
 config = RailsConfig.from_path("data/config")
-guardrails_run = RunnableRails(config, 
-                               input_key="question", 
-                               output_key="answer")
+
+guardrails = LLMRails(config)
+
+def guardrails_run(info):
+     rewritten_question = info["question"]
+     original_question = info["original_question"]
+     res = guardrails.generate(prompt=f'{original_question}, additionally {rewritten_question}')
+     return res

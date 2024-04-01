@@ -4,7 +4,6 @@ timestamp=$(date +%Y%m%d)
 VERSION=$(git rev-parse --short HEAD)
 BACKEND_FOLDER=carefirst
 FRONTEND_FOLDER=webapp
-NAMESPACE=rmarin
 ACR_DOMAIN=w255mids.azurecr.io
 # TAG=latest
 ENV="$(git symbolic-ref HEAD 2>/dev/null)" ||
@@ -17,9 +16,8 @@ else
 fi
 commitID=$(git rev-parse --short HEAD)
 TAG=$ENVName$commitID
-IMAGE_PREFIX=rmarin
 # -- Virtual Service HOST and URL
-export KNS=$IMAGE_PREFIX
+export KNS=rmarin
 # export VSVC_HOST=$(kubectl get virtualservice -n $KNS $IMAGE_NAME -o jsonpath='{.spec.hosts[0]}')
 export VSVC_HOST=$KNS.mids255.com
 export VSVC_URL=https://$VSVC_HOST
@@ -30,9 +28,23 @@ wait_seconds=5
 total_seconds=0
 request_count=0
 
+# -- Docker Tags
+IMAGE_REPOSITORY=carefirst
+
+BACKEND_IMAGE_NAME=pythonapi
+BACKEND_IMAGE_TAG=${BACKEND_IMAGE_NAME}:${TAG}
+BACKEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_REPOSITORY}/${BACKEND_IMAGE_NAME}"
+BACKEND_IMAGE_FQDN_FULL=${BACKEND_IMAGE_FQDN}:${TAG}
+
+FRONTEND_IMAGE_NAME=frontend
+FRONTEND_IMAGE_TAG=${FRONTEND_IMAGE_NAME}:${TAG}
+FRONTEND_IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_REPOSITORY}/${FRONTEND_IMAGE_NAME}"
+FRONTEND_IMAGE_FQDN_FULL=${FRONTEND_IMAGE_FQDN}:${TAG}
+
+# -- Create deployment files
 echo " -- Deploy CAREFirst Version:${TAG}"
-sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
-sed "s/\[TAG\]/${TAG}/g" .k8s/overlays/prod/patch-deployment-frontend_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-frontend.yaml
+sed -e "s/\[REPOSITORY\]/${IMAGE_REPOSITORY}/g" -e "s/\[IMAGE_TAG\]/${BACKEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-pythonapi_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-pythonapi.yaml
+sed -e "s/\[REPOSITORY\]/${IMAGE_REPOSITORY}/g" -e "s/\[IMAGE_TAG\]/${FRONTEND_IMAGE_TAG}/g" .k8s/overlays/prod/patch-deployment-frontend_TEMPLATE.yaml > .k8s/overlays/prod/patch-deployment-frontend.yaml
 
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
@@ -76,21 +88,17 @@ az acr login --name w255mids &> /dev/null
 
 # Build pythonapi image
 cd ${BACKEND_FOLDER}
-IMAGE_NAME=pythonapi
-IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
-echo " -- Build and push ${IMAGE_NAME}:${TAG} to ${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
-docker build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} . 
-docker tag ${IMAGE_NAME}:${TAG} ${IMAGE_FQDN}:${TAG}
-docker push ${IMAGE_FQDN}:${TAG}
+echo " -- Build and push ${BACKEND_IMAGE_TAG} to ${BACKEND_IMAGE_FQDN}"
+docker build --platform linux/amd64 -t ${BACKEND_IMAGE_TAG} . 
+docker tag ${BACKEND_IMAGE_TAG} ${BACKEND_IMAGE_FQDN_FULL}
+docker push ${BACKEND_IMAGE_FQDN_FULL}
 
 # Build frontend image
 cd ../${FRONTEND_FOLDER}/client
-IMAGE_NAME=frontend
-IMAGE_FQDN="${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
-echo " -- Build and push ${IMAGE_NAME}:${TAG} to ${ACR_DOMAIN}/${IMAGE_PREFIX}/${IMAGE_NAME}"
-docker build --platform linux/amd64 -t ${IMAGE_NAME}:${TAG} . 
-docker tag ${IMAGE_NAME}:${TAG} ${IMAGE_FQDN}:${TAG}
-docker push ${IMAGE_FQDN}:${TAG}
+echo " -- Build and push ${FRONTEND_IMAGE_TAG} to ${FRONTEND_IMAGE_FQDN}"
+docker build --platform linux/amd64 -t ${FRONTEND_IMAGE_TAG} . 
+docker tag ${FRONTEND_IMAGE_TAG} ${FRONTEND_IMAGE_FQDN_FULL}
+docker push ${FRONTEND_IMAGE_FQDN_FULL}
 
 # Go back to root
 cd ../../

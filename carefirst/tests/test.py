@@ -62,14 +62,45 @@ def test_conversations_basic():
     # deleteCollection(db_name="carefirstdb", collection_name="messages")
 
 def test_messages_basic():
-    data = {"feedback": "True"}
+    # Start Conversation
+    data = {"query": "can you try again to simple check on my burn"}
     response = client.post(
-        "/messages/" + unix_timestamp,
+        "/conversations/" + unix_timestamp,
         json=data,
     )
-    assert response.status_code == 200
-    # assert response.json()["modified_count"] == 1
-    # deleteCollection(db_name="carefirstdb", collection_name="messages")
+
+    # Get Message to give feedback on
+    message_id = response.json()["message_id"]
+
+    # Give Positive Feedback
+    data_true = {"feedback": "True"}
+    response = client.post(
+        "/messages/" + message_id,
+        json=data_true,
+    )
+    response_true = response.status_code
+
+    # Give Negative Feedback
+    data_false = {"feedback": "False"}
+    response = client.post(
+        "/messages/" + message_id,
+        json=data_false,
+    )
+    response_false = response.status_code
+
+    assert response_true == 200
+    assert response_false == 200
+
+   
+def test_messages_not_found():
+    # Start Conversation
+    data = {"feedback": "False"}
+    response = client.post(
+        "/messages/" + "Ricardito",
+        json=data,
+    )
+    response = response.status_code
+    assert response == 404
 
 
 # # Are we able to send feedback query?
