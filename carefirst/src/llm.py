@@ -29,7 +29,8 @@ load_dotenv()
 
 
 MODEL = "gpt-3.5-turbo-1106"
-MODEL_ANSWER = "mistralai/Mistral-7B-Instruct-v0.2"
+MODEL_ANSWER = "google/gemma-7b-it"
+# "microsoft/phi-2"
 
 def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
 
@@ -167,7 +168,7 @@ def RequireQuestion(info):
                 )
             except: print(f"follow up failed with node: {info['node']}")
 
-        return answer_chain
+    return answer_chain
 
 
 # function to check guardrail response before proceeding with answer
