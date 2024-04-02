@@ -18,6 +18,7 @@ from pydantic_mongo import AbstractRepository, ObjectIdField
 # LLM
 from src.db_mongo import getURI
 from src.llm import ChatChain
+from langchain_core.messages import AIMessage, HumanMessage
 
 # Cache
 from fastapi_cache import FastAPICache
@@ -122,7 +123,13 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     last_3_conversations = list(database["messages"].find({"conversation_id": conversation_id}).sort("timestamp_sent_query", pymongo.DESCENDING).limit(3))
 
     # Format conversations as [{"Human": " "}, {"AI": " "}]
-    formatted_conversations = [{"Human": conversation["query"], "AI": conversation["answer"]} for conversation in last_3_conversations]
+    formatted_conversations = []
+    for conversation in last_3_conversations:
+        formatted_conversations += AIMessage(conversation["answer"])
+        formatted_conversations += HumanMessage(conversation["query"])
+    # reverse order so first human message at top
+    # latest AI message at bottom
+    formatted_conversations.reverse()
 
     # Generate Response
     timestamp_queryin = datetime.now()
