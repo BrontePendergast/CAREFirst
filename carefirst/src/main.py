@@ -125,8 +125,8 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     # Format conversations as [{"Human": " "}, {"AI": " "}]
     formatted_conversations = []
     for conversation in last_3_conversations:
-        formatted_conversations += AIMessage(conversation["answer"])
-        formatted_conversations += HumanMessage(conversation["query"])
+        formatted_conversations.append(AIMessage(conversation["answer"]))
+        formatted_conversations.append(HumanMessage(conversation["query"]))
     # reverse order so first human message at top
     # latest AI message at bottom
     formatted_conversations.reverse()
@@ -223,5 +223,5 @@ async def health_check():
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://redis:6379")
+    redis = aioredis.from_url("redis://localhost:6379")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")

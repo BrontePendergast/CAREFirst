@@ -215,7 +215,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
 
     else:
         loaded_memory = RunnablePassthrough.assign(
-            chat_history=lambda x: previous_conversation,
+            chat_history=lambda x: previous_conversations,
         )
 
     # guardrails aren't on by default to allow for testing and evaluation
