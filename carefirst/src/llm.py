@@ -29,7 +29,8 @@ load_dotenv()
 
 
 MODEL = "gpt-3.5-turbo-1106"
-MODEL_ANSWER = "google/gemma-7b-it"
+MODEL_ANSWER = "Mistral-7B-Instruct-v0.2"
+# "google/gemma-7b-it"
 # "microsoft/phi-2"
 
 def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):

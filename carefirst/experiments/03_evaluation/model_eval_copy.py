@@ -150,10 +150,8 @@ def summary_results(model_name, res_df):
 carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
 summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
 
-
 carefirst_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_gpt35.csv')
 summary_results(model_name="carefirst gpt3.5", res_df=carefirst_gpt35)
-
 
 carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
 summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
