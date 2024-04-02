@@ -66,11 +66,11 @@ llm = SelectLLM(model_name = MODEL,
 #######################################
 
 
-MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
-MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
-DATABASE_NAME = "carefirstdb"
-COLLECTION_NAME = "chat_history"
-CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
+# MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
+# MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
+# DATABASE_NAME = "carefirstdb"
+# COLLECTION_NAME = "chat_history"
+# CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
 
 # memory - reduce to the 3 most recent messages
 memory = ConversationBufferWindowMemory(
@@ -204,26 +204,19 @@ def AnswerDecision(info):
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=[{"Human": " "}, {"AI": " "}]):
-    
-    # First we add a step to load memory
-    # This adds a "memory" key to the input object
-    loaded_memory = RunnablePassthrough.assign(
-        chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
-    )
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=None):
 
-    # Add Mongo History to chain
-    ## Create history object from langchain_community.chat_message_histories
-    mongo_history = MongoDBChatMessageHistory(
-      connection_string=CONNECTION_STRING, 
-      database_name=DATABASE_NAME,
-      collection_name=COLLECTION_NAME,
-      session_id=conversation_id
-    )
-    ## Create chat_history [{"Human": " "}, {"AI": " "}]
-    ## https://python.langchain.com/docs/integrations/memory/mongodb_chat_message_history
-    chat_history = mongo_history.messages
-    print(chat_history)
+    if demo:
+        # First we add a step to load memory
+        # This adds a "memory" key to the input object
+        loaded_memory = RunnablePassthrough.assign(
+            chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
+        )
+
+    else:
+        loaded_memory = RunnablePassthrough.assign(
+            chat_history=lambda x: previous_conversation,
+        )
 
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
@@ -234,7 +227,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
 
     # And now we put it all together!
     chain = (
-          loaded_memory 
+          loaded_memory
         | { # run question and keyword prompt in parallel
             "question": standalone_question,
             "keywords": keywords
