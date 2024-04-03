@@ -22,7 +22,7 @@ export default {
         // return response['data']['output']['answer'];
         console.log(conv_id);
         return {"answer": response['data']['answer'], 
-        "page": toString(response['data']['source']['page']),
+        "page": response['data']['source']['page'].toString(),
         "message_id": response['data']['message_id']};
         // console.log(JSON.stringify(response)['data']['output']['answer']);
       })
