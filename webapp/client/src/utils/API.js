@@ -21,7 +21,9 @@ export default {
         // console.log(response['data']['answer']);
         // return response['data']['output']['answer'];
         console.log(conv_id);
-        return {"answer": response['data']['answer'], "page": toString(response['data']['source']['page'])};
+        return {"answer": response['data']['answer'], 
+        "page": toString(response['data']['output']['source']['page']),
+        "message_id": response['data']['output']['message_id']};
         // console.log(JSON.stringify(response)['data']['output']['answer']);
       })
       .catch((error) => {
