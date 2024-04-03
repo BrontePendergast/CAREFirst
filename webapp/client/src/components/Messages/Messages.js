@@ -119,9 +119,10 @@ function Messages() {
         var output = await API.sendQuery(message, conversation_id);
         var answer = output["answer"];
         var page = output["page"];
+        var message_id = output["message_id"];
         setIsTyping(false);
         // document.getElementById("typingCheck").style.visiblity = "hidden";
-        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': makeid(6)}];
+        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': message_id}];
         console.log("messages");
         console.log(messages);
         await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
