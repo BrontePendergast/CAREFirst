@@ -19,8 +19,8 @@ message_parser = PydanticOutputParser(pydantic_object=message)
 
 question_system_prompt = SystemMessagePromptTemplate.from_template(
     template="""
-    Given the chat history and the latest human message, rephrase the latest human message to be a standalone message.
-    The message should continue to be written from the human's perspective and not answer their question. 
+    Given the chat history and the latest human message, rephrase the latest human message to be a standalone message incorporating any context from the chat history.
+    The message should continue to be written from the human's perspective and your response should not answer their question. 
     Prioritise the information in the latest human message and make no changes to it if the chat history does not provide additional context.
 
     Respond with the standalone message in JSON format

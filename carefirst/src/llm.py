@@ -65,13 +65,6 @@ llm = SelectLLM(model_name = MODEL,
 # Conversation history
 #######################################
 
-
-# MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
-# MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
-# DATABASE_NAME = "carefirstdb"
-# COLLECTION_NAME = "chat_history"
-# CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
-
 # memory - reduce to the 3 most recent messages
 memory = ConversationBufferWindowMemory(
         return_messages=True, output_key="answer", input_key="question", k = 3
@@ -169,17 +162,26 @@ def RequireQuestion(info):
 
     return answer_chain
 
+def AppendAnswer(info):
+
+    answer = (
+        "Important:\n" 
+        + info["guardrail"] 
+        + "\nOtherwise, see more information below."
+        + "\n\n"
+        + info["answer"]
+    )
+
+    return answer
 
 # function to check guardrail response before proceeding with answer
 def AnswerDecision(info):
 
     print(f"quardrail answer: {info['guardrail_answer']}")
 
-    if info["guardrail_answer"] in ["Your medical situation may be critical. Please call EMS/9-1-1", 
-                                    "I'm sorry, I can't respond to that.",
+    if info["guardrail_answer"] in [#"I'm sorry, I can't respond to that.",
                                     "Hello! Thanks for using Carefirst AI, how can I assist you?",
-                                    "You're welcome! Thanks for using Carefirst AI.",
-                                    "If you have any more questions or need further information, feel free to ask."]:
+                                    "Let me know if you have any further questions! Thanks for using Carefirst AI."]:
         return info["guardrail_answer"]
     else:
             
@@ -194,9 +196,20 @@ def AnswerDecision(info):
                 "follow_up": lambda y: info["follow_up"]
             } 
             | RunnableLambda(RequireQuestion)
+            | StrOutputParser()
+        )
+        
+    if "the medical situation may be critical. Please call EMS/9-1-1" in info["guardrail_answer"]:
+
+        final_chain = (
+            {
+                "answer": final_chain, 
+                "guardrail": lambda x: info["guardrail_answer"]
+            } 
+            | RunnableLambda(AppendAnswer)
         )
 
-    return final_chain | StrOutputParser()
+    return final_chain
 
 
 #######################################
