@@ -89,7 +89,7 @@ DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}"
 
 def CombineDocuments(docs, 
                      document_prompt=DEFAULT_DOCUMENT_PROMPT, 
-                     document_separator="\n\n"):
+                     document_separator="\n\n================================\n\n"):
     
     doc_strings = [format_document(doc, document_prompt) for doc in docs]
 

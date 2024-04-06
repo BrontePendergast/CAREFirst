@@ -155,6 +155,7 @@ define user express thanks
     "very happy with your service"
     "got it"
     "makes sense"
+    "ok"
 
 define bot express thanks
     "Let me know if you have any further questions! Thanks for using Carefirst AI."
