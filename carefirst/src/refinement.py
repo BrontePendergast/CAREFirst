@@ -2,7 +2,7 @@
 from langchain.output_parsers.pydantic import PydanticOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain.prompts.prompt import PromptTemplate
-from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain.schema import format_document
 
 from enum import Enum
@@ -57,7 +57,8 @@ node_human_prompt = HumanMessagePromptTemplate.from_template(
 
 
 NODE_PROMPT = ChatPromptTemplate.from_messages([node_system_prompt,
-                                                node_human_prompt])
+                                                node_human_prompt,
+                                                MessagesPlaceholder(variable_name="conversation", optional=True)])
 
     # 
 
@@ -105,15 +106,18 @@ FOLLOW_UP_SYSTEM_PROMPT = SystemMessagePromptTemplate.from_template(
     template="""
     The user has a question and you have narrowed down that the answer is related to several scenarios. 
     Your role is to ask the user a follow up question to identify which specific scenario they are referring to.
-    """
+
+    Scenarios: \n{graph}
+    """,
+    input_variables=["graph"]
     )
 
 
 FOLLOW_UP_HUMAN_PROMPT = HumanMessagePromptTemplate.from_template(
-    template = "User question: \n {question} \n Scenarios: \n{graph}\n Assistant:", 
-    input_variables=["question", "graph"]
+    template = "User question: \n {question} \n \n Assistant:", 
+    input_variables=["question"]
     )
 
 
 FOLLOW_UP_PROMPT = ChatPromptTemplate.from_messages([FOLLOW_UP_SYSTEM_PROMPT, 
-                                                  FOLLOW_UP_HUMAN_PROMPT])
+                                                     FOLLOW_UP_HUMAN_PROMPT])

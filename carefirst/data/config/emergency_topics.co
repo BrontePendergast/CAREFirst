@@ -22,9 +22,8 @@ define user ask about chest
 
 define user ask about bleeding
   "uncontrollable bleeding"
-  "lot's of blood"
-  "they're bleeding a lot"
-  "won't stop bleeding"
+  "extreme bleeding"
+  "life threatening bleeding"
 
 define user ask about seizure
   "having a seizure"
@@ -55,35 +54,43 @@ define user ask about childbirth
   "I'm giving birth right now"
   "the baby is coming now"
 
+define user ask about mentalhealth
+  "changed mental health"
+  "confusion"
+  "disorientation"
+
 define bot inform breathing
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is having difficulty breathing or shows no signs of breathing, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform unresponsiveness
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is unresponsive, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform chest
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is experiencing persistent chest pains, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform bleeding
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is experiencing life-threatening or uncontrollable bleeding, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform seizure
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is having a seizure, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform headaches
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is experiencing a severe headache, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform speech
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is showing signs of abnormal speech, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform spine
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone has experienced an injury to the head, neck, or back, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform blood
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is experiencing blood in the vomit or urine, the medical situation may be critical. Please call EMS/9-1-1"
 
 define bot inform childbirth
-  "Your medical situation may be critical. Please call EMS/9-1-1"
+  "If someone is showing signs of imminent childbirth, the medical situation may be critical. Please call EMS/9-1-1"
+
+define bot inform mentalhealth
+  "If someone is showing changes in mental status, confusion, or disorientation, the medical situation may be critical. Please call EMS/9-1-1"
 
 define flow breathing 
   user ask about breathing
@@ -125,6 +132,10 @@ define flow childbirth
   user ask about childbirth
   bot inform childbirth
 
+define flow mentalhealth
+  user ask about mentalhealth
+  bot inform mentalhealth
+
 # define niceties
 define user express greeting
     "hello"
@@ -142,24 +153,13 @@ define user express thanks
     "thanks"
     "thanks for your help"
     "very happy with your service"
+    "got it"
+    "makes sense"
+    "ok"
 
 define bot express thanks
-    "You're welcome! Thanks for using Carefirst AI."
+    "Let me know if you have any further questions! Thanks for using Carefirst AI."
 
 define flow thanks
     user express thanks
     bot express thanks
-
-define user express conversation
-    "ok"
-    "cool"
-    "sure"
-    "will do"
-    "no worries"
-
-define bot express conversation
-    "If you have any more questions or need further information, feel free to ask."
-
-define flow conversation
-    user express conversation
-    bot express conversation

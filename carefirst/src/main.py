@@ -18,6 +18,7 @@ from pydantic_mongo import AbstractRepository, ObjectIdField
 # LLM
 from src.db_mongo import getURI
 from src.llm import ChatChain
+from langchain_core.messages import AIMessage, HumanMessage
 
 # Cache
 from fastapi_cache import FastAPICache
@@ -66,6 +67,7 @@ class MessageRecord(BaseModel):
     answer: str
     query: str
     feedback: Optional[bool] = None
+    model: Optional[str]
     timestamp_sent_query: datetime
     timestamp_sent_response: datetime
     response_duration: float
@@ -117,20 +119,33 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
     # Set Message Repository
     messages_repository = MessagesRepository(database=database)
 
+    # Fetch the last 3 conversations for the given conversation_id
+    last_3_conversations = list(database["messages"].find({"conversation_id": conversation_id}).sort("timestamp_sent_query", pymongo.DESCENDING).limit(3))
+
+    # Format conversations as [{"Human": " "}, {"AI": " "}]
+    formatted_conversations = []
+    for conversation in last_3_conversations:
+        formatted_conversations.append(AIMessage(conversation["answer"]))
+        formatted_conversations.append(HumanMessage(conversation["query"]))
+    # reverse order so first human message at top
+    # latest AI message at bottom
+    formatted_conversations.reverse()
+
     # Generate Response
     timestamp_queryin = datetime.now()
-    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True )
+    ai_response = ChatChain(question=query.query, conversation_id=query.id, guardrails = True, followup = True, previous_conversations=formatted_conversations )
     validated_response = Response(**ai_response)
     # #TEST
-    # validated_response = {
+    # validated_response_json = {
     #     "message_id":"TEST-whatever",
     #     "conversation_id":conversation_id,
-    #     "answer":"comoestas",
+    #     "answer":"comoestas " + str(datetime.now()),
     #     "query":"holi",
     #     "source":"TEST",
-    #     "model":"",
+    #     "model":str(formatted_conversations),
     #     "timestamp":"2024-03-12T15:52:16.954444"
     # }
+    # validated_response = Response(**validated_response_json)
     # #TEST
 
     # Create message_id
@@ -150,7 +165,8 @@ async def conversations(conversation_id: str, query: RequestQuery) -> Response:
                             , query=validated_response.query
                             , timestamp_sent_query = timestamp_queryin
                             , timestamp_sent_response=validated_response.timestamp
-                            , response_duration=duration_in_s)
+                            , response_duration=duration_in_s
+                            , model=validated_response.model)
     messages_repository.save(message)
 
 

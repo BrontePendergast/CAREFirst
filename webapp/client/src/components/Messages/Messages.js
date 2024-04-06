@@ -119,9 +119,10 @@ function Messages() {
         var output = await API.sendQuery(message, conversation_id);
         var answer = output["answer"];
         var page = output["page"];
+        var message_id = output["message_id"];
         setIsTyping(false);
         // document.getElementById("typingCheck").style.visiblity = "hidden";
-        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': makeid(6)}];
+        var new_messages_received = [{'sender': 'bot', 'message': answer, 'page': page, 'message_id': message_id}];
         console.log("messages");
         console.log(messages);
         await setMessages((prevMessages) => [...prevMessages, ...new_messages_received]);
@@ -212,7 +213,7 @@ function Messages() {
                     <OverlayTrigger placement='top' show={showTooltip['message-'+i] || showTooltip['pop-'+i]}  overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id={"popover-basic pop-"+i}>
                     <Popover.Header as="h3" id={"pop-"+i}><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
                     <Popover.Body id={"pop-"+i}>
-                    Page {message.page}
+                    {message.page}
                     </Popover.Body>
                     </Popover>}>
                     <Row className={"individual-message-div"} id={"message-"+i}>

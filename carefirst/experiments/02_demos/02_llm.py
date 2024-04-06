@@ -32,7 +32,7 @@ def ChatDemo(question):
     scenarios = ExtractNode({'node':result['node'],
                              'scenarios': str(all_options)})
 
-    page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
+    page_num = 'pages ' + ', '.join([str(doc.metadata['page'] + 1) for doc in result['docs']])
     document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
     source = page_num + ' of ' + document
     

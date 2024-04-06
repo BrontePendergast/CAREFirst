@@ -16,7 +16,7 @@ from langchain_mongodb import MongoDBChatMessageHistory
 from src. retrieval import Retriever, CombineDocuments
 from src. refinement import ExtractScenarios, ExtractNode, node_parser, NODE_PROMPT, FOLLOW_UP_PROMPT
 from src.summarization import ANSWER_PROMPT, CONDENSE_QUESTION_PROMPT, message_parser, keyword_parser, KEYWORD_PROMPT
-from src.guardrails import guardrail_prompt, guardrails_run
+from src.guardrails import guardrails_func
 
 # Env Variables
 from dotenv import load_dotenv, dotenv_values 
@@ -67,17 +67,43 @@ llm = SelectLLM(model_name = MODEL,
 # Conversation history
 #######################################
 
-
-MONGODB_PASSWORD = os.getenv("POETRY_MONGODB_PASSWORD")
-MONGODB_USERNAME = os.getenv("POETRY_MONGODB_USERNAME")
-DATABASE_NAME = "carefirstdb"
-COLLECTION_NAME = "chat_history"
-CONNECTION_STRING = f"mongodb+srv://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@carefirst-dev.77movpn.mongodb.net/?retryWrites=true&w=majority"
-
 # memory - reduce to the 3 most recent messages
 memory = ConversationBufferWindowMemory(
         return_messages=True, output_key="answer", input_key="question", k = 3
     )
+
+
+#######################################
+# Chatbot helper functions
+#######################################
+
+
+def AppendAnswer(info):
+
+    answer = (
+        "Important:\n" 
+        + info["guardrail"] 
+        + "\nOtherwise, see more information below."
+        + "\n\n"
+        + info["answer"]
+    )
+
+    return answer
+
+
+def CountQuestions(info):
+
+    # history or empty string if none
+    history = info["chat_history"] or ""
+    # counter
+    count = 0
+
+    message_list = history.split('\n')
+    for message in message_list:
+        if 'AI:' in message and '?' in message:
+            count += 1
+
+    return count
 
 #######################################
 # Chatbot chains
@@ -139,11 +165,14 @@ graph = (
 
 # Function to check if follow up is required or direct answer
 def RequireQuestion(info):
+
+    print(f"counter: {info['count']}")
     # by default answer the question, unless a follow up can be determined
     answer_chain = (
         {
             "question": lambda x: info["question"], 
-            "context": lambda x: info["context"]
+            "context": lambda x: info["context"],
+            "conversation": lambda y: info["conversation"],
         } 
         | ANSWER_PROMPT 
         | llm_answer
@@ -151,8 +180,8 @@ def RequireQuestion(info):
         
     # follow ups aren't on by default to allow for testing and evaluation
     if info["follow_up"]: 
-
-        if info['node']['identified'] == 'Many':
+        # a follow up is needed and we haven't asked more than 2
+        if info['node']['identified'] == 'Many' and info['count'] <= 2:
             try:
                 graph = ExtractNode({"scenarios": info["scenarios"], 
                                      "node": info["node"]})
@@ -162,7 +191,8 @@ def RequireQuestion(info):
                 answer_chain = (
                     {
                         "question": lambda x: info["question"], 
-                        "graph": lambda x: graph
+                        "graph": lambda x: graph,
+                        "conversation": lambda y: info["conversation"],
                     }
                     | FOLLOW_UP_PROMPT 
                     | llm_answer
@@ -177,11 +207,9 @@ def AnswerDecision(info):
 
     print(f"quardrail answer: {info['guardrail_answer']}")
 
-    if info["guardrail_answer"] in ["Your medical situation may be critical. Please call EMS/9-1-1", 
-                                    "I'm sorry, I can't respond to that.",
+    if info["guardrail_answer"] in [#"I'm sorry, I can't respond to that.",
                                     "Hello! Thanks for using Carefirst AI, how can I assist you?",
-                                    "You're welcome! Thanks for using Carefirst AI.",
-                                    "If you have any more questions or need further information, feel free to ask."]:
+                                    "Let me know if you have any further questions! Thanks for using Carefirst AI."]:
         return info["guardrail_answer"]
     else:
             
@@ -193,12 +221,25 @@ def AnswerDecision(info):
                 "node": lambda y: x["node"],
                 "scenarios": lambda y: ExtractScenarios(x["docs"]),
                 "context": lambda y : CombineDocuments(x["docs"]),
-                "follow_up": lambda y: info["follow_up"]
+                "follow_up": lambda y: info["follow_up"],
+                "conversation": lambda y: info["conversation"]["conversation"],
+                "count": lambda y: info["count"]
             } 
             | RunnableLambda(RequireQuestion)
+            | StrOutputParser()
+        )
+        
+    if "the medical situation may be critical. Please call EMS/9-1-1" in info["guardrail_answer"]:
+
+        final_chain = (
+            {
+                "answer": final_chain, 
+                "guardrail": lambda x: info["guardrail_answer"]
+            } 
+            | RunnableLambda(AppendAnswer)
         )
 
-    return final_chain | StrOutputParser()
+    return final_chain
 
 
 #######################################
@@ -206,37 +247,30 @@ def AnswerDecision(info):
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False):
-    
-    # First we add a step to load memory
-    # This adds a "memory" key to the input object
-    loaded_memory = RunnablePassthrough.assign(
-        chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
-    )
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=None):
 
-    # Add Mongo History to chain
-    ## Create history object from langchain_community.chat_message_histories
-    mongo_history = MongoDBChatMessageHistory(
-      connection_string=CONNECTION_STRING, 
-      database_name=DATABASE_NAME,
-      collection_name=COLLECTION_NAME,
-      session_id=conversation_id
-    )
-    ## Create chat_history [{"Human": " "}, {"AI": " "}]
-    ## https://python.langchain.com/docs/integrations/memory/mongodb_chat_message_history
-    chat_history = mongo_history.messages
-    print(chat_history)
+    if demo:
+        # First we add a step to load memory
+        # This adds a "memory" key to the input object
+        loaded_memory = RunnablePassthrough.assign(
+            chat_history=RunnableLambda(memory.load_memory_variables) | itemgetter("history"),
+        )
+
+    else:
+        loaded_memory = RunnablePassthrough.assign(
+            chat_history=lambda x: previous_conversations,
+        )
 
     # guardrails aren't on by default to allow for testing and evaluation
     if guardrails:
-        guardrails_run = guardrails_run
+        guardrails_run = guardrails_func
     else:
         def guardrails_run(info):
             return "Guardrails are not implemented"
 
     # And now we put it all together!
     chain = (
-          loaded_memory 
+          loaded_memory
         | { # run question and keyword prompt in parallel
             "question": standalone_question,
             "keywords": keywords
@@ -245,12 +279,15 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
             "question": lambda x: x["question"]["standalone_question"],
             "docs": RunnableLambda(Retriever),
             "keywords": lambda x: x["keywords"]["keywords"],
-            "original_question": lambda x: question
+            "original_question": lambda x: question,
+            "conversation": loaded_memory | {"conversation": lambda x: x["chat_history"]},
           }
         | { # run in parallel
             "guardrail_answer": RunnableLambda(guardrails_run),
             "actual_answer": graph,
-            "follow_up": lambda x: followup
+            "follow_up": lambda x: followup,
+            "conversation": loaded_memory | {"conversation": lambda x: x["chat_history"]},
+            "count": loaded_memory | {"chat_history": lambda x: get_buffer_string(x["chat_history"])} | RunnableLambda(CountQuestions),
           }
         | { # Determine whether to give guardrail answer, follow up question or answer from document
             "history": loaded_memory | {"chat_history": lambda x: get_buffer_string(x["chat_history"]) or "No chat history"},
@@ -262,7 +299,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
         )
     
     # run chain
-    result = chain.invoke({"question": question})
+    result = chain.invoke({"question": question, "conversation": loaded_memory})
 
     # store answer in memory
     memory.save_context({"question": question},
@@ -273,7 +310,7 @@ def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = 
     if demo:
         return result
     
-    page_num = 'page ' + str(result['docs'][0].metadata['page'] + 1)
+    page_num = 'pages ' + ', '.join([str(doc.metadata['page'] + 1) for doc in result['docs']])
     document = result["docs"][0].metadata["source"].replace('../data/guidelines/', '')
     source = page_num + ' of ' + document
 
