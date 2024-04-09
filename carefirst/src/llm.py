@@ -247,7 +247,7 @@ def AnswerDecision(info):
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=None):
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=[]):
 
     if demo:
         # First we add a step to load memory
