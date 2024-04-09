@@ -59,7 +59,7 @@ def gpt3_response(prompt, model = 'gpt-3.5-turbo-0125'):
 
 @retry(stop=(stop_after_delay(20)|stop_after_attempt(5)))
 def chatbot_response_fun(prompt):
-    chatbot_response = ChatChain(prompt)
+    chatbot_response = ChatChain(question = prompt)
     return chatbot_response
 
 
@@ -91,7 +91,7 @@ def evaluate_one_model(chatbot,
         answer = intent['answer']
         # get response from carefirst
         chatbot_response = chatbot(prompt)
-        chatbot_page = int(''.join(re.findall(r'\d+', chatbot_response["source"])))
+        chatbot_pages = re.findall(r'\d+', chatbot_response["source"])
         chatbot_answer = chatbot_response['answer']
         #
         embeddings = sbert_model.encode([answer, chatbot_answer])
@@ -101,8 +101,8 @@ def evaluate_one_model(chatbot,
         'question': prompt,
         'expected_answer': answer,
         'chatbot_answer': chatbot_answer,
-        'page': page,
-        'chatbot_page': chatbot_page,
+        'page': str(page),
+        'chatbot_page': chatbot_pages,
         f'cos_sim_{chatbot_name}': util.cos_sim(embeddings[0], embeddings[1])[0].numpy()[0],
         f'rouge_1_f1_{chatbot_name}': float(rouge.get_scores(chatbot_answer, intent['answer'])[0]['rouge-1']['f']),
         f'rouge_2_f1_{chatbot_name}': float(rouge.get_scores(chatbot_answer, intent['answer'])[0]['rouge-2']['f']),                    
@@ -112,7 +112,7 @@ def evaluate_one_model(chatbot,
         scores.append(results)
         print(results)
         scores_df = pd.DataFrame(scores)
-        scores_df['page_match'] = scores_df.apply(lambda x: 1 if x['page'] == x['chatbot_page'] else 0, axis = 1)
+        scores_df['page_match'] = scores_df.apply(lambda x: 1 if x['page'] in x['chatbot_page'] else 0, axis = 1)
         scores_df.to_csv(output_data_path)
     #
     return scores_df
@@ -122,14 +122,25 @@ def evaluate_one_model(chatbot,
 # run evaluation for each model
 ##############################
 
+# validation on baseline
+# scores_df = evaluate_one_model(chatbot = gpt3_response, 
+#                        chatbot_name = 'baseline', 
+#                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
+#                        output_data_path = './data/evaluation/model_evaluation_baseline.csv')
+
 # validation on smaller sample
-scores_df = evaluate_one_model(chatbot = gpt3_response, 
-                       chatbot_name = 'baseline', 
-                       test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-                       output_data_path = './data/evaluation/model_evaluation_baseline.csv')
+# scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
+#                        chatbot_name = 'gpt35', 
+#                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
+#                        output_data_path = './data/evaluation/model_evaluation_gpt35_wo_tag.csv')
 
 
 def summary_results(model_name, res_df):
+    # pages within 1 page
+    res_df["buffer_page_match"] = res_df.apply(lambda row: 1 if (str(row['page']) in row['chatbot_page'] 
+                                               or str(row['page']+1) in row['chatbot_page'] 
+                                               or  str(row['page']-1) in row['chatbot_page']) 
+                                               else 0, axis = 1)
     # drop unneccessary columns
     df = res_df.drop(['Unnamed: 0', 
                       'question',
@@ -147,16 +158,16 @@ def summary_results(model_name, res_df):
     return print("======================")
 
 # summarised results
-carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
-summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
+# carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
+# summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
 
 carefirst_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_gpt35.csv')
 summary_results(model_name="carefirst gpt3.5", res_df=carefirst_gpt35)
 
-carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
-summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
+# carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
+# summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
 
-baseline_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_baseline.csv')
-summary_results(model_name="baseline gpt3.5", res_df=baseline_gpt35)
+# baseline_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_baseline.csv')
+# summary_results(model_name="baseline gpt3.5", res_df=baseline_gpt35)
 
 
