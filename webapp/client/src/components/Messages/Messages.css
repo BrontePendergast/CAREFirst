@@ -60,6 +60,7 @@
     color: white;
     max-width: 80%;
     border-radius: 10px;
+    margin-bottom: 20px;
   }
   .bot {
     padding: 8px;
@@ -67,7 +68,7 @@
     color: white;
     max-width: 80%;
     border-radius: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
 
   .message-container {
