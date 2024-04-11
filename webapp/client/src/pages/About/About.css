@@ -1,0 +1,99 @@
+.slogan-header {
+    font-size: 80px;
+    margin-top: 15vh;
+}
+
+#langchain-logo {
+    margin-left: 30%;
+    width: 35%;
+}
+
+#gpt-35 {
+    width: 35%;
+}
+
+.you-about {
+    padding: 8px;
+    background-color: gray;
+    color: white;
+    max-width: 80%;
+    border-radius: 10px;
+    font-size: 28px;
+  }
+
+.bot-about {
+    padding: 8px;
+    background-color: #407481;
+    color: white;
+    max-width: 80%;
+    border-radius: 10px;
+    font-size: 28px;
+  }
+
+ .info-link {
+    color: gold;
+  }
+
+  .info-section {
+    margin-top: 140px;
+    margin-bottom: 40px;
+  }
+
+  #red-cross {
+    width: 25%;
+  }
+
+  #feedback-image {
+    margin-left: 25%;
+    width: 45%;
+  }
+
+
+
+  .profile-pics {
+    width: 47%;
+  }
+
+  #charlie_pic {
+    width: 35% !important;
+  }
+
+  .name-message {
+    position: relative;
+  }
+
+  .name-plate {
+    font-size: 2em;
+    position: absolute;
+    top: 32%;
+    width: 100%;
+  }
+
+  .job-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .im-logos {
+    display: block;
+    margin: auto;
+  }
+
+  @media only screen and (max-width: 1000px){
+
+    .name-plate {
+        font-size: 25px;
+    }
+
+    .job-title {
+        visibility: hidden;
+    }
+  }
+
+  @media only screen and (max-width: 700px){
+
+    .you-about, .bot-about {
+        font-size: 18px !important;
+    }
+  }

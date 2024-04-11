@@ -208,25 +208,34 @@ function Messages() {
         <Container fluid>
             <Container fluid id="individual-messages-div">
             {messages.map((message, i) => {
-                if (message.sender=='bot'){
+                if ((message.sender=='bot') && (i==0)){
                     return (
-                    <OverlayTrigger placement='top' show={showTooltip['message-'+i] || showTooltip['pop-'+i]}  overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id={"popover-basic pop-"+i}>
-                    <Popover.Header as="h3" id={"pop-"+i}><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
-                    <Popover.Body id={"pop-"+i}>
-                    {message.page}
-                    </Popover.Body>
-                    </Popover>}>
                     <Row className={"individual-message-div"} id={"message-"+i}>
                         <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
                             {message.message}
-                            <div class="thumbs-container">
-                                <Button className="thumbs-up btn" data-messageid={message.message_id} id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
-                                <Button className="thumbs-down btn" data-messageid={message.message_id} id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
-                            </div>
                         </Col>
                     </Row>
-                    </OverlayTrigger>
                     )
+                }
+                else if (message.sender=='bot'){
+                    return (
+                        <OverlayTrigger placement='top' show={showTooltip['message-'+i] || showTooltip['pop-'+i]}  overlay={<Popover onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} id={"popover-basic pop-"+i}>
+                        <Popover.Header as="h3" id={"pop-"+i}><a href="https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf" target="_blank">Red Cross Guidelines</a></Popover.Header>
+                        <Popover.Body id={"pop-"+i}>
+                        {message.page}
+                        </Popover.Body>
+                        </Popover>}>
+                        <Row className={"individual-message-div"} id={"message-"+i}>
+                            <Col className={message.sender+" message-container mr-auto ml-0"} id={"message-"+i} onMouseEnter={setShowTooltipTrue} onMouseLeave={setShowTooltipFalse} xs={"auto"}>
+                                {message.message}
+                                <div class="thumbs-container">
+                                    <Button className="thumbs-up btn" data-messageid={message.message_id} id={"thumbs-up-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👍</Button>
+                                    <Button className="thumbs-down btn" data-messageid={message.message_id} id={"thumbs-down-"+i+" message-"+i} onClick={thumbSelected} onMouseLeave={setShowTooltipFalse}>👎</Button>
+                                </div>
+                            </Col>
+                        </Row>
+                        </OverlayTrigger>
+                        )
                 }
                 else{
                     return (
