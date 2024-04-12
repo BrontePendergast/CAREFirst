@@ -122,17 +122,17 @@ def evaluate_one_model(chatbot,
 # run evaluation for each model
 ##############################
 
-# validation on baseline
-# scores_df = evaluate_one_model(chatbot = gpt3_response, 
-#                        chatbot_name = 'baseline', 
-#                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-#                        output_data_path = './data/evaluation/model_evaluation_baseline.csv')
+validation on baseline
+scores_df = evaluate_one_model(chatbot = gpt3_response, 
+                       chatbot_name = 'baseline', 
+                       test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
+                       output_data_path = './data/evaluation/model_evaluation_baseline.csv')
 
-# validation on smaller sample
-# scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
-#                        chatbot_name = 'gpt35', 
-#                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-#                        output_data_path = './data/evaluation/model_evaluation_gpt35_wo_tag.csv')
+validation on smaller sample
+scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
+                       chatbot_name = 'gpt35', 
+                       test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
+                       output_data_path = './data/evaluation/model_evaluation_gpt35.csv')
 
 
 def summary_results(model_name, res_df):
@@ -158,16 +158,16 @@ def summary_results(model_name, res_df):
     return print("======================")
 
 # summarised results
-# carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
-# summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
+carefirst_mistral = pd.read_csv('./data/evaluation/model_evaluation_mistal_7b_instruct.csv')
+summary_results(model_name="carefirst mistral", res_df=carefirst_mistral)
 
 carefirst_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_gpt35.csv')
 summary_results(model_name="carefirst gpt3.5", res_df=carefirst_gpt35)
 
-# carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
-# summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
+carefirst_gemma = pd.read_csv('./data/evaluation/model_evaluation_gemma_7b_it.csv')
+summary_results(model_name="carefirst gemma", res_df=carefirst_gemma)
 
-# baseline_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_baseline.csv')
-# summary_results(model_name="baseline gpt3.5", res_df=baseline_gpt35)
+baseline_gpt35 = pd.read_csv('./data/evaluation/model_evaluation_baseline.csv')
+summary_results(model_name="baseline gpt3.5", res_df=baseline_gpt35)
 
 
