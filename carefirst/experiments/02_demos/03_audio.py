@@ -107,6 +107,8 @@ def num_to_words(text):
             after_spliting[index] = "nine one one"
         elif after_spliting[index] == 'EMS':
             after_spliting[index] = "Emergency Medical Services"
+        elif after_spliting[index] == 'AI.':
+            after_spliting[index] = "A I"
         elif after_spliting[index].isdigit():
             after_spliting[index] = num2words(after_spliting[index])
 
