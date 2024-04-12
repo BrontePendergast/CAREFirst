@@ -122,13 +122,7 @@ def evaluate_one_model(chatbot,
 # run evaluation for each model
 ##############################
 
-validation on baseline
-scores_df = evaluate_one_model(chatbot = gpt3_response, 
-                       chatbot_name = 'baseline', 
-                       test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
-                       output_data_path = './data/evaluation/model_evaluation_baseline.csv')
-
-validation on smaller sample
+# example validation on smaller sample
 scores_df = evaluate_one_model(chatbot = chatbot_response_fun, 
                        chatbot_name = 'gpt35', 
                        test_data_path = './data/intent/redcross_validation_10_percent.pickle', 
