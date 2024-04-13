@@ -11,7 +11,7 @@ This repository holds the codebase for a capstone project created by students in
 ### Problem & Motivation
 
 People seeking information on their mild to serious health issues are often caught between two extremes. They are either overloaded with information from scouring various medical websites or journals with mixed/ambiguous answers, or they are under-observed or treated by busy hospitals and urgent cares. Built as a conversational AI chatbot, CareFirst provides a singular, medically-sourced solution that can guide users on what the medical issue may be, how it may be treated, and where they should go for medical attention. 
-<br />
+
 Our goal is always the same: help you find the best possible solution to your first-aid needs. That's why we don't just rely on AI conversation. We encourage feedback from our users and our very own verified medical professionals. See transparent feedback on CareFirst AI on our website Model page.
 
 ### Data Science Approach and Impact
@@ -40,7 +40,7 @@ Our baseline GPT3.5 answers were the furthest from our reference answers, with C
 
 **Subject Matter Experts:**
 
-4 board-certified physicians practicing general surgery, trauma surgery, and internal medicine and 1 licensed Emergency Medical Technician (EMT) reviewed CareFirst responses.
+We had four board-certified physicians practicing general surgery, trauma surgery, and internal medicine and 1 licensed Emergency Medical Technician (EMT) review CareFirst responses.
 
 Overall, CareFirst was rated a 7.2 for trustworthiness; reviewing on a scale of 0 to 10 the correctness of the information provided in the response. CareFirst was rated a 6.7 for comprehensiveness; reviewing on a scale of 0 to 10 the completeness of the information provided in the response.
 
@@ -51,5 +51,6 @@ Feedback received included:
 
 ### Acknowledgements
 
-Thank you for the advice and support from Professor Mark Butler, Professor James Winegar, Professor Korin Reid, Professor Fred Nugen. 
-Thank you for the user testing from SMEs, friends, and family.
+*Thank you for the advice and support from Professor Mark Butler, Professor James Winegar, Professor Korin Reid, Professor Fred Nugen.* 
+
+*Thank you for the user testing from SMEs, friends, and family.*
