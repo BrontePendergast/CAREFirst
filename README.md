@@ -54,3 +54,10 @@ Feedback received included:
 *Thank you for the advice and support from Professor Mark Butler, Professor James Winegar, Professor Korin Reid, Professor Fred Nugen.* 
 
 *Thank you for the user testing from SMEs, friends, and family.*
+
+### References
+
+* [Red Cross Guidelines](https://www.redcross.ca/crc/documents/comprehensive_guide_for_firstaidcpr_en.pdf)
+* [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al., NeurIPS 2020)](https://arxiv.org/pdf/2005.11401.pdf)
+* [Chain-of-Thought Prompting Elicits Reasoning in Large Language Models (Wei et al., NeurIPS 2022)](https://arxiv.org/pdf/2201.11903.pdf)
+* [NeMo Guardrails: A Toolkit for Controllable and Safe LLM Applications with Programmable Rails (Rebedea et al., EMNLP 2023)](https://aclanthology.org/2023.emnlp-demo.40)
