@@ -1,0 +1,37 @@
+Number of rows: 236
+Number of unique values: 236
+Maximum text length: 3987
+Minimum text length: 8
+Average text length: 1794.6059322033898
+Average number of sentences: 15.970338983050848
+Common Bigrams:
+.Mobile phones
+//www.shutterstock.com/g/bikeriderlondon Jodie
+//www.thinkstockphotos.ca/search/2/image artist=Ale-ks
+01 02The
+0559 cpr
+08 85
+09154 poisons13
+0944 4461
+1-877-356-3226ISSN 978-1-55104-709-6Stay
+1.5 diameter
+1/2 front-to-back
+1/4 headboard
+10189 98
+105 11588
+10587 96
+10:00 a.m.
+10°C 50°F
+132129 140
+13391 93
+13713386 95
+14114762 65
+147 152150142
+150 151132
+151132 13391
+152 153135129
+152150142 150
+153135129 132129
+153140 147
+155 158
+155155 Poisons155

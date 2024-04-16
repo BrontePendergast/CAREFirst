@@ -8,8 +8,6 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import get_buffer_string
 from langchain_core.output_parsers import StrOutputParser
 from langchain.memory import ConversationBufferWindowMemory
-# from langchain_community.chat_message_histories import MongoDBChatMessageHistory
-from langchain_mongodb import MongoDBChatMessageHistory
 
 
 # carefirst functions
@@ -30,6 +28,8 @@ load_dotenv()
 
 MODEL = "gpt-3.5-turbo-1106"
 MODEL_ANSWER = "mistralai/Mistral-7B-Instruct-v0.2"
+# "google/gemma-7b-it"
+# "microsoft/phi-2"
 
 def SelectLLM(model_name="gpt-3.5-turbo-1106", huggingface=False):
 
@@ -245,7 +245,7 @@ def AnswerDecision(info):
 #######################################
 
 
-def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=None):
+def ChatChain(question, conversation_id = 'Test456', demo = False, guardrails = False, followup = False, previous_conversations=[]):
 
     if demo:
         # First we add a step to load memory

@@ -2,6 +2,8 @@ import json
 import os
 import pandas as pd
 import pickle
+from sklearn.model_selection import train_test_split
+from random import sample
 
 from langchain_community.document_transformers import DoctranQATransformer
 
@@ -75,7 +77,7 @@ for doc in transformed_document:
 # when a page has no information, such as a divider/contents page, gpt hallucinates and still asks questions
 # remove such pages using the metadata associated with the page.
      
-chapters = pd.read_pickle(r'../..data/guidelines/redcross_chapter_titles.pickle')
+chapters = pd.read_pickle(r'../../data/guidelines/redcross_chapter_titles.pickle')
 chapter_pages = [chapter["page"] for chapter in chapters]
 
 with open('../../data/intent/redcross_testing.pickle', 'rb') as f:
@@ -89,5 +91,54 @@ for doc in transformed_qna:
     if doc["page"] not in chapter_pages:
         final_qna .append(doc)
 
+# ready for diversification
+qna_df = pd.DataFrame(final_qna)
+qna_df.to_csv('../../data/intent/redcross_testing_pre_translate.csv')
+
+
+###############################
+# diversify using google sheets 
+###############################
+     
+# this step is done in google sheets
+# https://docs.google.com/spreadsheets/d/1vA2UDQGRdvgauHejv8-WjVEz2-BJ1AtBQaLrnZzSjFw/edit?usp=sharing
+     
+###############################
+# testing split
+###############################
+     
+# read in newly expanded testing data
+qna_expanded = pd.read_csv('../../data/intent/redcross_testing_post_translate.csv')
+qna_expanded = qna_expanded.drop(['Unnamed: 0', 'language conversion'], axis = 1)
+
+qna_dict = qna_expanded.to_dict('records')
+
+validation, test = train_test_split(qna_dict, test_size=0.33, random_state=2024)
+
+print(f'Size of validation: {len(validation)} questions')
+print(f'Size of test: {len(test)} questions')
+
+###############################
+# samples for quick dev
+###############################
+
+# 10% sample
+sample_validation = sample(validation, k = int(len(validation)*0.1))
+
+print(f'Size of sample validation: {len(sample_validation)} questions')
+
+###############################
+# save all files
+###############################
+
+# hold out for testing
 with open('../../data/intent/redcross_testing.pickle', 'wb') as f:
-     pickle.dump(final_qna, f)
+     pickle.dump(test, f)
+
+# validation/tuning sample
+with open('../../data/intent/redcross_validation.pickle', 'wb') as f:
+     pickle.dump(validation, f)
+
+# validation/tuning smaller sample for quick iteration
+with open('../../data/intent/redcross_validation_10_percent.pickle', 'wb') as f:
+     pickle.dump(sample_validation, f)
